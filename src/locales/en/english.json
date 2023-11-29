@@ -1,0 +1,530 @@
+{
+  "header": {
+    "home": "Home",
+    "about": "About",
+    "jobs": "Jobs",
+    "company": "Company",
+    "blog": "Blog",
+    "contact": "Contact",
+    "languages": "Language",
+    "dashboard": "Dashboard",
+    "approvedBlogs": "Approved Blogs",
+    "waitingBlogs": "Waiting Blogs",
+    "approvedJobs": "Approved Jobs",
+    "waitingJobs": "Waiting Jobs",
+    "profile": "Profile",
+    "favoriteJob": "Favorite Job",
+    "logout": "Logout",
+    "login": "Login",
+    "jobManagement": "Job Management",
+    "candidates": "Candidates",
+    "employers": "Employers",
+    "approvedCandidates": "Approved Candidates",
+    "waitingCandidates": "Waiting Candidates",
+    "approvedEmployers": "Approved Employers",
+    "waitingEmployers": "Waiting Employers",
+    "category": "Category",
+    "openContact": "Open Contact",
+    "closeContact": "Closed Contact"
+
+  },
+
+  "about": {
+    "title": "We Help To Get The Best Job And Find A Talent",
+    "description": "Searching for and starting a new job takes courage and discipline. While you may also feel excited about the future, reading something inspirational can help you feel more confident in your abilities",
+    "point1": "FiveItViec - the world of jobseekers",
+    "point2": "FiveItViec - where you truly find yourself",
+    "point3": "FiveItViec - bring ITers together",
+    "readMore": "Read More"
+  },
+  "home": {
+    "carousel": {
+      "title": "Find The Perfect Job That You Deserved",
+      "description": "Embark on a journey to discover the job that resonates with your aspirations and expertise, a role you genuinely deserve.",
+      "btnSearchJob": "Search A Job",
+      "btnFindTalent": "Find A Talent"
+    },
+    "category": {
+      "exploreCate": "Explore By Category",
+      "jobs": "Jobs"
+    },
+    "readMore": {
+      "header": "We Help To Get The Best Job And Find A Talent",
+      "paragraph1": "Embark on a journey to explore roles perfectly aligned with your aspirations and expertise. Let us guide you in discovering the ideal job opportunities or sourcing exceptional talent effortlessly.",
+      "listItems1": "Find roles tailored to your expertise",
+      "listItems2": "Discover ideal job opportunities",
+      "listItems3": "Source exceptional talent effortlessly",
+      "buttonText": "Read More"
+    },
+    "testimonial": {
+      "clientsSay": "Our Clients Say!!!",
+      "client1": "Always reliable and fast, even after I leave for the day, I can always count on you guys to get requests done. Thank you!",
+      "client2": "Excellent service. Quick response, efficient troubleshooting and resolution with full explanation of the problem. Gotta love FiveITViec!",
+      "client3": "I just wanted to take a minute to let you know how helpful your office was in a time of near desperation. The people that I have dealt with have helped make my job much easier.",
+      "profession": "Professor"
+    }
+  },
+
+  "job": {
+    "jobBanner": {
+      "pageTitle": "Jobs List",
+      "home": "Home",
+      "jobs": "Jobs"
+    }
+  },
+
+  "jobDetail": {
+    "jobDetailBanner": {
+      "pageTitle": "Jobs Details",
+      "home": "Home",
+      "jobs": "Jobs",
+      "jobDetail": "Job Details"
+    },
+    "applyForm": {
+      "validationErrors": {
+        "fullNameRequired": "Name is required",
+        "emailRequired": "Email is required",
+        "emailInvalid": "Email is invalid",
+        "phoneNumberInvalid": "Phone number must be numeric and has to be greater than 10 or less than 12",
+        "cvRequired": "CV is required"
+      },
+      "applyWelcome": "Apply For The Job",
+      "applyWelcome1": "Upload your CV from your computer, select or drag and drop",
+      "chooseCV": "Choose CV"
+    },
+
+    "details": {
+      "left": {
+        "fullTime": "Full Time",
+        "descriptions": "Job Description",
+        "requirements": {
+          "requirements1": "Competitive salary based on performance and highest in the IT industry",
+          "requirements2": "Youthful and enjoyable working environment"
+        },
+        "responsibilities": "Responsibilities",
+        "qualifications": {
+          "qualifications": "Qualifications",
+          "qualifications1": "At least 2 years of project experience (Highly prefer candidates with extensive experience)",
+          "qualifications2": "Programming experience",
+          "qualifications3": "Understanding and application of CI/CD",
+          "qualifications4": "English communication at an intermediate level (TOEIC score of 550 or equivalent certificates, or confident in English communication)"
+        }
+      },
+      "right": {
+        "summary": "Jobs summary",
+        "createdAt": "Published On:",
+        "salary": "Salary: ",
+        "location": "Location: ",
+        "deadline": "Dead Line: ",
+        "detail": "Searching for and starting a new job takes courage and discipline. While you may also feel excited about the future, reading something inspirational can help you feel more confident in your abilities"
+      }
+    }
+  },
+
+  "company": {
+    "companyBanner": {
+      "pageTitle": "Company",
+      "home": "Home",
+      "comapany": "Comppany"
+    },
+    "company": "Company",
+    "description": "Companies, whether large corporations or small startup are thebackbone of the global business landscape. They serve as engines of economic growth, providing goods and services that meet theneeds and desires of consumers worldwide.",
+    "noCompany": "At the moment, there are no available companies that meet your requirements"
+  },
+
+  "companyDetail": {
+    "openJob": "Open jobs",
+    "details": {
+      "left": {
+        "general": "General information",
+        "type": "Company type",
+        "product": "Product",
+        "workingDay": "Working Days",
+        "workingFromTo": " Monday - Friday",
+        "country": "Country",
+        "vietnam": "Vietnam",
+        "overview": {
+          "overview": "Company Overview",
+          "overview1": "As a Digital Transformation Expert (DX) and Digital Growth Partner,",
+          "overview2": "We dedicate our DX skills to helping large customers succeed.",
+          "overview3": "leads in providing the best working environment for employees",
+          "overview4": "Top office: Office on the 35th floor of Keangnam building, beautiful view and modern space",
+          "overview5": "Top equipment: Each employee is equipped with the latest generation LG Gram laptop and modern LG screen",
+          "overview6": "Best working mode: Work 8 hours/day, from 8:30 to 5:30. No OT, no overtime on weekends!",
+          "overview7": "Employees are like family: Working with Korea's top experts, youthful, modern, fair working style!",
+          "overview8": "Best remuneration: Salary deal based on ability, fixed PI bonus of 150% of salary Incentive, Lunch allowance, transportation, phone bill. Party with the team once a month, Workshop travel for the whole company once a year. Rewarding gifts on holidays, International Labor Day, International Women's Day, etc"
+        },
+        "keyskill": "Key skills"
+      }
+    }
+  },
+
+  "blog": {
+    "blogBanner": {
+      "description": "As an IT business, you have a wealth of highly specialized knowledge that is valuable to industries and professionals of all types. One of the best ways to share your expertise and build lasting connections is by starting an IT company blog. You might even have a long list of IT blog ideas in the back of your mind that you could sit down and write today.",
+      "home": "Home"
+    },
+    "noBlog": "You don't have any blog yet",
+    "lastUpdated": "Last updated ",
+    "empty": "Empty",
+    "emptyBlogList": "The waiting blog list is empty",
+    "createBlog": "Please create a new blog to enjoy our website"
+  },
+  "blogDetail": {
+    "title": "Blog Detail",
+    "description": "As an IT business, you have a wealth of highly specialized knowledge that is valuable to industries and professionals of all types. One of the best ways to share your expertise and build lasting connections is by starting an IT company blog. You might even have a long list of IT blog ideas in the back of your mind that you could sit down and write today.",
+    "home": "Home",
+    "left": {
+      "qoute": "Management truly cares about employees and treats them with respect.",
+      "point1": "Friendly colleagues and a good working environment. A collaborative culture, friendly colleagues, and well-equipped offices.",
+      "point2": "What do the best IT companies have in common?",
+      "point3": "Learning opportunities. Exposure to new technologies, training, fast career advancement opportunities, and technical challenges.",
+      "point4": "How did FiveITViec select winning companies?",
+      "point5": "FiveITViec selects winning companies based on over 8,000 company reviews on FiveITViec posted by IT employees.",
+      "point6": "The 'Best IT Company' award winners have received high scores and detailed positive reviews from their employees."
+    }
+  },
+
+  "contact": {
+    "sendButton": "Send Message",
+    "pageTitle": "Contact",
+    "breadcrumbHome": "Home",
+    "breadcrumbContact": "Contact",
+    "location": "Quang Trung Software Compound, District 12, HCM City",
+    "email": "FiveITViec@gmail.com",
+    "phone": "+84 335 335 455",
+    "formInstructions": "Don't hesitate to contact us by completing the form below. Our staffs will try to reach you ASAP",
+    "downloadLink": "Download Now",
+    "successMessage": "Send contact SuccessFully",
+    "errorMessage": "Error in sending contact"
+  },
+
+  "login": {
+    "welcome": "Welcome back!",
+    "welcome1": "Let's build an outstanding profile and seize ideal career opportunities.",
+    "orLogin": "Or log in with",
+    "noAccount": "Don't have an account yet?",
+    "hello": "Hello"
+  },
+
+  "register": {
+    "welcome": "Please take a few seconds to confirm the information below!",
+    "welcome1": "To best optimize your experience with FiveItViec,",
+    "welcome2": "Please choose the group that best suits you.",
+    "welcome3": "Welcome to 5ITviec!",
+    "welcome4": "Let's build an outstanding profile and receive ideal career opportunities",
+    "employerWelcome1": "Employer Account Registration",
+    "employerWelcome2": "Build a competitive advantage for your business with a new recruitment technology experience",
+    "employer": "Employer",
+    "candidate": "Candidate",
+    "hasAccount": "Already have an account?",
+    "and": "and",
+    "termService": "I have read and agree to the",
+    "termService1": "Terms of Service",
+    "termService2": "Privacy Policy",
+    "ofFiveITViec": "of 5ITviec",
+    "account": "Account",
+    "employerInfo": "Employer Information"
+  },
+
+  "forget": {
+    "welcome": "Please take a few seconds to confirm the information below!",
+    "welcome1": "Forgot Password"
+  },
+
+  "favorite": {
+    "noFavorite": "No item in Favorite Job",
+    "favorite": "Favorite job"
+  },
+
+  "profile": {
+    "myCV": "My CV",
+    "jobApplied": "Jobs Applied",
+    "changePassword": "Change Password",
+    "profile": "Profile",
+    "companyImg": "Company Images",
+    "dragOrClick": "Drag or click to the images to change"
+  },
+
+  "jobManagement": {
+    "jobManagement": "Job Management",
+    "updateJob": "Update Your Job",
+    "postJob": "Post Your Job",
+    "chooseImg": "Choose Image",
+    "companyImg": "Company Images",
+    "dragOrClick": "Drag or click to the images to change",
+    "appliedForJob": "Applied for job",
+    "noCandidate": "There are no candidates for this job",
+    "commentForThisJob": "Comments for this job",
+    "noComment": "This job has no comments yet",
+    "confirmClose": "Confirm Close Job?",
+    "reachedDate": "The work has reached date close",
+    "message": "Message"
+  },
+
+  "dashboard": {
+    "welcome": "Welcome",
+    "welcomeText": "Welcome to FiveITViec! Wish you have a nice day!",
+    "waitingCv": "Waiting CV",
+    "approvedCv": "Approved CV",
+    "statistics": "Statistics",
+    "jobEnable": "Job Enable",
+    "jobDisable": "Job Disable",
+    "jobReport": "Jobs Report",
+    "applicant": "Applicant",
+    "job": "Job",
+    "totalCandidate": "Total Candidates",
+    "totalEmployers": "Total Employers",
+    "jobs": "Jobs",
+    "blogs": "Blogs",
+    "contacts": "Contacts",
+    "recentEmployer": "Recent Employer",
+    "logo": "Logo",
+    "companyName": "Company Name",
+    "email": "Email",
+    "phone": "Phone",
+    "address": "Address",
+    "tax": "Tax",
+    "employer": "Employer",
+    "candidate": "Candidate"
+  },
+
+  "admin":{
+    "noUser": " We don't find any users with the conditions you require.",
+    "noCate": " We don't find any categories with the conditions you require.",
+    "noContact": " We don't find any contacts with the conditions you require.",
+    "noBlog": " We don't find any blogs with the conditions you require.",
+    "noJob": " We don't find any jobs with the conditions you require."
+  },
+
+  "table": {
+    "noMessage": "No message",
+    "noCoverLetter": "No cover letter",
+    "img": "Image",
+    "title": "Title",
+    "author": "Author",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "CL": "Cover Letter",
+    "CV": "CV",
+    "date": "Date",
+    "message": "Message",
+    "salary": "Salary",
+    "category": "Category",
+    "action": "Action",
+    "status": "Status",
+    "finvalidIMGFile": "Approval",
+    "applied": "Applied",
+    "closeDate": "Close Date",
+    "gender": "Gender",
+    "companyName": "Company Name",
+    "taxNumber": "Tax Number",
+    "companyLogo": "Company Logo",
+    "createdAt": "Created At",
+    "createdBy": "Created By",
+    "updatedAt": "Updated At",
+    "updatedBy": "Updated By",
+    "applicantRating": "Applicant/Rating"
+    
+  },
+
+  "status": {
+    "status": "Status",
+    "closed": "Closed",
+    "waiting": "Waiting",
+    "approved": "Approved",
+    "enable": "Enable",
+    "disable": "Disable"
+  },
+
+  "pagination": {
+    "firstPage": "First Page",
+    "lastPage": "Last Page"
+  },
+
+  "formErrors": {
+    "emailRequired": "Email is required",
+    "emailInvalid": "Email is invalid",
+    "passwordRequired": "Password is invalid",
+    "invalidPassword": "Password > 6 characters, has  upper, speacial characters and number",
+    "notMatchPassword": "Passwords do not match",
+    "currentMatchNewPass": "Current Password and New Password can't be the same",
+    "nameLength": "Name has to be > 3 letters",
+    "nameRequired": "Name is required",
+    "phoneRequired": "Phone is required",
+    "phoneInvalid": "Phone number should start with '0' and have exactly 10 digits in total.",
+    "subjectLength": "Subject has to be > 6 letters",
+    "messageLength": "Message has to be > 20 letters",
+    "companyNameRequired": "Company name is required",
+    "companyLength": "Company has to be > 3 letters",
+    "invalidTax": "Tax number incorrect",
+    "addressRequired": "Address is required",
+    "invalidAddress": "Address > 5 characters",
+    "invalidBio": "Bio is required and should be at least 10 characters long",
+    "invalidTitle": "Title has to > 5 characters",
+    "invalidSalary": "Please enter a valid numeric value",
+    "invalidQuantity": "Please enter a valid numeric value",
+    "category": "Pls!Choose Category",
+    "location": "Pls!Choose Location",
+    "invalidDescription": "Description has to be greater than 100 letters",
+    "invalidRequirements": "Requirements has to be greater than 100 letters",
+    "closeDate": "Please select close date.",
+    "sendMessage": "Pls! Enter Message",
+    "invalidTitle10": "Title has to > 10 characters",
+    "invalidContent": "Content has to greater than 100 letters",
+    "invalidAuthor": "Pls! Enter Author",
+    "invalidImg": "Pls! Choose an image",
+    "invalidCategory": "Category name has to greater than 3 letters"
+  },
+
+  "placeholders": {
+    "name": "Your name",
+    "fullName": "Your Fullname",
+    "email": "Your email",
+    "password": "Your password",
+    "currentPassword": "Your current password",
+    "newPassword": "New password",
+    "confirmNewPassword": "Confirm new password",
+    "confirmPassword": "Confirm Password",
+    "confirmPassword1": "Re-enter Password",
+    "subject": "Subject",
+    "message": "Type your message here...",
+    "phoneNumber": "Phone Number",
+    "companyName": "Company Name",
+    "taxNumber": "Tax Number",
+    "workAddress": "Work Address",
+    "address": "Address",
+    "bio": "Bio",
+    "gender": {
+      "gender": "Gender",
+      "male": "Male",
+      "female": "Female",
+      "others": "Others"
+    },
+    "specialization": "Specialization",
+    "chooseSpecialization": "Choose your specialization",
+    "title": "Title",
+    "salary": "Salary",
+    "quantityCV": "Quantity of CV",
+    "dateClose": "Close Date",
+    "category": "Category",
+    "location": "Location",
+    "description": "Description",
+    "requirements": "Requirements",
+    "closeDate": "Close Date",
+    "blogContent": "Blog Content",
+    "author": "Author",
+    "createdBy":"Created By",
+    "createdAt":"Created At"
+    
+  },
+
+  "showToastMessage": {
+    "status": "Status",
+    "successContactMessage": "Send contact successFully",
+    "errorContactMessage": "Failed to send contact",
+    "successCommentMessage": "Thanks for your comment",
+    "errorCommentMessage": "Failed to send comment",
+    "successApplyMessage": "Send contact successFully",
+    "errorApplyMessage": "Failed to send contact",
+    "successRegisterMessage": "Register successFully",
+    "errorRegisterMessage": "Email already existed",
+    "errorWrongPassword": "Oops! Wrong Password",
+    "errorWrongEmail": "Oops! Wrong Email",
+    "errorDisableAccount": "The account has been disable, please contact admin for help",
+    "invalidPDFFile": "Invalid file type for PDFs. Please select a PDF file.",
+    "invalidIMGFile": "Invalid file type for IMGs. Please select a IMG file.",
+    "pleaseLogin": "Please Login",
+    "reviewContent": "Please enter the content for your comment",
+    "reviewRating": "Please give your stars comment",
+    "thanksApply": "Thank you for applying",
+    "thanksForComment": "Thanks for your comment",
+    "checkEmail": "Please check your email for the new password",
+    "add": "Add",
+    "remove": "remove",
+    "successFavorite": "to favorite job successful",
+    "successUpdateProfile": "Update profile successFully",
+    "errorUpdateProfile": "Failed to update profile",
+    "successCloseJob": "Close job successFully",
+    "errorCloseJob": "Failed to close job",
+    "successSendMessage": "Send message successFully",
+    "errorSendMessage": "Failed to send message",
+    "successUpdateJob": "Update job successFully",
+    "errorUpdateJob": "Failed to update job",
+    "successPostJob": "Post job successFully",
+    "errorPostJob": "Failed to post job",
+    "successBlogPostWaiting": "Please wait for admin to approve! You can check it here",
+    "errorBlogPost": "Failed to post blog",
+    "updateSuccess": "Update SuccessFully",
+    "updateFailed": "Update Failed",
+    "categoryNameExist": "Category name has been existed"
+
+  },
+
+  "searchForm": {
+    "keyword": "Keyword",
+    "category": "Category",
+    "location": "Location",
+    "searchBtn": "Search"
+  },
+
+  "btn": {
+    "btnApply": "Apply Now",
+    "btnApplyOne": "Apply",
+    "btnApplied": "Applied",
+    "btnSend": "Send",
+    "btnViewCompany": "View Company",
+    "btnLogin": "Login",
+    "btnForget": "Forget Password",
+    "btnSignUpNow": "Sign up Now",
+    "btnClose": "Close",
+    "btnSignUp": "Sign Up",
+    "btnResetPass": "Reset Password",
+    "btnUpdateProfile": "Update Your Profile",
+    "btnUploadCV": "Upload Your CV",
+    "btnViewCV": "View Your CV",
+    "btnViewJobs": "View Jobs",
+    "btnChangePassword": "Change here",
+    "btnView": "View",
+    "btnPost": "Post",
+    "btnUpdate": "Update",
+    "btnNew": "New",
+    "btnCancel": "Cancel",
+    "btnDisable": "Disable",
+    "btnEdit": "Edit",
+    "btnDenied": "Denied",
+    "btnApproved": "Approve",
+    "btnSave": "Save",
+    "btnOpen": "Open",
+    "goToCreateBlog": "Go to create"
+  },
+
+  "comment": {
+    "review_rating": "Reviews And Ratings",
+    "statistic": "Statistic",
+    "comments": "Comments",
+    "review": "Post your comment",
+    "ratings": "Ratings ",
+    "content": "Comment content",
+    "no_review": "There are no reviews yet"
+  },
+
+  "footer": {
+    "about": "About",
+    "aboutUs": "About Us",
+    "contactUs": "Contact Us",
+    "quickLinks": "Quick Links",
+    "ourServices": "Our Services",
+    "privacyPolicy": "Privacy Policy",
+    "termsCondition": "Terms & Condition",
+    "address": "Address",
+    "addressText": "Quang Trung Software Compound",
+    "newsletter": "Newsletter",
+    "newsletterText": "Please enjoy with us",
+    "yourEmail": "Your email",
+    "signUp": "Sign Up",
+    "designBy": "is designed by",
+    "allRightsReserved": "All rights reserved"
+  }
+}

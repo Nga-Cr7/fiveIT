@@ -1,0 +1,522 @@
+{
+  "header": {
+    "home": "Trang chủ",
+    "about": "Giới thiệu",
+    "jobs": "Công việc",
+    "company": "Công ty",
+    "blog": "Blog",
+    "contact": "Liên hệ",
+    "languages": "Ngôn ngữ",
+    "dashboard": "Bảng điều khiển",
+    "approvedBlogs": "Blog đã duyệt",
+    "waitingBlogs": "Blog đang chờ",
+    "approvedJobs": "Công việc đã duyệt",
+    "waitingJobs": "Công việc đang chờ",
+    "profile": "Trang cá nhân",
+    "favoriteJob": "Việc làm yêu thích",
+    "logout": "Đăng xuất",
+    "login": "Đăng nhập",
+    "jobManagement": "Quản lý công việc",
+    "candidates": "Ứng viên",
+    "employers": "Nhà tuyển dụng",
+    "approvedCandidates": "Ứng viên đã phê duyệt",
+    "waitingCandidates": "Ứng viên đang chờ",
+    "approvedEmployers": "Nhà tuyển dụng đã phê duyệt",
+    "waitingEmployers": "Nhà tuyển dụng đang chờ",
+    "category": "Danh mục",
+    "openContact": "Liên hệ chưa phản hồi",
+    "closeContact": "Liên hệ đã đóng"
+  },
+  "about": {
+    "title": "Chúng Tôi Giúp Bạn Tìm Việc Tốt Nhất Và Tìm Kiếm Tài Năng",
+    "description": "Việc tìm kiếm và bắt đầu công việc mới đòi hỏi lòng can đảm và kỷ luật. Trong khi bạn cũng có thể cảm thấy hào hứng với tương lai, việc đọc những điều động viên có thể giúp bạn cảm thấy tự tin hơn về khả năng của mình",
+    "point1": "FiveItViec - thế giới của người tìm việc",
+    "point2": "FiveItViec - nơi bạn thực sự tìm thấy bản thân",
+    "point3": "FiveItViec - kết nối cộng đồng ITers",
+    "readMore": "Đọc Thêm"
+  },
+  "home": {
+    "carousel": {
+      "title": "Tìm Kiếm Công Việc Hoàn Hảo ",
+      "description": "Bắt đầu hành trình để khám phá công việc phản ánh đúng hoài bão và chuyên môn của bạn, một vai trò mà bạn thực sự xứng đáng.",
+      "btnSearchJob": "Tìm Kiếm Công Việc",
+      "btnFindTalent": "Tìm Người Tài Năng"
+    },
+    "category": {
+      "exploreCate": "Khám Phá Theo Danh Mục",
+      "jobs": "Công việc"
+    },
+    "readMore": {
+      "header": "Chúng Tôi Hỗ Trợ Bạn Tìm Việc Tốt Nhất Và Tìm Người Tài Năng",
+      "paragraph1": "Bắt đầu hành trình khám phá các vị trí công việc hoàn hảo phản ánh đúng hoài bão và chuyên môn của bạn. Hãy để chúng tôi hướng dẫn bạn trong việc khám phá cơ hội việc làm lý tưởng hoặc tìm nguồn nhân tài xuất sắc một cách dễ dàng.",
+      "listItems1": "Tìm các vị trí phù hợp với chuyên môn của bạn",
+      "listItems2": "Khám phá cơ hội việc làm lý tưởng",
+      "listItems3": "Tìm nguồn nhân tài xuất sắc một cách dễ dàng",
+      "buttonText": "Đọc Thêm"
+    },
+    "testimonial": {
+      "clientsSay": "Ý Kiến ​​Của Khách Hàng Của Chúng Tôi!!!",
+      "client1": "Luôn đáng tin cậy và nhanh chóng, ngay cả sau khi tôi rời khỏi trong ngày, tôi luôn có thể tin tưởng vào các bạn để hoàn thành yêu cầu. Cảm ơn bạn!",
+      "client2": "Dịch vụ xuất sắc. Phản hồi nhanh chóng, sửa lỗi và giải quyết hiệu quả với giải thích đầy đủ về vấn đề. Yêu FiveITViec!",
+      "client3": "Tôi chỉ muốn dành một phút để cho bạn biết cách văn phòng của bạn đã giúp đỡ trong một thời điểm gần như tuyệt vọng. Những người mà tôi đã gặp ... đã giúp làm cho công việc của tôi dễ dàng hơn nhiều.",
+      "profession": "Chuyên gia IT"
+    }
+  },
+
+  "job": {
+    "jobBanner": {
+      "pageTitle": "Danh Sách Công Việc",
+      "home": "Trang Chủ",
+      "jobs": "Công Việc"
+    }
+  },
+
+  "jobDetail": {
+    "jobDetailBanner": {
+      "pageTitle": "Chi Tiết Công Việc",
+      "home": "Trang Chủ",
+      "jobs": "Công Việc",
+      "jobDetail": "Chi Tiết Công Việc"
+    },
+    "applyForm": {
+      "validationErrors": {
+        "fullNameRequired": "Tên là bắt buộc",
+        "emailRequired": "Email là bắt buộc",
+        "emailInvalid": "Email không hợp lệ",
+        "phoneNumberInvalid": "Số điện thoại phải từ 10 đến 12 kí  tự",
+        "cvRequired": "CV là bắt buộc"
+      },
+      "applyWelcome": "Ứng tuyển cho công việc",
+      "applyWelcome1": "Tải lên CV của bạn, kéo hoặc ấn vào đây",
+      "chooseCV": "Chọn CV"
+    },
+    "details": {
+      "left": {
+        "fullTime": "Toàn thời gian",
+        "descriptions": "Mô tả công việc",
+        "requirements": {
+          "requirements1": "Lương thưởng theo năng lực và cao nhất khối IT",
+          "requirements2": "Môi trường làm việc trẻ trung, vui vẻ"
+        },
+        "responsibilities": "Trách nhiệm",
+        "qualifications": {
+          "qualifications": "Yêu cầu",
+          "qualifications1": "Có ít nhất 2 năm kinh nghiệm về dự án (Ưu tiên ứng viên có kinh nghiệm rộng lớn)",
+          "qualifications2": "Kinh nghiệm lập trình",
+          "qualifications3": "Hiểu và áp dụng CI/CD",
+          "qualifications4": "Giao tiếp tiếng Anh ở mức trung bình (TOEIC trên 550 hoặc chứng chỉ tương đương, hoặc tự tin trong giao tiếp tiếng Anh)"
+        }
+      },
+      "right": {
+        "summary": "Tóm tắt công việc",
+        "createdAt": "Được tạo ngày: ",
+        "salary": "Mức lương: ",
+        "location": "Địa điểm: ",
+        "deadlline": "Hạn chót: ",
+        "detail": "Tìm kiếm và bắt đầu công việc mới đòi hỏi lòng dũng cảm và kỷ luật. Trong khi bạn cũng có thể cảm thấy hứng khởi về tương lai, việc đọc những điều động lực có thể giúp bạn cảm thấy tự tin hơn về khả năng của mình."
+      }
+    }
+  },
+
+  "company": {
+    "companyBanner": {
+      "pageTitle": "Công ty",
+      "home": "Trang chủ",
+      "company": "Công ty"
+    },
+    "company": "Công ty",
+    "description": "Các công ty, cho dù là doanh nghiệp lớn hay doanh nghiệp khởi nghiệp nhỏ, là cột mốc quan trọng trên bức tranh kinh doanh toàn cầu. Chúng là động cơ của sự tăng trưởng kinh tế, cung cấp hàng hóa và dịch vụ đáp ứng nhu cầu và mong muốn của người tiêu dùng trên toàn thế giới.",
+    "noCompany": "Hiện tại không có công ty nào như bạn tìm!"
+  },
+
+  "companyDetail": {
+    "openJob": "Công việc: ",
+    "details": {
+      "left": {
+        "general": "Thông tin chung",
+        "type": "Loại công ty",
+        "product": "Gia công",
+        "workingDay": "Ngày làm việc",
+        "workingFromTo": "Thứ Hai - Thứ Sáu",
+        "country": "Quốc gia",
+        "vietnam": "Việt Nam",
+        "overview": {
+          "overview": "Tổng quan về công ty",
+          "overview1": "Là Chuyên gia Chuyển đổi Kỹ thuật số (DX) và Đối tác Phát triển Kỹ thuật số,",
+          "overview2": "Chúng tôi tận dụng kỹ năng DX của mình để giúp các khách hàng lớn đạt được thành công.",
+          "overview3": "dẫn đầu trong việc cung cấp môi trường làm việc tốt nhất cho nhân viên",
+          "overview4": "Top văn phòng: Văn phòng tại tầng 35 của tòa nhà Keangnam, tầm nhìn đẹp và không gian hiện đại",
+          "overview5": "Top thiết bị: Mỗi nhân viên được trang bị laptop LG Gram thế hệ mới nhất và màn hình LG hiện đại",
+          "overview6": "Chế độ làm việc tốt nhất: Làm việc 8 giờ/ngày, từ 8:30 đến 17:30. Không làm thêm giờ, không làm thêm giờ vào cuối tuần!",
+          "overview7": "Nhân viên như gia đình: Làm việc với các chuyên gia hàng đầu của Hàn Quốc, phong cách làm việc trẻ trung, hiện đại, công bằng!",
+          "overview8": "Phúc lợi tốt nhất: Lương thương lượng dựa trên khả năng, thưởng PI cố định 150% lương thưởng, trợ cấp trưa, di chuyển, hóa đơn điện thoại. Tiệc cùng đội một lần mỗi tháng, Du lịch Workshop cho toàn công ty một lần mỗi năm. Quà thưởng vào các dịp lễ, Ngày Quốc tế lao động, Ngày Quốc tế Phụ nữ, v.v."
+        },
+        "keyskill": "Kỹ năng chính"
+      }
+    }
+  },
+  "blog": {
+    "blogBanner": {
+      "description": "Là một doanh nghiệp công nghệ thông tin, bạn sở hữu một lượng kiến thức chuyên sâu rất có giá trị đối với các ngành và chuyên gia của mọi loại. Một trong những cách tốt nhất để chia sẻ chuyên môn của bạn và xây dựng mối quan hệ lâu dài là bắt đầu một blog của công ty IT. Bạn thậm chí có thể có một danh sách dài các ý tưởng blog IT trong tâm trí mà bạn có thể ngồi xuống và viết ngay hôm nay.",
+      "home": "Trang chủ"
+    },
+    "noBlog": "Bạn chưa có blog nào!",
+    "lastUpdated": "Lần cuối cập nhật ",
+    "empty": "Trống rỗng",
+    "emptyBlogList": "Danh sách blog đang chờ trống rỗng",
+    "createBlog": "Vui lòng tạo một blog mới để trải nghiệm trang web của chúng tôi"
+  },
+
+  "blogDetail": {
+    "title": "Chi tiết Blog",
+    "description": "Là một doanh nghiệp công nghệ thông tin, bạn sở hữu một lượng kiến thức chuyên sâu rất có giá trị đối với các ngành và chuyên gia của mọi loại. Một trong những cách tốt nhất để chia sẻ chuyên môn của bạn và xây dựng mối quan hệ lâu dài là bắt đầu một blog của công ty IT. Bạn thậm chí có thể có một danh sách dài các ý tưởng blog IT trong tâm trí mà bạn có thể ngồi xuống và viết ngay hôm nay.",
+    "home": "Trang chủ",
+    "left": {
+      "qoute": "Quản lý thực sự quan tâm đến nhân viên và đối xử với họ bằng sự tôn trọng.",
+      "point1": "Đồng nghiệp thân thiện và một môi trường làm việc tốt. Một văn hóa hợp tác, đồng nghiệp thân thiện và một văn phòng tiện nghi.",
+      "point2": "Những công ty IT tốt nhất có điểm chung gì?",
+      "point3": "Cơ hội học tập. Được tiếp xúc với các công nghệ mới, được đào tạo, có cơ hội thăng tiến nhanh và những thách thức về kỹ thuật.",
+      "point4": "FiveITViec đã lựa chọn những công ty thắng giải như thế nào?",
+      "point5": "FiveITViec lựa chọn những công ty thắng giải dựa trên hơn 8.000 đánh giá công ty trên FiveITViec được đăng bởi những nhân viên IT.",
+      "point6": "Những công ty thắng giải “Công ty IT tốt nhất” đã nhận được điểm cao và những đánh giá tích cực chi tiết từ những nhân viên của mình."
+    }
+  },
+
+  "contact": {
+    "sendButton": "Gửi tin nhắn",
+    "pageTitle": "Liên hệ",
+    "breadcrumbHome": "Trang chủ",
+    "breadcrumbContact": "Liên hệ",
+    "location": "Công viên phần mềm  Quang Trung, Quận 12, TP.HCM",
+    "email": "FiveITViec@gmail.com",
+    "phone": "+84 335 335 455",
+    "formInstructions": "Đừng ngần ngại liên  hệ với chúng tôi qua biểu mẫu bên dưới. Bộ phận chăm sóc khách hàng sẽ hỗ trợ bạn sớm nhất có thể",
+    "downloadLink": "Tải về Ngay"
+  },
+
+  "login": {
+    "welcome": "Chào mừng trở lại!",
+    "welcome1": "Hãy xây dựng một hồ sơ nổi bật và nắm bắt cơ hội nghề nghiệp lý tưởng.",
+    "orLogin": "Hoặc đăng nhập bằng",
+    "noAccount": "Chưa có tài khoản?",
+    "hello": "Xin  chào"
+  },
+  "register": {
+    "welcome": "Vui lòng dành vài giây để xác nhận thông tin dưới đây!",
+    "welcome1": "Để tối ưu hóa trải nghiệm của bạn với FiveItViec,",
+    "welcome2": "Vui lòng chọn nhóm phù hợp nhất với bạn.",
+    "welcome3": "Chào mừng đến với 5ITviec!",
+    "welcome4": "Hãy xây dựng một hồ sơ xuất sắc và nhận những cơ hội nghề nghiệp lý tưởng",
+    "employerWelcome1": "Đăng ký tài khoản nhà tuyển dụng",
+    "employerWelcome2": "Xây dựng ưu thế cạnh tranh cho doanh nghiệp của bạn với trải nghiệm công nghệ tuyển dụng mới",
+    "employer": "Nhà tuyển dụng",
+    "candidate": "Ứng viên",
+    "hasAccount": "Đã có tài khoản?",
+    "and": "và",
+    "termService": "Tôi đã đọc và đồng ý với",
+    "termService1": "Điều khoản Dịch vụ",
+    "termService2": "Chính sách Bảo mật",
+    "ofFiveITViec": "của 5ITviec",
+    "account": "Tài Khoản",
+    "employerInfo": "Thông Tin Nhà Tuyển Dụng"
+  },
+  "forget": {
+    "welcome": "Vui lòng dành vài giây để xác nhận thông tin dưới đây!",
+    "welcome1": "Quên Mật Khẩu"
+  },
+
+  "favorite": {
+    "noFavorite": "Không có công việc nào trong danh sách Yêu thích",
+    "favorite": "Công việc Yêu thích"
+  },
+
+  "profile": {
+    "myCV": "CV của tôi",
+    "jobApplied": "Công việc đã ứng tuyển",
+    "changePassword": "Đổi mật khẩu",
+    "profile": "Trang cá nhân",
+    "companyImg": "Hình ảnh công ty",
+    "dragOrClick": "Kéo hoặc nhấp chuột để thay đổi hình ảnh"
+  },
+
+  "jobManagement": {
+    "jobManagement": "Quản lý công việc",
+    "updateJob": "Cập nhật Công Việc Của Bạn",
+    "postJob": "Đăng Công Việc Của Bạn",
+    "chooseImg": "Chọn Ảnh",
+    "companyImg": "Hình ảnh Công ty",
+    "dragOrClick": "Kéo hoặc nhấp để thay đổi ảnh",
+    "appliedForJob": "Đã ứng tuyển cho công việc",
+    "noCandidate": "Không có ứng viên cho công việc này",
+    "commentForThisJob": "Bình luận cho công việc này",
+    "noComment": "Công việc này chưa có bình luận",
+    "confirmClose": "Xác nhận Đóng Công Việc?",
+    "reachedDate": "Công việc đã đến ngày đóng",
+    "message": "Tin nhắn"
+  },
+
+
+  "dashboard": {
+    "welcome": "Chào mừng",
+    "welcomeText": "Chào mừng đến với FiveITViec! Chúc bạn một ngày tốt lành!",
+    "waitingCv": "CV đợi duyệt",
+    "approvedCv": "CV đã duyệt",
+    "statistics": "Thống kê",
+    "jobEnable": "Việc làm đang mở",
+    "jobDisable": "Việc làm đã đóng",
+    "applicant": "Ứng viên",
+    "job": "Công việc",
+    "totalCandidate": "Ứng viên",
+    "totalEmployers": "Nhà tuyển dụng",
+    "jobs": "Công việc",
+    "blogs": "Blogs",
+    "contacts": "Liên hệ",
+    "recentEmployer": "Nhà tuyển dụng mới",
+    "logo": "Ảnh",
+    "companyName": "Tên công ty",
+    "email": "Email",
+    "phone": "Số điện thoại",
+    "address": "Địa chỉ",
+    "tax": "Số thuế",
+    "employer": "Nhà tuyển dụng",
+    "candidate": "Ứng viên"
+  },
+
+  "admin":{
+    "noUser": "Không có người dùng nào theo tìm kiếm của bạn!",
+    "noCate": "Không có danh mục nào theo tìm kiếm của bạn!",
+    "noContact": "Không có liên hệ nào theo tìm kiếm của bạn!",
+    "noBlog": "Không có blog nào theo tìm kiếm của bạn!",
+    "noJob": "Không có công việc nào theo tìm kiếm của bạn!"
+
+  },
+
+  "table": {
+    "noMessage": "Không có tin nhắn",
+    "noCoverLetter": "Không có thư xin việc",
+    "img": "Ảnh",
+    "title": "Tiêu đề",
+    "author": "Tác giả",
+    "name": "Tên",
+    "email": "Email",
+    "phone": "Số điện thoại",
+    "CL": "Thư xin việc",
+    "CV": "CV",
+    "date": "Ngày",
+    "message": "Tin nhắn",
+    "salary": "Lương",
+    "category": "Danh mục",
+    "action": "Hành động",
+    "status": "Trạng thái",
+    "approval": "Duyệt",
+    "applied": "Đã ứng tuyển",
+    "closeDate": "Ngày đóng",
+    "gender": "Giới tính",
+    "companyName": "Tên công ty",
+    "taxNumber": "Mã số thuế",
+    "companyLogo": "Logo công ty",
+    "createdAt": "Tạo lúc",
+    "createdBy": "Tạo bởi",
+    "updatedAt": "Cập nhật lúc",
+    "updatedBy": "Cập nhật bởi",
+    "applicantRating": "Ứng viên/Đánh giá"
+  },
+
+  "status": {
+    "status": "Trạng thái",
+    "closed": "Đã đóng",
+    "waiting": "Đang chờ",
+    "approved": "Đã duyệt",
+    "enable": "Kích hoạt",
+    "disable": "Vô hiệu hóa"
+  },
+
+  "pagination": {
+    "firstPage": "Trang Đầu",
+    "lastPage": "Trang Cuối"
+  },
+
+  "formErrors": {
+    "emailRequired": "Email là bắt buộc",
+    "emailInvalid": "Email không hợp lệ",
+    "passwordRequired": "Mật khẩu là bắt buộc",
+    "invalidPassword": "Mật khẩu phải >= 6 kí tự, có chữ hoa,  chữ thường, kí tự đặc biệt và số",
+    "notMatchPassword": "Mật khẩu không khớp",
+    "currentMatchNewPass": "Mật khẩu hiện tại và mật khẩu mới không thể trùng nhau",
+    "nameLength": "Tên phải có > 3 ký tự",
+    "nameRequired": "Tên là bắt buộc",
+    "phoneRequired": "Số điện thoại là bắt buộc",
+    "phoneInvalid": "Số điện thoại phải bắt đầu bằng '0' và có đúng 10 chữ số.",
+    "subjectLength": "Chủ đề phải có > 6 ký tự",
+    "messageLength": "Tin nhắn phải có > 20 ký tự",
+    "companyNameRequired": "Tên  công ty là bắt buộc",
+    "companyLength": "Tên công ty phải > 3 ký tự",
+    "invalidTax": "Mã số thuế không hợp lệ",
+    "addressRequired": "Địa chỉ là bắt buộc",
+    "invalidAddress": "Địa chỉ > 5 kí tự",
+    "invalidBio": "Giới thiệu > 10 kí tự",
+    "invalidTitle": "Tiêu đề phải dài hơn 5 ký tự",
+    "invalidSalary": "Vui lòng nhập một giá trị số hợp lệ",
+    "invalidQuantity": "Vui lòng nhập một giá trị số hợp lệ",
+    "category": "Vui lòng chọn danh mục",
+    "location": "Vui lòng chọn địa điểm",
+    "invalidDescription": "Mô tả phải lớn hơn 100 ký tự",
+    "invalidRequirements": "Yêu cầu phải lớn hơn 100 ký tự",
+    "closeDate": "Vui lòng chọn ngày đóng",
+    "sendMessage": "Vui lòng nhập tin nhắn",
+    "invalidTitle10": "Tiêu đề phải dài hơn 10 ký tự",
+    "invalidContent": "Nội dung phải nhiều hơn 100 ký tự",
+    "invalidAuthor": "Vui lòng nhập Tác giả",
+    "invalidImg": "Vui lòng chọn hình ảnh",
+    "invalidCategory": "Danh mục > 3 kí tự"
+  },
+
+  "placeholders": {
+    "name": "Họ và tên của bạn",
+    "fullName": "Họ và tên",
+    "email": "Email của bạn",
+    "password": "Mật khẩu của bạn",
+    "currentPassword": "Mật khẩu hiện tại của bạn",
+    "newPassword": "Mật khẩu mới",
+    "confirmNewPassword": "Xác nhận mật khẩu mới",
+    "confirmPassword": "Xác nhận mật khẩu",
+    "confirmPassword1": "Nhập lại mật khẩu",
+    "subject": "Chủ đề",
+    "message": "Nội dung tin nhắn của bạn...",
+    "phoneNumber": "Số điện thoại",
+    "companyName": "Tên công ty",
+    "taxNumber": "Mã số thuế",
+    "workAddress": "Địa chỉ",
+    "address": "Địa chỉ",
+    "bio": "Giới thiệu bản thân",
+    "gender": {
+      "gender": "Giới tính",
+      "male": "Nam",
+      "female": "Nữ",
+      "others": "Khác"
+    },
+    "specialization": "Chuyên môn",
+    "chooseSpecialization": "Chọn chuyên môn của bạn",
+    "title": "Tiêu đề",
+    "salary": "Mức lương",
+    "quantityCV": "Số lượng CV",
+    "dateClose": "Ngày đóng",
+    "category": "Danh mục",
+    "location": "Địa điểm",
+    "description": "Mô tả",
+    "requirements": "Yêu cầu",
+    "closeDate": "Vui lòng chọn ngày đóng",
+    "blogContent": "Nội dung blog",
+    "author": "Tác giả",
+    "createdBy":"Tạo bởi",
+    "createdAt":"Tạo lúc"
+
+  },
+
+  "showToastMessage": {
+    "status": "Trạng thái",
+    "successContactMessage": "Gửi liên hệ thành công",
+    "errorContactMessage": "Gửi liên hệ thất bại",
+    "successCommentMessage": "Cảm ơn bạn đã bình luận",
+    "errorCommentMessage": "Gửi bình luận thất bại",
+    "successApplyMessage": "Ứng tuyển thành công",
+    "errorApplyMessage": "Ứng tuyển thất bại",
+    "successRegisterMessage": "Đăng ký thành công",
+    "errorRegisterMessage": "Email đã tồn tại",
+    "errorWrongPassword": "Oops! Sai Mật khẩu",
+    "errorWrongEmail": "Oops! Sai Email",
+    "errorDisableAccount": "Tài khoản đã bị vô hiệu hóa, vui lòng liên hệ quản trị viên để được trợ giúp",
+    "invalidPDFFile": "Loại file không hợp lệ cho các tệp PDF. Vui lòng chọn một tệp PDF.",
+    "invalidIMGFile": "Loại file không hợp lệ cho các tệp hình ảnh. Vui lòng chọn một tệp hình ảnh.",
+    "pleaseLogin": "Vui lòng đăng nhập",
+    "reviewContent": "Vui lòng nhập nội dung cho bình luận của bạn",
+    "reviewRating": "Vui lòng đánh giá bằng sao cho bình luận của bạn",
+    "thanksApply": "Cảm ơn bạn đã nộp đơn",
+    "thanksForComment": "Cảm ơn bạn đã bình luận",
+    "checkEmail": "Vui lòng kiểm tra email của bạn để lấy mật khẩu mới",
+    "add": "Thêm",
+    "remove": "Xóa",
+    "successFavorite": "công việc yêu thích thành công",
+    "successUpdateProfile": "Cập nhật trang cá nhân thành công",
+    "errorUpdateProfile": "Lỗi cập nhật trang cá nhân",
+    "successCloseJob": "Đóng công việc thành công",
+    "errorCloseJob": "Đóng công việc thất bại",
+    "successSendMessage": "Gửi tin nhắn thành công",
+    "errorSendMessage": "Gửi tin nhắn thất bại",
+    "successUpdateJob": "Cập nhật công việc thành công",
+    "errorUpdateJob": "Không thể cập nhật công việc",
+    "successPostJob": "Đăng tuyển dụng thành công",
+    "errorPostJob": "Không thể đăng tuyển dụng",
+    "successBlogPostWaiting": "Vui lòng đợi quản trị viên phê duyệt blog của bạn. Kiểm tra ngay",
+    "errorBlogPost": "Không thể đăng blog",
+    "updateSuccess": "Cập nhật thành công",
+    "updateFailed": "Cập nhật thất bại",
+    "categoryNameExist": "Danh mục đã tồn tại"
+  },
+
+  "searchForm": {
+    "keyword": "Từ khóa",
+    "category": "Danh mục",
+    "location": "Địa điểm",
+    "searchBtn": "Tìm kiếm"
+  },
+
+  "btn": {
+    "btnApply": "Ứng Tuyển Ngay",
+    "btnApplyOne": "Ứng Tuyển",
+    "btnApplied": "Đã Ứng Tuyển",
+    "btnSend": "Gửi",
+    "btnViewCompany": "Xem Công Ty",
+    "btnLogin": "Đăng Nhập",
+    "btnForget": "Quên Mật Khẩu",
+    "btnSignUpNow": "Đăng Ký Ngay",
+    "btnClose": "Đóng",
+    "btnSignUp": "Đăng Ký",
+    "btnResetPass": "Lấy lại mật khẩu",
+    "btnUpdateProfile": "Cập nhật",
+    "btnUploadCV": "Tải lên CV",
+    "btnViewCV": "Xem CV",
+    "btnViewJobs": "Xem công việc",
+    "btnChangePassword": "Đổi mật khẩu",
+    "btnView": "Xem",
+    "btnPost": "Đăng",
+    "btnUpdate": "Cập nhật",
+    "btnNew": "Mới",
+    "btnCancel": "Hủy",
+    "btnDisable": "Vô hiệu hóa",
+    "btnEdit": "Sửa",
+    "btnDenied": "Từ chối",
+    "btnApproved": "Chấp nhận",
+    "btnSave": "Lưu",
+    "btnOpen": "Mở",
+    "goToCreateBlog": "Tới trang tạo mới"
+  },
+
+  "comment": {
+    "review_rating": "Nhận xét và đánh giá",
+    "statistic": "Thống kê",
+    "comments": "Bình luận",
+    "review": "Đăng bình luận của bạn",
+    "ratings": "Đánh giá",
+    "content": "Nội dung bình luận",
+    "no_review": "Chưa có nhận xét nào"
+  },
+
+  "footer": {
+    "about": "Về chúng tôi",
+    "aboutUs": "Về chúng tôi",
+    "contactUs": "Liên hệ",
+    "quickLinks": "Liên kết nhanh",
+    "ourServices": "Dịch vụ của chúng tôi",
+    "privacyPolicy": "Chính sách bảo mật",
+    "termsCondition": "Điều khoản & Điều kiện",
+    "address": "Địa chỉ",
+    "addressText": "Quang Trung Software Compound",
+    "newsletter": "Bản tin",
+    "newsletterText": "Hãy thưởng thức cùng chúng tôi",
+    "yourEmail": "Email của bạn",
+    "signUp": "Đăng ký",
+    "designBy": "được thiết kế bởi",
+    "allRightsReserved": "Chân thành cảm ơn!"
+  }
+}
