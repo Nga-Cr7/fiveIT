@@ -13,6 +13,9 @@ export class UserManagementModel {
   companyName: string | null;
   companyLogo: string | null;
   taxNumber: string | null;
+  companyImg1 : string | null;
+  companyImg2 : string | null;
+  companyImg3 : string | null;
   specializationNames: string[] | null; // Array to hold specialization names
 
   constructor(
@@ -30,6 +33,9 @@ export class UserManagementModel {
     companyName: string | null,
     companyLogo: string | null,
     taxNumber: string | null,
+    companyImg1: string | null,
+    companyImg2: string | null,
+    companyImg3: string | null,
     specializationNames: string[] |null // Add specialization names parameter
   ) {
     this.profileType = profileType;
@@ -47,5 +53,8 @@ export class UserManagementModel {
     this.companyLogo = companyLogo;
     this.taxNumber = taxNumber;
     this.specializationNames = specializationNames; // Assign specialization names
+    this.companyImg1 = companyImg1; // Assign specialization names
+    this.companyImg2 = companyImg2; // Assign specialization names
+    this.companyImg3 = companyImg3; // Assign specialization names
   }
 }

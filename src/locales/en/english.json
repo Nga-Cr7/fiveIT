@@ -125,7 +125,7 @@
     "companyBanner": {
       "pageTitle": "Company",
       "home": "Home",
-      "comapany": "Comppany"
+      "company": "Company"
     },
     "company": "Company",
     "description": "Companies, whether large corporations or small startup are thebackbone of the global business landscape. They serve as engines of economic growth, providing goods and services that meet theneeds and desires of consumers worldwide.",
@@ -243,7 +243,8 @@
     "changePassword": "Change Password",
     "profile": "Profile",
     "companyImg": "Company Images",
-    "dragOrClick": "Drag or click to the images to change"
+    "dragOrClick": "Drag or click to the images to change",
+    "createNewAdmin" : "Create New Admin"
   },
 
   "jobManagement": {
@@ -267,7 +268,18 @@
     "welcomeText": "Welcome to FiveITViec! Wish you have a nice day!",
     "waitingCv": "Waiting CV",
     "approvedCv": "Approved CV",
-    "statistics": "Statistics",
+    "statisticsAccess": "Access Statistics",
+    "statisticsUser": "User Statistics",
+    "statisticsApprovedEmployer": "Approved Employer Statistics",
+    "statisticsWaitingEmployer": "Waiting Employer Statistics",
+    "statisticsApprovedJob": "Approved Job Statistics",
+    "statisticsWaitingJob": "Waiting Job Statistics",
+    "statisticsOpenContact": "Open Contact Statistics",
+    "statisticsCloseContact": "Close Contact Statistics",
+    "statisticsApprovedBlog": "Approved Blog Statistics",
+    "statisticsWaitingBlog": "Waiting Blog Statistics",
+    "statisticsCandidate": "Candidate Statistics",
+    "statisticsJob": "Job & Applicant Statistics",
     "jobEnable": "Job Enable",
     "jobDisable": "Job Disable",
     "jobReport": "Jobs Report",
@@ -286,7 +298,15 @@
     "address": "Address",
     "tax": "Tax",
     "employer": "Employer",
-    "candidate": "Candidate"
+    "candidate": "Candidate",
+    "approvedEmployer": "Approved Employer",
+    "waitingEmployer": "Waiting Employer",
+    "approvedJob": "Approved Job",
+    "waitingJob": "Waiting Job",
+    "openContact": "Open Contact",
+    "closeContact": "Close Contact",
+    "approvedBlog": "Approved Blog",
+    "waitingBlog": "Waiting Blog"
   },
 
   "admin":{
@@ -320,7 +340,7 @@
     "gender": "Gender",
     "companyName": "Company Name",
     "taxNumber": "Tax Number",
-    "companyLogo": "Company Logo",
+    "companyLogo": "Logo",
     "createdAt": "Created At",
     "createdBy": "Created By",
     "updatedAt": "Updated At",
@@ -367,12 +387,12 @@
     "invalidQuantity": "Please enter a valid numeric value",
     "category": "Pls!Choose Category",
     "location": "Pls!Choose Location",
-    "invalidDescription": "Description has to be greater than 100 letters",
-    "invalidRequirements": "Requirements has to be greater than 100 letters",
+    "invalidDescription": "Description has to be greater than 30 letters",
+    "invalidRequirements": "Requirements has to be greater than 30 letters",
     "closeDate": "Please select close date.",
     "sendMessage": "Pls! Enter Message",
     "invalidTitle10": "Title has to > 10 characters",
-    "invalidContent": "Content has to greater than 100 letters",
+    "invalidContent": "Content has to greater than 30 letters",
     "invalidAuthor": "Pls! Enter Author",
     "invalidImg": "Pls! Choose an image",
     "invalidCategory": "Category name has to greater than 3 letters"
@@ -422,13 +442,13 @@
 
   "showToastMessage": {
     "status": "Status",
-    "successContactMessage": "Send contact successFully",
+    "successContactMessage": "Send contact successfully",
     "errorContactMessage": "Failed to send contact",
     "successCommentMessage": "Thanks for your comment",
     "errorCommentMessage": "Failed to send comment",
-    "successApplyMessage": "Send contact successFully",
+    "successApplyMessage": "Send contact successfully",
     "errorApplyMessage": "Failed to send contact",
-    "successRegisterMessage": "Register successFully",
+    "successRegisterMessage": "Register successfully",
     "errorRegisterMessage": "Email already existed",
     "errorWrongPassword": "Oops! Wrong Password",
     "errorWrongEmail": "Oops! Wrong Email",
@@ -444,20 +464,23 @@
     "add": "Add",
     "remove": "remove",
     "successFavorite": "to favorite job successful",
-    "successUpdateProfile": "Update profile successFully",
+    "successUpdateProfile": "Update profile successfully",
     "errorUpdateProfile": "Failed to update profile",
-    "successCloseJob": "Close job successFully",
+    "successCloseJob": "Close job successfully",
     "errorCloseJob": "Failed to close job",
-    "successSendMessage": "Send message successFully",
+    "successSendMessage": "Send message successfully",
     "errorSendMessage": "Failed to send message",
-    "successUpdateJob": "Update job successFully",
+    "successUpdateJob": "Update job successfully",
     "errorUpdateJob": "Failed to update job",
-    "successPostJob": "Post job successFully",
+    "successPostJob": "Post job successfully",
     "errorPostJob": "Failed to post job",
     "successBlogPostWaiting": "Please wait for admin to approve! You can check it here",
     "errorBlogPost": "Failed to post blog",
-    "updateSuccess": "Update SuccessFully",
+    "updateSuccess": "Update Successfully",
+    "saveSuccess": "Save Successfully",
+    "deleteSuccess": "Delete Successfully",
     "updateFailed": "Update Failed",
+    "deleteFailed": "Delete Failed",
     "categoryNameExist": "Category name has been existed"
 
   },
@@ -489,6 +512,7 @@
     "btnView": "View",
     "btnPost": "Post",
     "btnUpdate": "Update",
+    "btnDelete": "Delete",
     "btnNew": "New",
     "btnCancel": "Cancel",
     "btnDisable": "Disable",
@@ -527,4 +551,7 @@
     "designBy": "is designed by",
     "allRightsReserved": "All rights reserved"
   }
+
+
+  
 }

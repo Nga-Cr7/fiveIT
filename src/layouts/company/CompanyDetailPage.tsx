@@ -26,7 +26,7 @@ export const CompanyDetailPage = () => {
 
   const searchParams = new URLSearchParams(location.search);
   const userId = searchParams.get("userId");
-  
+
   useEffect(() => {
     const jobsUrl = `http://localhost:8080/api/company/getJobByCompanyEnableApproval?userId=${userId}`;
     const profilesUrl = `http://localhost:8080/api/company/getAllEmployerApproval?companyName=${companyName}&address=${address}`;
@@ -83,6 +83,9 @@ export const CompanyDetailPage = () => {
               profileData.content[0].companyName,
               profileData.content[0].companyLogo,
               profileData.content[0].taxNumber,
+              profileData.content[0].companyImg1,
+              profileData.content[0].companyImg2,
+              profileData.content[0].companyImg3,
               profileData.content[0].specializationNames
             );
 

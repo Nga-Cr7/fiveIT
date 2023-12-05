@@ -4,6 +4,8 @@ import { SpinnerLoading } from "../../utils/SpinnerLoading";
 import { Page404 } from "../../errors/Page404";
 import { Pagination } from "../../utils/Pagination";
 import { useTranslation } from 'react-i18next';
+import { BarChart } from "@mui/x-charts/BarChart";
+import { CSVLink } from "react-csv";
 
 
 export const EmployerAdminPage = () => {
@@ -27,7 +29,8 @@ export const EmployerAdminPage = () => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [searchStatus, setSearchStatus] = useState("ENABLE");
-
+  const [totalEmployerByMonth, setTotalEmployerByMonth] = useState([0]);
+  const [year, setYear] = useState("2023");
   const showToastMessage = (message: string) => {
     setMessage(message);
     setShowToast(true);
@@ -73,6 +76,9 @@ export const EmployerAdminPage = () => {
             employerData.companyName,
             employerData.companyLogo || null,
             employerData.taxNumber,
+            employerData.companyImg1,
+            employerData.companyImg2,
+            employerData.companyImg3,
             employerData.specializationNames
           );
 
@@ -108,6 +114,7 @@ export const EmployerAdminPage = () => {
   ) => {
     setCurrentPage(1);
     setEdit(false);
+    setEditingEmployer(null);
     let newURL = `http://localhost:8080/auth/admin/getAllEmployers?email=${search}&page=<currentPage>&size=${employersPerPage}&approval=${approval}&startDate=${startDate}&endDate=${endDate}&status=${searchStatus}`;
     setSearchUrl(newURL);
   };
@@ -167,6 +174,54 @@ export const EmployerAdminPage = () => {
       }
     }
   };
+  useEffect(() => {
+    const fetchTotalCandidateByMonth = async () => {
+      try {
+        const baseUrl =
+          `http://localhost:8080/auth/admin/getTotalApprovedEmployerByMonth?year=${year}`;
+        const response = await fetch(baseUrl, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`, // Replace with your actual authorization token
+          },
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setTotalEmployerByMonth(data.approvedEmployerMap);
+        } else {
+          console.error("Failed to fetch");
+        }
+      } catch (error: any) {
+        setHttpError(error.message);
+      }
+    };
+    fetchTotalCandidateByMonth();
+  }, [year]);
+
+  const employerData: { month: number; value: number }[] = [];
+  for (const key in totalEmployerByMonth) {
+    if (totalEmployerByMonth.hasOwnProperty(key)) {
+      const item = {
+        month: parseInt(key),
+        value: totalEmployerByMonth[key],
+      };
+      employerData.push(item);
+    }
+  }
+  const xLabels = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
 
 
 
@@ -365,7 +420,7 @@ export const EmployerAdminPage = () => {
                     </div>
 
                     <div className="text-center">
-                      <button type="button" className="btn btn-primary" onClick={updateEmployerStatus}>
+                      <button type="button" className="btn btn-success" onClick={updateEmployerStatus}>
                         {t('btn.btnUpdate')}
                       </button>
                       <button type="submit" className="btn btn-danger ms-3" onClick={handleCancel}>
@@ -375,6 +430,53 @@ export const EmployerAdminPage = () => {
 
                   </form>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      {/*  */}
+      {!edit && !editingEmployer && (
+        <div className="container mt-4">
+          <div className="row justify-content-center">
+            <div className="col-md-9">
+              <div className="d-flex align-items-center justify-content-between mb-4">
+                <h6 className="mb-0 fw-bold text-success">{t('dashboard.statisticsApprovedEmployer')}</h6>
+                <div className="col-3">
+                  <select
+                    className="form-control"
+                    id="selectMonth"
+                    value={year}
+                    onChange={(e) => setYear(e.target.value)}
+                  >
+                    <option value="2018">2018</option>
+                    <option value="2019">2019</option>
+                    <option value="2020">2020</option>
+                    <option value="2021">2021</option>
+                    <option value="2022">2022</option>
+                    <option value="2023">2023</option>
+                    <option value="2024">2024</option>
+                  </select>
+                </div>
+              </div>
+              <div className="card">
+                <BarChart
+                  xAxis={[
+                    {
+                      id: "barCategories",
+                      data: xLabels,
+                      scaleType: "band",
+                    },
+                  ]}
+                  series={[
+                    {
+                      data: employerData.map((item) => item.value),
+                      label: t('dashboard.approvedEmployer'),
+                      color: "#198754"
+                    },
+                  ]}
+                  height={450}
+                />
               </div>
             </div>
           </div>
@@ -392,7 +494,7 @@ export const EmployerAdminPage = () => {
               }}>
                 <div className="form-row">
                   <div className="row">
-                    <div className="col-md-4 col-lg-4 mb-3">
+                    <div className="col-md-4 col-lg-3 mb-3">
                       <input
                         type="text"
                         className="form-control"
@@ -401,7 +503,7 @@ export const EmployerAdminPage = () => {
                         onChange={(e) => setSearch(e.target.value)}
                       />
                     </div>
-                    <div className="col-md-2  mb-3">
+                    <div className="col-md-2 col-lg-2 mb-3">
 
                       <input
                         type="date"
@@ -412,7 +514,7 @@ export const EmployerAdminPage = () => {
                         onChange={(e) => setStartDate(e.target.value)}
                       />
                     </div>
-                    <div className="col-md-2 mb-3">
+                    <div className="col-md-2 col-lg-2 mb-3">
                       <input
                         type="date"
                         className="form-control"
@@ -421,7 +523,7 @@ export const EmployerAdminPage = () => {
                         onChange={(e) => setEndDate(e.target.value)}
                       />
                     </div>
-                    <div className="col-md-2 mb-3">
+                    <div className="col-md-2 col-lg-2 mb-3">
                       <select
                         className="form-select"
                         id="status"
@@ -433,9 +535,9 @@ export const EmployerAdminPage = () => {
                       </select>
                     </div>
 
-                    <div className="col-md-2 mb-3">
+                    <div className="col-md-2 col-lg-2 mb-3 text-center">
                       <button
-                        className="btn btn-primary btn-block"
+                        className="btn btn-success btn-block"
                         type="button"
                         onClick={() =>
                           searchHandleChange(search, startDate, endDate, searchStatus)
@@ -444,12 +546,25 @@ export const EmployerAdminPage = () => {
                         {t('searchForm.searchBtn')}
                       </button>
                     </div>
+
+                    {employers.length > 0 && (
+                      <div className="col-md-2 col-lg-1 mb-3">
+                        <CSVLink
+                          className="btn btn-success btn-block"
+                          data={employers}
+                          filename="Approved Job"
+                          target="_blank"
+                        >
+                          Excel
+                        </CSVLink>
+                      </div>
+                    )}
                   </div>
                 </div>
               </form>
               <>
                 {employers.length > 0 ? (
-                  <div className="table-responsive">
+                  <div className="table-responsive ">
                     <table className="table">
                       <thead className="text-center">
                         <tr>
@@ -483,8 +598,8 @@ export const EmployerAdminPage = () => {
                             <td>{employer.taxNumber}</td>
                             <td>{employer.phoneNumber}</td>
                             <td>{employer.status}</td>
-                            <td>
-                              <button type="button" className="btn btn-primary" onClick={() => handleEditEmployer(employer)}>
+                            <td style={{ minWidth: '100px' }}>
+                              <button type="button" className="btn btn-success" onClick={() => handleEditEmployer(employer)}>
                                 <i className="fa fa-pencil-alt"></i>  {t('btn.btnEdit')}
                               </button>
                             </td>
@@ -492,11 +607,20 @@ export const EmployerAdminPage = () => {
                         ))}
                       </tbody>
                     </table>
+                    {totalPage >= 2 && (
+                      <div className="mt-3">
+                        <Pagination
+                          currentPage={currentPage}
+                          totalPage={totalPage}
+                          paginate={paginate}
+                        />
+                      </div>
+                    )}
                   </div>
                 ) : (
                   <div className="text-center">
                     <div className="background">
-                    {t('admin.noUser')}
+                      {t('admin.noUser')}
                     </div>
                     <div>
                       <img
@@ -513,35 +637,40 @@ export const EmployerAdminPage = () => {
         </div>
       </div>
 
-      {totalPage >= 2 && (
-        <div className="mt-3">
-          <Pagination
-            currentPage={currentPage}
-            totalPage={totalPage}
-            paginate={paginate}
-          />
+      {showToast === true && (
+
+        <div className="position-fixed bottom-0 end-0 p-3" style={{ zIndex: 5 }}>
+          <div
+            className={`toast ${showToast ? "show" : ""}`}
+            role="alert"
+            aria-live="assertive"
+            aria-atomic="true"
+          >
+            <div className="toast-header bg-success text-white">
+              <strong className="me-auto">{t('showToastMessage.status')}</strong>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="toast"
+                onClick={() => setShowToast(false)}
+              ></button>
+            </div>
+            <div className="toast-body">{message}</div>
+          </div>
         </div>
       )}
 
-      <div className="position-fixed bottom-0 end-0 p-3" style={{ zIndex: 5 }}>
-        <div
-          className={`toast ${showToast ? "show" : ""}`}
-          role="alert"
-          aria-live="assertive"
-          aria-atomic="true"
-        >
-          <div className="toast-header">
-            <strong className="me-auto">{t('showToastMessage.status')}</strong>
-            <button
-              type="button"
-              className="btn-close"
-              data-bs-dismiss="toast"
-              onClick={() => setShowToast(false)}
-            ></button>
-          </div>
-          <div className="toast-body">{message}</div>
-        </div>
-      </div>
+
+      <style>
+        {
+          `
+          .form-check-input:checked{
+            background-color: #198754;
+          }
+          `
+        }
+
+      </style>
     </>
   );
 };

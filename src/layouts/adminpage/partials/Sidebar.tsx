@@ -61,7 +61,7 @@ export const Sidebar = () => {
               location.pathname === "/dashboard"
                 ? "nav-item nav-link active"
                 : "nav-item nav-link"}>
-              <i className="fa fa-tachometer-alt me-2"></i>{t('header.dashboard')}
+              <i className="fa fa-tachometer-alt"></i>{t('header.dashboard')}
             </Link>
             <Link to="/candidate" className={location.pathname === "/candidate" ? "nav-item nav-link nav-link active" : "nav-item nav-link nav-link "}>
               <i className="fas fa-user-tie"></i>{t('header.candidates')}
@@ -81,7 +81,7 @@ export const Sidebar = () => {
             </div>
 
             <Link to="/category" className={location.pathname === "/category" ? "nav-item nav-link nav-link active" : "nav-item nav-link nav-link "}>
-              <i className="fa fa-th me-2"></i>{t('header.category')}
+              <i className="fa fa-th"></i>{t('header.category')}
             </Link>
 
             <div className="nav-item dropdown">
@@ -135,8 +135,8 @@ export const Sidebar = () => {
                 </button>
               </div>
             </div>
-            
-            <button  onClick={logout} className="nav-item nav-link nav-link border-0">
+
+            <button onClick={logout} className="nav-item nav-link nav-link border-0">
               <i className="fas fa-home me-2"></i>{t('header.logout')}
             </button>
 
@@ -311,6 +311,30 @@ export const Sidebar = () => {
 
         </style>
       )}
+
+      <style>
+        {`
+            a.nav-item.nav-link.nav-link{
+              font-family: sans-serif;
+              font-weight: 500 !important;
+            }
+
+            a.nav-item.nav-link.active{
+              font-family: sans-serif;
+              font-weight: 600 !important;
+            }
+
+            a.nav-link.dropdown-toggle {
+              font-family: sans-serif;
+              font-weight: 500 !important;
+          }
+          .navbar-nav .nav-link{
+            margin-right: 10px !important;
+          }
+
+        `}
+
+      </style>
 
       {/* Chinh hover: 28554 */}
 

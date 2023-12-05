@@ -44,7 +44,7 @@ export const AboutPage = () => {
                             <p><i className="fa fa-check text-primary me-3"></i>{t('about.point1')}</p>
                             <p><i className="fa fa-check text-primary me-3"></i>{t('about.point2')}</p>
                             <p><i className="fa fa-check text-primary me-3"></i>{t('about.point3')}</p>
-                            <a className="btn btn-primary py-3 px-5 mt-3" href="">{t('about.readMore')}</a>
+                            {/* <a className="btn btn-primary py-3 px-5 mt-3" href="">{t('about.readMore')}</a> */}
                         </div>
                     </div>
                 </div>

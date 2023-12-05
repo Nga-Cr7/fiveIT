@@ -33,33 +33,52 @@ export const Pagination: React.FC<{
 
     }
     return (
-        <div className="pagination-area pb-115 text-center">
-            <div className="container">
-                <div className="row">
-                    <div className="col-xl-12">
-                        <div className="single-wrap d-flex justify-content-center">
-                            <nav aria-label="Page navigation example">
-                                <ul className="pagination justify-content-start">
+        <>
+            <div className="pagination-area pb-115 text-center">
+                <div className="container">
+                    <div className="row">
+                        <div className="col-xl-12">
+                            <div className="single-wrap d-flex justify-content-center">
+                                <nav aria-label="Page navigation example">
+                                    <ul className="pagination justify-content-start">
 
-                                    <li className="page-item" onClick={() =>{props.paginate(1)}}><button className="page-link">{t('pagination.firstPage')}</button></li>
+                                        <li className="page-item" onClick={() => { props.paginate(1) }}><button className="page-link">{t('pagination.firstPage')}</button></li>
 
-                                    {pageNumbers.map(number => (
-                                        <li key={number} onClick={() => props.paginate(number)}
-                                            className={'page-item ' + (props.currentPage === number ? 'active' : '')}>
-                                            <button className="page-link">
-                                                {number}
-                                            </button>
-                                        </li>
-                                    ))}
+                                        {pageNumbers.map(number => (
+                                            <li key={number} onClick={() => props.paginate(number)}
+                                                className={'page-item ' + (props.currentPage === number ? 'active' : '')}>
+                                                <button className="page-link">
+                                                    {number}
+                                                </button>
+                                            </li>
+                                        ))}
 
 
-                                    <li className="page-item" onClick={() => props.paginate(props.totalPage)}><button className="page-link" >{t('pagination.lastPage')}</button></li>
-                                </ul>
-                            </nav>
+                                        <li className="page-item" onClick={() => props.paginate(props.totalPage)}><button className="page-link" >{t('pagination.lastPage')}</button></li>
+                                    </ul>
+                                </nav>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+
+            <style>
+                {
+                    `
+                
+                    .page-item, .page-link{
+                        color: #00B074 !important
+                    }
+                    .page-item.active .page-link{
+                        color:#ffffff !important;
+                        background: #00B074 !important;
+                        border: #00B074 !important;
+                    }
+                    `
+                }
+            </style>
+        </>
+
     )
 }

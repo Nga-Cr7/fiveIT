@@ -9,6 +9,7 @@ import { ApplicantModel } from "../../../models/ApplicantModel";
 import { FaStar } from "react-icons/fa";
 import ReactQuill from "react-quill";
 import { useTranslation } from 'react-i18next';
+import { CSVLink, CSVDownload } from "react-csv"
 
 
 export const JobManagement = () => {
@@ -315,11 +316,11 @@ export const JobManagement = () => {
       isValid = false;
     }
 
-    if (deEditorHtml.trim().length < 100) {
+    if (deEditorHtml.trim().length < 30) {
       errors.description = t('formErrors.invalidDescription');
       isValid = false;
     }
-    if (reEditorHtml.trim().length < 100) {
+    if (reEditorHtml.trim().length < 30) {
       errors.requirements = t('formErrors.invalidRequirements');
       isValid = false;
     }
@@ -445,6 +446,29 @@ export const JobManagement = () => {
     setFormErrors(null);
     setImageURL("");
     setIsUpdate(false);
+  };
+
+
+  const handleNewButton = async () => {
+    setFormData({
+      jobId: "",
+      title: "",
+      salary: 0,
+      category: "0",
+      location: "location",
+      file: null,
+      description: "",
+      requirements: "",
+      applicationDeadline: "",
+      quantityCv: "",
+    });
+    setReEditorHtml("");
+    setDeEditorHtml("");
+    setJob(null);
+    setFormErrors(null);
+    setImageURL("");
+    setIsUpdate(false);
+    setIsDisplayedForm(true);
   };
 
   //View applicant function
@@ -842,7 +866,11 @@ export const JobManagement = () => {
       <div className="page-wrapper">
         <div className="row justify-content-center mt-4">
           <h3 className="text-center fw-bold text-success">{t('jobManagement.jobManagement')}</h3>
+
         </div>
+        {isDisplayedForm === false &&(
+        <button className="btn btn-success" id="newButtonBegin" onClick={handleNewButton}>{t("btn.btnNew")}</button>
+        )}
         <div className="content container-fluid">
           <div className="row">
             {/* show form */}
@@ -858,14 +886,16 @@ export const JobManagement = () => {
                         <div className="row">
                           <div className="col-9">
                             {isUpdate ?
-                              <h2 className="card-titles">
+                              <h5 className="card-titles text-success">
                                 {t('jobManagement.updateJob')}
-                              </h2> : <h2 className="card-titles">
+                              </h5> : <h5 className="card-titles text-success">
                                 {t('jobManagement.postJob')}
-                              </h2>
-
+                              </h5>
                             }
                           </div>
+                        </div>
+
+                        <div>
                         </div>
                       </div>
                       <div className="card-body">
@@ -881,15 +911,15 @@ export const JobManagement = () => {
                                 <img
                                   src={imageURL}
                                   className="img"
-                                  alt="Click here"
-                                  style={{ height: "100px", width: "170px", objectFit:"contain" }}
+                                  alt="aaaa"
+                                  style={{ height: "100px", width: "170px", objectFit: "contain" }}
                                 />
                               ) : (
                                 <img
                                   src={job?.jobImg}
                                   className="form-control"
                                   alt="Click here"
-                                  style={{ height: "100px", width: "170px",objectFit:"contain" }}
+                                  style={{ height: "100px", width: "170px", objectFit: "contain" }}
                                 />
                               )}
                             </div>
@@ -983,7 +1013,7 @@ export const JobManagement = () => {
                                   htmlFor="bio"
                                   className="form-label fw-bold"
                                 >
-                                 {t('placeholders.closeDate')}
+                                  {t('placeholders.closeDate')}
                                 </label>
                                 <input
                                   type="date"
@@ -1437,7 +1467,7 @@ export const JobManagement = () => {
               <div className="card card-lists ">
                 <div className="row">
                   <div className="row mt-3 ms-2">
-                    <div className="col-md-4">
+                    <div className="col-md-3">
                       <input
                         type="text"
                         className="form-control"
@@ -1451,7 +1481,7 @@ export const JobManagement = () => {
                         }}
                       ></input>
                     </div>
-                    <div className="col-md-3 ">
+                    <div className="col-md-2">
                       <input
                         type="date"
                         className="form-control"
@@ -1459,7 +1489,7 @@ export const JobManagement = () => {
                         onChange={(e) => setStartDate(e.target.value)}
                       ></input>
                     </div>
-                    <div className="col-md-3">
+                    <div className="col-md-2">
                       <input
                         type="date"
                         className="form-control"
@@ -1468,21 +1498,8 @@ export const JobManagement = () => {
                       ></input>
                     </div>
                     <div className="col-md-2">
-                      <button
-                        onClick={() =>
-                          searchJob(status, startDate, endDate, query)
-                        }
-
-                        className="form-control btn-success me-4 text-danger fw-bold"
-                      >
-                        {t('searchForm.searchBtn')}
-                      </button>
-                    </div>
-                  </div>
-                  <div className="row mt-3 ms-2">
-                    <div className="col-md-3">
                       <select
-                        className="form-control"
+                        className="form-control bg-warning text-white"
                         value={status}
                         onChange={(e) => setStatusForJob(e.target.value)}
                       >
@@ -1490,7 +1507,31 @@ export const JobManagement = () => {
                         <option value="DISABLE">{t('status.disable')}</option>
                       </select>
                     </div>
+                    <div className="col-md-2 text-center">
+                      <button
+                        onClick={() =>
+                          searchJob(status, startDate, endDate, query)
+                        }
+
+                        className="form-control btn-success me-4 bg-success text-white fw-bold"
+                      >
+                        {t('searchForm.searchBtn')}
+                      </button>
+                    </div>
+                    {jobs.length > 0 && (
+                      <div className="col-md-1">
+                        <CSVLink
+                          className="btn btn-success"
+                          data={jobs}
+                          filename="Job Management"
+                          target="_blank"
+                        >
+                          Excel
+                        </CSVLink>
+                      </div>
+                    )}
                   </div>
+                  
                 </div>
                 <div className="card-body p-0">
                   <div className="table-responsive">
@@ -1517,7 +1558,7 @@ export const JobManagement = () => {
                               <img
                                 src={jobItem.jobImg}
                                 alt=""
-                                style={{ width: "50px", height: "50px", objectFit:"contain" }}
+                                style={{ width: "50px", height: "50px", objectFit: "contain" }}
                               />
                             </td>
                             <td>{jobItem.title}</td>
@@ -1749,153 +1790,154 @@ export const JobManagement = () => {
         </div>
       )}
 
-      {/* toast message */}
-      <div
-        className="position-fixed bottom-0 end-0 p-3 toast-message"
-        style={{ zIndex: 5 }}
-      >
+      {showToast === true && (
         <div
-          className={`toast ${showToast ? "show" : ""}`}
-          role="alert"
-          aria-live="assertive"
-          aria-atomic="true"
+          className="position-fixed bottom-0 end-0 p-3 toast-message"
+          style={{ zIndex: 5 }}
         >
           <div
-            className="toast-header"
-            style={{ backgroundColor: "#198754", color: "white" }}
+            className={`toast ${showToast ? "show" : ""}`}
+            role="alert"
+            aria-live="assertive"
+            aria-atomic="true"
           >
-            <strong className="me-auto">{t('showToastMessage.status')}</strong>
-            <button
-              type="button"
-              className="btn-close"
-              data-bs-dismiss="toast"
-              onClick={() => setShowToast(false)}
-            ></button>
+            <div
+              className="toast-header"
+              style={{ backgroundColor: "#198754", color: "white" }}
+            >
+              <strong className="me-auto">{t('showToastMessage.status')}</strong>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="toast"
+                onClick={() => setShowToast(false)}
+              ></button>
+            </div>
+            <div className="toast-body">{message}</div>
           </div>
-          <div className="toast-body">{message}</div>
-        </div>
-        <>
-          <div
-            id="modal "
-            className={`modal ${isDisplayedCloseJobModal && jobDeadline && jobDeadline.length > 0
-              ? ""
-              : "display-none"
-              }`}
-          >
-            <div className="modal-content w-100 h-100">
-              <div className="row justify-content-end">
-                <div className="col-md-11">
-                  <h4 className="text-success">
-                  {t('jobManagement.reachedDate')}
-                  </h4>
+          <>
+            <div
+              id="modal "
+              className={`modal ${isDisplayedCloseJobModal && jobDeadline && jobDeadline.length > 0
+                ? ""
+                : "display-none"
+                }`}
+            >
+              <div className="modal-content w-100 h-100">
+                <div className="row justify-content-end">
+                  <div className="col-md-11">
+                    <h4 className="text-success">
+                      {t('jobManagement.reachedDate')}
+                    </h4>
+                  </div>
+                  <div className="col-md-1">
+                    <h4
+                      className="btn text-danger"
+                      onClick={handleCloseJobDeadline}
+                    >
+                      X
+                    </h4>
+                  </div>
                 </div>
-                <div className="col-md-1">
-                  <h4
-                    className="btn text-danger"
-                    onClick={handleCloseJobDeadline}
-                  >
-                    X
-                  </h4>
+                <div className="">
+                  {jobDeadline !== null ? (
+                    <table className="table custom-table  no-footer">
+                      <thead>
+                        <tr>
+                          <th></th>
+                          <th>{t('table.title')}</th>
+                          <th>{t('table.salary')}</th>
+                          <th>{t('table.closeDate')}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {jobDeadline.map((jobItem: any, index: number) => (
+                          <tr key={index}>
+                            <td>
+                              <img
+                                src={jobItem.jobImg}
+                                alt=""
+                                style={{ width: "50px", height: "50px", objectFit: "contain" }}
+                              />
+                            </td>
+                            <td>{jobItem.title}</td>
+                            <td>{formatMoney(jobItem.salary)} đ</td>
+                            <td>{formatDate(jobItem.applicationDeadline)}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  ) : null}
                 </div>
+                <div className="row"></div>
               </div>
-              <div className="">
-                {jobDeadline !== null ? (
-                  <table className="table custom-table  no-footer">
-                    <thead>
-                      <tr>
-                        <th></th>
-                        <th>{t('table.title')}</th>
-                        <th>{t('table.salary')}</th>
-                        <th>{t('table.closeDate')}</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {jobDeadline.map((jobItem: any, index: number) => (
-                        <tr key={index}>
+            </div>
+          </>
+          {/* modal noti when close job */}
+          {confirmCloseJob && job ? (
+            <div className="modal">
+              <div className="modal">
+                <div className="modal-content">
+                  <div className="modal-header">
+                    <h6 className="">{t('jobManagement.confirmClose')}</h6>
+                    <button
+                      type="button"
+                      className="btn-close text-danger"
+                      onClick={handleCancelButtonConfirm}
+                    ></button>
+                  </div>
+                  <div className="modal-body">
+                    <table className="table custom-table  no-footer">
+                      <thead>
+                        <tr>
+                          <th></th>
+                          <th>{t('table.title')}</th>
+                          <th>{t('table.salary')}</th>
+                          <th>{t('table.closeDate')}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
                           <td>
                             <img
-                              src={jobItem.jobImg}
+                              src={job?.jobImg}
                               alt=""
-                              style={{ width: "50px", height: "50px",objectFit:"contain" }}
+                              style={{ width: "50px", height: "50px", objectFit: "contain" }}
                             />
                           </td>
-                          <td>{jobItem.title}</td>
-                          <td>{formatMoney(jobItem.salary)} đ</td>
-                          <td>{formatDate(jobItem.applicationDeadline)}</td>
+                          <td>{job?.title}</td>
+                          <td>{formatMoney(job?.salary)} đ</td>
+                          <td>{formatDate(job?.applicationDeadline)}</td>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                ) : null}
-              </div>
-              <div className="row"></div>
-            </div>
-          </div>
-        </>
-        {/* modal noti when close job */}
-        {confirmCloseJob && job ? (
-          <div className="modal">
-            <div className="modal">
-              <div className="modal-content">
-                <div className="modal-header">
-                  <h6 className="">{t('jobManagement.confirmClose')}</h6>
-                  <button
-                    type="button"
-                    className="btn-close text-danger"
-                    onClick={handleCancelButtonConfirm}
-                  ></button>
-                </div>
-                <div className="modal-body">
-                  <table className="table custom-table  no-footer">
-                    <thead>
-                      <tr>
-                        <th></th>
-                        <th>{t('table.title')}</th>
-                        <th>{t('table.salary')}</th>
-                        <th>{t('table.closeDate')}</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>
-                          <img
-                            src={job?.jobImg}
-                            alt=""
-                            style={{ width: "50px", height: "50px", objectFit:"contain" }}
-                          />
-                        </td>
-                        <td>{job?.title}</td>
-                        <td>{formatMoney(job?.salary)} đ</td>
-                        <td>{formatDate(job?.applicationDeadline)}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <div className="modal-footer">
-                  <button
-                    type="button"
-                    className="btn btn-secondary"
-                    onClick={handleCloseJob}
-                  >
-                    OK
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-success"
-                    onClick={handleCancelButtonConfirm}
-                  >
-                    {t('btn.btnCancel')}
-                  </button>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div className="modal-footer">
+                    <button
+                      type="button"
+                      className="btn btn-secondary"
+                      onClick={handleCloseJob}
+                    >
+                      OK
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-success"
+                      onClick={handleCancelButtonConfirm}
+                    >
+                      {t('btn.btnCancel')}
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        ) : (
-          " "
-        )}
+          ) : (
+            " "
+          )}
 
-        {/*  */}
-      </div >
+          {/*  */}
+        </div >
+      )}
       <style>
         {`
       

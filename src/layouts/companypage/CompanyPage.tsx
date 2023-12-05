@@ -74,6 +74,9 @@ export function CompanyPage() {
               employerData.companyName,
               employerData.companyLogo,
               employerData.taxNumber,
+              employerData.companyImg1,
+              employerData.companyImg2,
+              employerData.companyImg3,
               employerData.specializationNames
             );
 

@@ -235,12 +235,12 @@ export const LeftContent: React.FC<{ job?: JobModel }> = (props) => {
       return;
     }
     if (formDataCmt.review_text.trim().length === 0) {
-      showToastMessage(t("showToastMessage."));
+      showToastMessage(t("showToastMessage.reviewContent"));
       return;
     }
 
     if (rating === 0) {
-      showToastMessage(t("showToastMessage.pleaseLogin"));
+      showToastMessage(t("showToastMessage.reviewRating"));
       return;
     }
 
@@ -524,6 +524,8 @@ export const LeftContent: React.FC<{ job?: JobModel }> = (props) => {
           setIsLoading(false);
           closeModal();
           showToastMessage(t("showToastMessage.thanksApply"));
+          setIsButtonDisabled(true);
+
         } else {
           setIsLoading(false);
         }
@@ -560,9 +562,9 @@ export const LeftContent: React.FC<{ job?: JobModel }> = (props) => {
       <div className="col-lg-8">
         <div className="d-flex align-items-center mb-5">
           {props.job?.jobImg ? (
-            <img className="flex-shrink-0 img-fluid border rounded" src={props.job?.jobImg} alt="" style={{ width: "80px", height: "80px" }} />
+            <img className="flex-shrink-0 img-fluid border rounded" src={props.job?.jobImg} alt="" style={{ width: "80px", height: "80px", objectFit: 'contain' }} />
           ) : (
-            <img className="flex-shrink-0 img-fluid border rounded" src="../assets/img/com-logo-1.jpg" alt="" style={{ width: "80px", height: "80px" }} />
+            <img className="flex-shrink-0 img-fluid border rounded" src="../assets/img/com-logo-1.jpg" alt="" style={{ width: "80px", height: "80px", objectFit: 'contain' }} />
           )}
           <div className="text-start ps-4">
             <h2 className="mb-3">{props.job?.title}</h2>
@@ -580,33 +582,33 @@ export const LeftContent: React.FC<{ job?: JobModel }> = (props) => {
         </div>
 
         <div className="mb-5">
-            <h4 className="mb-3">{t('jobDetail.details.left.descriptions')}</h4>
-            <p dangerouslySetInnerHTML={{ __html: props.job?.description|| "" }}></p>
-            <h4 className="mb-3">{t('jobDetail.details.left.responsibilities')}</h4>
-            <p dangerouslySetInnerHTML={{ __html: props.job?.requirements|| "" }}></p>
-            <ul className="list-unstyled">
-                <li>
-                    <i className="fa fa-angle-right text-primary me-2"></i>{t('jobDetail.details.left.requirements.requirements1')}
-                </li>
-                <li>
-                    <i className="fa fa-angle-right text-primary me-2"></i>{t('jobDetail.details.left.requirements.requirements2')}
-                </li>
-            </ul>
-            <h4 className="mb-3">{t('jobDetail.details.left.qualifications.qualifications')}</h4>
-            <ul className="list-unstyled">
-                <li>
-                    <i className="fa fa-angle-right text-primary me-2"></i>{t('jobDetail.details.left.qualifications.qualifications1')}
-                </li>
-                <li>
-                    <i className="fa fa-angle-right text-primary me-2"></i>{t('jobDetail.details.left.qualifications.qualifications2')}
-                </li>
-                <li>
-                    <i className="fa fa-angle-right text-primary me-2"></i>{t('jobDetail.details.left.qualifications.qualifications3')}
-                </li>
-                <li>
-                    <i className="fa fa-angle-right text-primary me-2"></i>{t('jobDetail.details.left.qualifications.qualifications4')}
-                </li>
-            </ul>
+          <h4 className="mb-3">{t('jobDetail.details.left.descriptions')}</h4>
+          <p dangerouslySetInnerHTML={{ __html: props.job?.description || "" }}></p>
+          <h4 className="mb-3">{t('jobDetail.details.left.responsibilities')}</h4>
+          <p dangerouslySetInnerHTML={{ __html: props.job?.requirements || "" }}></p>
+          <ul className="list-unstyled">
+            <li>
+              <i className="fa fa-angle-right text-primary me-2"></i>{t('jobDetail.details.left.requirements.requirements1')}
+            </li>
+            <li>
+              <i className="fa fa-angle-right text-primary me-2"></i>{t('jobDetail.details.left.requirements.requirements2')}
+            </li>
+          </ul>
+          <h4 className="mb-3">{t('jobDetail.details.left.qualifications.qualifications')}</h4>
+          <ul className="list-unstyled">
+            <li>
+              <i className="fa fa-angle-right text-primary me-2"></i>{t('jobDetail.details.left.qualifications.qualifications1')}
+            </li>
+            <li>
+              <i className="fa fa-angle-right text-primary me-2"></i>{t('jobDetail.details.left.qualifications.qualifications2')}
+            </li>
+            <li>
+              <i className="fa fa-angle-right text-primary me-2"></i>{t('jobDetail.details.left.qualifications.qualifications3')}
+            </li>
+            <li>
+              <i className="fa fa-angle-right text-primary me-2"></i>{t('jobDetail.details.left.qualifications.qualifications4')}
+            </li>
+          </ul>
         </div>
 
         <div className="mt-5">
@@ -756,7 +758,7 @@ export const LeftContent: React.FC<{ job?: JobModel }> = (props) => {
                   onChange={setEditorHtmlCmt}
                 />
               </div>
-              <button type="submit" className="btn btn-primary mt-3">
+              <button type="submit" className="btn btn-success mt-3">
                 {t("btn.btnSend")}
               </button>
             </form>
@@ -766,12 +768,12 @@ export const LeftContent: React.FC<{ job?: JobModel }> = (props) => {
         <div className="pt-5">
           <div className="col-12 pt-5">
             {isButtonDisabled ? (
-              <button className="btn btn-primary w-100" style={{ height: '45px' }} disabled>
+              <button className="btn btn-warning w-100" style={{ height: '45px' }} disabled>
                 {t('btn.btnApplied')}
               </button>
             ) : (
-              <button className="btn btn-primary w-100" style={{ height: '45px' }} onClick={openModal}>
-               {t('btn.btnApply')}
+              <button className="btn btn-success w-100" style={{ height: '45px' }} onClick={openModal}>
+                {t('btn.btnApply')}
               </button>
             )}
 
@@ -790,7 +792,7 @@ export const LeftContent: React.FC<{ job?: JobModel }> = (props) => {
 
                     <div className="col-12 col-sm-12">
                       <div className="mb-0 d-block" style={{ color: '#00b14f' }}><i className="bi bi-cloud-upload"></i> Upload File
-                      {t("jobDetail.applyForm.applyWelcome1")}</div>
+                        {t("jobDetail.applyForm.applyWelcome1")}</div>
                       <input
                         type="file"
                         id="cv"
@@ -859,12 +861,12 @@ export const LeftContent: React.FC<{ job?: JobModel }> = (props) => {
                     </div>
                     <div className="col-lg-2 col-md-3 col-sm-4">
                       <button className="btn btn-secondary w-100" onClick={closeModal} type="button">
-                      {t("btn.btnClose")}
+                        {t("btn.btnClose")}
                       </button>
                     </div>
                     <div className="col-lg-2 col-md-3 col-sm-4">
-                      <button className="btn btn-primary w-100" type="submit">
-                      {t("btn.btnApplyOne")}
+                      <button className="btn btn-success w-100" type="submit">
+                        {t("btn.btnApplyOne")}
                       </button>
                     </div>
                   </div>
@@ -874,26 +876,27 @@ export const LeftContent: React.FC<{ job?: JobModel }> = (props) => {
           </div>
         )}
 
-
-        <div className="position-fixed bottom-0 end-0 p-3 toast-message" style={{ zIndex: "999" }}>
-          <div
-            className={`toast ${showToast ? "show" : ""}`}
-            role="alert"
-            aria-live="assertive"
-            aria-atomic="true"
-          >
-            <div className="toast-header" style={{ backgroundColor: '#198754', color: 'white' }}>
-              <strong className="me-auto">{("showToastMessage.status")};</strong>
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="toast"
-                onClick={() => setShowToast(false)}
-              ></button>
+        {showToast === true && (
+            <div className="position-fixed bottom-0 end-0 p-3 toast-message" style={{ zIndex: "999" }}>
+              <div
+                className={`toast ${showToast ? "show" : ""}`}
+                role="alert"
+                aria-live="assertive"
+                aria-atomic="true"
+              >
+                <div className="toast-header bg-success text-white" style={{ backgroundColor: '#198754', color: 'white' }}>
+                  <strong className="me-auto">{t("showToastMessage.status")}</strong>
+                  <button
+                    type="button"
+                    className="btn-close"
+                    data-bs-dismiss="toast"
+                    onClick={() => setShowToast(false)}
+                  ></button>
+                </div>
+                <div className="toast-body">{message}</div>
+              </div>
             </div>
-            <div className="toast-body">{message}</div>
-          </div>
-        </div>
+          )}
 
       </div>
 

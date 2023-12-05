@@ -3,11 +3,11 @@ import { UserManagementModel } from "../../../models/UserManagementModel";
 import { SpinnerLoading } from "../../utils/SpinnerLoading";
 import { Page404 } from "../../errors/Page404";
 import { Pagination } from "../../utils/Pagination";
-import { useTranslation } from 'react-i18next';
-
+import { useTranslation } from "react-i18next";
+import { BarChart } from "@mui/x-charts/BarChart";
+import { CSVLink } from "react-csv";
 
 export const CandidateAdminPage = () => {
-
   const { t } = useTranslation();
 
   // Handle loading + Errors
@@ -38,6 +38,9 @@ export const CandidateAdminPage = () => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [searchStatus, setSearchStatus] = useState("ENABLE");
+  const [totalCandidateByMonth, setTotalCandidateByMonth] = useState([0]);
+  const [year, setYear] = useState("2023");
+
   const showToastMessage = (message: string) => {
     setMessage(message);
     setShowToast(true);
@@ -87,6 +90,9 @@ export const CandidateAdminPage = () => {
             null,
             null,
             null,
+            null,
+            null,
+            null,
             candidateData.specializationNames
           );
 
@@ -115,6 +121,42 @@ export const CandidateAdminPage = () => {
     fetchAllCandidates();
   }, [currentPage, searchUrl, updated]);
 
+
+  useEffect(() => {
+    const fetchTotalCandidateByMonth = async () => {
+      try {
+        const baseUrl =
+          `http://localhost:8080/auth/admin/getTotalCandidateByMonth?year=${year}`;
+        const response = await fetch(baseUrl, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`, // Replace with your actual authorization token
+          },
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setTotalCandidateByMonth(data.candidateMap);
+        } else {
+          console.error("Failed to fetch");
+        }
+      } catch (error: any) {
+        setHttpError(error.message);
+      }
+    };
+    fetchTotalCandidateByMonth();
+  }, [year]);
+
+  const candidateData: { month: number; value: number }[] = [];
+  for (const key in totalCandidateByMonth) {
+    if (totalCandidateByMonth.hasOwnProperty(key)) {
+      const item = {
+        month: parseInt(key),
+        value: totalCandidateByMonth[key],
+      };
+      candidateData.push(item);
+    }
+  }
+
   if (isLoading) {
     return <SpinnerLoading />;
   }
@@ -131,6 +173,7 @@ export const CandidateAdminPage = () => {
   ) => {
     setCurrentPage(1);
     setEdit(false);
+    setEditingCandidate(null);
     let newURL = ` http://localhost:8080/auth/admin/getAllCandidates?email=${search}&startDate=${startDate}&endDate=${endDate}&status=${searchStatus}&page=<currentPage>&size=${candidatesPerPage}`;
     setSearchUrl(newURL);
   };
@@ -182,10 +225,10 @@ export const CandidateAdminPage = () => {
         if (response.ok) {
           setUpdated(true);
           setIsLoading(false);
-          showToastMessage(t('showToastMessage.updateSuccess'));
+          showToastMessage(t("showToastMessage.updateSuccess"));
           handleCancle();
         } else {
-          showToastMessage(t('showToastMessage.updateFailed'));
+          showToastMessage(t("showToastMessage.updateFailed"));
         }
       } catch (error) {
         console.error("Error updating status:", error);
@@ -193,6 +236,21 @@ export const CandidateAdminPage = () => {
       }
     }
   };
+
+  const xLabels = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
 
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
@@ -230,10 +288,7 @@ export const CandidateAdminPage = () => {
                             height: "150px",
                           }}
                         />
-
-
                       </div>
-
                     </label>
                   </div>
                   <form>
@@ -241,13 +296,13 @@ export const CandidateAdminPage = () => {
                       <div className="col-6">
                         <div className="mb-3">
                           <label htmlFor="name" className="form-label">
-                            {t('placeholders.fullName')}
+                            {t("placeholders.fullName")}
                           </label>
                           <input
                             type="text"
                             className="form-control"
                             id="name"
-                            placeholder={t('placeholders.fullName')}
+                            placeholder={t("placeholders.fullName")}
                             readOnly
                             value={editingCandidate.userName}
                           />
@@ -256,13 +311,13 @@ export const CandidateAdminPage = () => {
                       <div className="col-6">
                         <div className="mb-3">
                           <label htmlFor="name" className="form-label">
-                            {t('placeholders.gender.gender')}
+                            {t("placeholders.gender.gender")}
                           </label>
                           <input
                             type="text"
                             className="form-control"
                             id="name"
-                            placeholder={t('placeholders.gender.gender')}
+                            placeholder={t("placeholders.gender.gender")}
                             readOnly
                             value={
                               editingCandidate.gender ||
@@ -276,13 +331,13 @@ export const CandidateAdminPage = () => {
                       <div className="col-6">
                         <div className="mb-3">
                           <label htmlFor="name" className="form-label">
-                            {t('placeholders.address')}
+                            {t("placeholders.address")}
                           </label>
                           <input
                             type="text"
                             className="form-control"
                             id="name"
-                            placeholder={t('placeholders.address')}
+                            placeholder={t("placeholders.address")}
                             value={
                               editingCandidate.address || "User address is null"
                             }
@@ -293,13 +348,13 @@ export const CandidateAdminPage = () => {
                       <div className="col-6">
                         <div className="mb-3">
                           <label htmlFor="name" className="form-label">
-                            {t('placeholders.phoneNumber')}
+                            {t("placeholders.phoneNumber")}
                           </label>
                           <input
                             type="text"
                             className="form-control"
                             id="name"
-                            placeholder={t('placeholders.phoneNumber')}
+                            placeholder={t("placeholders.phoneNumber")}
                             value={editingCandidate.phoneNumber}
                             readOnly
                           />
@@ -312,7 +367,7 @@ export const CandidateAdminPage = () => {
                       <div className="col-6">
                         <div className="mb-3">
                           <label htmlFor="bio" className="form-label">
-                            {t('placeholders.bio')}
+                            {t("placeholders.bio")}
                           </label>
                           <textarea
                             className="form-control"
@@ -325,7 +380,9 @@ export const CandidateAdminPage = () => {
                       </div>
                       <div className="col-6">
                         <div className="mb-3">
-                          <label className="form-label">{t('status.status')}</label>
+                          <label className="form-label">
+                            {t("status.status")}
+                          </label>
                           <div className="row ms-3  align-items-center d-flex justify-content-center">
                             <div className="form-check">
                               <input
@@ -340,7 +397,7 @@ export const CandidateAdminPage = () => {
                                 className="form-check-label"
                                 htmlFor="enable"
                               >
-                                {t('status.enable')}
+                                {t("status.enable")}
                               </label>
                             </div>
                             <div className="form-check">
@@ -356,7 +413,7 @@ export const CandidateAdminPage = () => {
                                 className="form-check-label"
                                 htmlFor="disable"
                               >
-                                {t('status.disable')}
+                                {t("status.disable")}
                               </label>
                             </div>
                           </div>
@@ -366,17 +423,17 @@ export const CandidateAdminPage = () => {
                     <div className="text-center">
                       <button
                         type="button"
-                        className="btn btn-primary"
+                        className="btn btn-success"
                         onClick={updateCandidateStatus}
                       >
-                        {t('btn.btnUpdate')}
+                        {t("btn.btnUpdate")}
                       </button>
                       <button
                         type="submit"
                         className="btn btn-danger ms-3"
                         onClick={handleCancle}
                       >
-                        {t('btn.btnCancel')}
+                        {t("btn.btnCancel")}
                       </button>
                     </div>
                   </form>
@@ -386,24 +443,66 @@ export const CandidateAdminPage = () => {
           </div>
         </div>
       )}
+      {!edit && !editingCandidate && (
+        <div className="container mt-4">
+          <div className="row justify-content-center">
+            <div className="col-md-9">
+              <div className="d-flex align-items-center justify-content-between mb-4">
+                <h6 className="mb-0 fw-bold text-success">{t('dashboard.statisticsCandidate')}</h6>
+                <div className="col-3">
+                  <select
+                    className="form-control"
+                    id="selectMonth"
+                    value={year}
+                    onChange={(e) => setYear(e.target.value)}
+                  >
+                    <option value="2018">2018</option>
+                    <option value="2019">2019</option>
+                    <option value="2020">2020</option>
+                    <option value="2021">2021</option>
+                    <option value="2022">2022</option>
+                    <option value="2023">2023</option>
+                    <option value="2024">2024</option>
+                  </select>
+                </div>
+              </div>
+              <div className="card">
+                <BarChart
+                  xAxis={[
+                    {
+                      id: "barCategories",
+                      data: xLabels,
+                      scaleType: "band",
 
+                    },
+                  ]}
+                  series={[
+                    {
+                      data: candidateData.map((item) => item.value),
+                      label: t('dashboard.candidate'),
+                      color: "#198754"
+                    },
+                  ]}
+                  height={450}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       <div className="container-fluid pt-4 px-4">
         <div className="row g-4">
           <div className="col-12">
             <div className="bg-light rounded h-100 p-4">
-              {/* tìm kiếm ở đây */}
-              <form onSubmit={(e) => {
-                e.preventDefault();
-                searchHandleChange(
-                  search,
-                  startDate,
-                  endDate,
-                  searchStatus
-                )
-              }}>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  searchHandleChange(search, startDate, endDate, searchStatus);
+                }}
+              >
                 <div className="form-row">
                   <div className="row">
-                    <div className="col-md-4 col-lg-4 mb-3">
+                    <div className="col-md-4 col-lg-3 mb-3">
                       <input
                         type="text"
                         className="form-control"
@@ -412,17 +511,17 @@ export const CandidateAdminPage = () => {
                         onChange={(e) => setSearch(e.target.value)}
                       />
                     </div>
-                    <div className="col-md-2  mb-3">
+                    <div className="col-md-2 col-lg-2  mb-3">
                       {/* <span>From</span> */}
                       <input
                         type="date"
                         className="form-control"
                         id="keyword"
-                        placeholder={t('searchForm.keyword')}
+                        placeholder={t("searchForm.keyword")}
                         onChange={(e) => setStartDate(e.target.value)}
                       />
                     </div>
-                    <div className="col-md-2 mb-3">
+                    <div className="col-md-2 col-lg-2 mb-3">
                       {/* <span>To</span> */}
                       <input
                         type="date"
@@ -432,7 +531,7 @@ export const CandidateAdminPage = () => {
                         onChange={(e) => setEndDate(e.target.value)}
                       />
                     </div>
-                    <div className="col-md-2 mb-3">
+                    <div className="col-md-2 col-lg-2 mb-3">
                       <select
                         className="form-select"
                         id="status"
@@ -440,14 +539,14 @@ export const CandidateAdminPage = () => {
                         onChange={(e) => setSearchStatus(e.target.value)}
                       >
                         {/* <option value="" >Status</option> */}
-                        <option value="ENABLE"> {t('status.enable')}</option>
-                        <option value="DISABLE">{t('status.disable')}</option>
+                        <option value="ENABLE"> {t("status.enable")}</option>
+                        <option value="DISABLE">{t("status.disable")}</option>
                       </select>
                     </div>
 
-                    <div className="col-md-2 mb-3">
+                    <div className="col-md-2 col-lg-2 mb-3 text-center">
                       <button
-                        className="btn btn-primary btn-block"
+                        className="btn btn-success btn-block"
                         type="button"
                         onClick={() =>
                           searchHandleChange(
@@ -458,9 +557,22 @@ export const CandidateAdminPage = () => {
                           )
                         }
                       >
-                        {t('searchForm.searchBtn')}
+                        {t("searchForm.searchBtn")}
                       </button>
                     </div>
+
+                    {candidates.length > 0 && (
+                      <div className="col-md-2 col-lg-1 mb-3">
+                        <CSVLink
+                          className="btn btn-success btn-block"
+                          data={candidates}
+                          filename="Candidates"
+                          target="_blank"
+                        >
+                          Excel
+                        </CSVLink>
+                      </div>
+                    )}
                   </div>
                 </div>
               </form>
@@ -471,13 +583,13 @@ export const CandidateAdminPage = () => {
                     <thead className="text-center">
                       <tr>
                         <th scope="col">#</th>
-                        <th scope="col">{t('table.name')}</th>
-                        <th scope="col">{t('table.email')}</th>
-                        <th scope="col">{t('table.img')}</th>
-                        <th scope="col">{t('table.gender')}</th>
-                        <th scope="col">{t('table.phone')}</th>
-                        <th scope="col">{t('table.status')}</th>
-                        <th scope="col">{t('table.action')}</th>
+                        <th scope="col">{t("table.name")}</th>
+                        <th scope="col">{t("table.email")}</th>
+                        <th scope="col">{t("table.img")}</th>
+                        <th scope="col">{t("table.gender")}</th>
+                        <th scope="col">{t("table.phone")}</th>
+                        <th scope="col">{t("table.status")}</th>
+                        <th scope="col">{t("table.action")}</th>
                       </tr>
                     </thead>
                     <tbody className="text-center">
@@ -502,26 +614,33 @@ export const CandidateAdminPage = () => {
                           <td>{candidate.gender}</td>
                           <td>{candidate.phoneNumber}</td>
                           <td>{candidate.status}</td>
-                          <td>
+                          <td style={{ minWidth: '100px' }}>
                             <button
                               type="button"
-                              className="btn btn-primary"
+                              className="btn btn-success"
                               onClick={() => handleEditCandidate(candidate)}
                             >
-                              <i className="fa fa-pencil-alt"></i> {t('btn.btnEdit')}
+                              <i className="fa fa-pencil-alt"></i>{" "}
+                              {t("btn.btnEdit")}
                             </button>
                           </td>
                         </tr>
                       ))}
                     </tbody>
                   </table>
+                  {totalPage >= 2 && (
+                    <div className="mt-3">
+                      <Pagination
+                        currentPage={currentPage}
+                        totalPage={totalPage}
+                        paginate={paginate}
+                      />
+                    </div>
+                  )}
                 </div>
               ) : (
-                
                 <div className="text-center">
-                  <div className="background">
-                  {t('admin.noUser')}
-                  </div>
+                  <div className="background">{t("admin.noUser")}</div>
                   <div>
                     <img
                       src="/assets/img/sorry.png"
@@ -534,35 +653,41 @@ export const CandidateAdminPage = () => {
           </div>
         </div>
       </div>
-      {totalPage >= 2 && (
-        <div className="mt-3">
-          <Pagination
-            currentPage={currentPage}
-            totalPage={totalPage}
-            paginate={paginate}
-          />
+
+      {showToast === true && (
+        <div className="position-fixed bottom-0 end-0 p-3" style={{ zIndex: 5 }}>
+          <div
+            className={`toast ${showToast ? "show" : ""}`}
+            role="alert"
+            aria-live="assertive"
+            aria-atomic="true"
+          >
+            <div className="toast-header bg-success text-white">
+              <strong className="me-auto">{t("showToastMessage.status")}</strong>
+              <button
+                type="button"
+                className="btn-close text-white"
+                data-bs-dismiss="toast"
+                onClick={() => setShowToast(false)}
+              ></button>
+            </div>
+            <div className="toast-body">{message}</div>
+          </div>
         </div>
       )}
 
-      <div className="position-fixed bottom-0 end-0 p-3" style={{ zIndex: 5 }}>
-        <div
-          className={`toast ${showToast ? "show" : ""}`}
-          role="alert"
-          aria-live="assertive"
-          aria-atomic="true"
-        >
-          <div className="toast-header">
-            <strong className="me-auto">{t('showToastMessage.status')}</strong>
-            <button
-              type="button"
-              className="btn-close"
-              data-bs-dismiss="toast"
-              onClick={() => setShowToast(false)}
-            ></button>
-          </div>
-          <div className="toast-body">{message}</div>
-        </div>
-      </div>
+
+
+      <style>
+        {
+          `
+          .form-check-input:checked{
+            background-color: #198754;
+          }
+          `
+        }
+
+      </style>
     </>
   );
 };

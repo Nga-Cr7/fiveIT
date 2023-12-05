@@ -160,7 +160,7 @@ export const EmployerApprovedBlogPage = () => {
             errors.title = t('formErrors.invalidTitle10');
             isValid = false;
         }
-        if (EditorHtml.trim().length < 100) {
+        if (EditorHtml.trim().length < 30) {
             errors.blogContent = t('formErrors.invalidContent');
             isValid = false;
         }

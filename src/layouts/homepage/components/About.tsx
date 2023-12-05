@@ -30,7 +30,7 @@ export const About = () => {
                         <p><i className="fa fa-check text-primary me-3"></i>{t('home.readMore.listItems1')}</p>
                         <p><i className="fa fa-check text-primary me-3"></i>{t('home.readMore.listItems2')}</p>
                         <p><i className="fa fa-check text-primary me-3"></i>{t('home.readMore.listItems3')}</p>
-                        <Link className="btn btn-primary py-3 px-5 mt-3" to="/home">{t('home.readMore.buttonText')}</Link>
+                        <Link className="btn btn-primary py-3 px-5 mt-3" to="/about">{t('home.readMore.buttonText')}</Link>
                     </div>
                 </div>
             </div>

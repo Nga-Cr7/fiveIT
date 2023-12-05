@@ -7,8 +7,9 @@ import { Page404 } from "../../errors/Page404";
 import { Pagination } from "../../utils/Pagination";
 import { SpinnerLoading } from "../../utils/SpinnerLoading";
 import { UserModel } from "../../../models/UserModel";
-import { useTranslation } from 'react-i18next';
-
+import { useTranslation } from "react-i18next";
+import { BarChart } from "@mui/x-charts/BarChart";
+import { CSVLink, CSVDownload } from "react-csv"
 export const ApprovedJobAdminPage = () => {
   const { t } = useTranslation();
 
@@ -55,7 +56,8 @@ export const ApprovedJobAdminPage = () => {
   >([]);
   const approval: string = "APPROVED";
   const [editingJob, setEditingJob] = useState<JobModel | null>(null);
-
+  const [totalApprovedJobByMonth, setTotalApprovedJobByMonth] = useState([0]);
+  const [year, setYear] = useState("2023");
   const showToastMessage = (message: string) => {
     setMessage(message);
     setShowToast(true);
@@ -139,6 +141,7 @@ export const ApprovedJobAdminPage = () => {
   ) => {
     setCurrentPage(1);
     setEdit(false);
+    setEditingJob(null);
     setView(false);
 
     let newURL = `http://localhost:8080/auth/admin/getAllJobs?jobTitle=${search}&approval=${approval}&status=${searchStatus}&startDate=${startDate}&endDate=${endDate}&page=<currentPage>&size=${jobsPerPage}`;
@@ -156,8 +159,6 @@ export const ApprovedJobAdminPage = () => {
       behavior: "smooth", // for smooth scrolling
     });
   };
-
-
 
   const fetchApply = async (jobId: any) => {
     try {
@@ -218,7 +219,6 @@ export const ApprovedJobAdminPage = () => {
         const data = await response.json();
         const loadedRv: ReviewAndRatingModel[] = [];
         data.content.forEach((rvAndRatingsData: any) => {
-
           const userForRv: UserModel = {
             userId: rvAndRatingsData.userId,
             userName: rvAndRatingsData.userName,
@@ -313,16 +313,64 @@ export const ApprovedJobAdminPage = () => {
         if (response.ok) {
           setUpdated(true);
           setIsLoading(false);
-          showToastMessage(t('showToastMessage.updateSuccess'));
+          showToastMessage(t("showToastMessage.updateSuccess"));
           handleCancel();
         } else {
-          showToastMessage(t('showToastMessage.updateFailed'));
+          showToastMessage(t("showToastMessage.updateFailed"));
         }
       } catch (error) {
         console.error("Error updating status:", error);
       }
     }
   };
+
+  useEffect(() => {
+    const fetchTotalCandidateByMonth = async () => {
+      try {
+        const baseUrl = `http://localhost:8080/auth/admin/getTotalApprovedJobByMonth?year=${year}`;
+        const response = await fetch(baseUrl, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`, // Replace with your actual authorization token
+          },
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setTotalApprovedJobByMonth(data.approvedJobMap);
+        } else {
+          console.error("Failed to fetch");
+        }
+      } catch (error: any) {
+        setHttpError(error.message);
+      }
+    };
+    fetchTotalCandidateByMonth();
+  }, [year]);
+
+  const jobData: { month: number; value: number }[] = [];
+  for (const key in totalApprovedJobByMonth) {
+    if (totalApprovedJobByMonth.hasOwnProperty(key)) {
+      const item = {
+        month: parseInt(key),
+        value: totalApprovedJobByMonth[key],
+      };
+      jobData.push(item);
+    }
+  }
+  const xLabels = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
 
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
   const paginateApply = (pageNumber: number) => setCurrentPageApply(pageNumber);
@@ -421,13 +469,13 @@ export const ApprovedJobAdminPage = () => {
                         <div className="col-6">
                           <div className="mb-3">
                             <label htmlFor="title" className="form-label">
-                              {t('placeholders.title')}
+                              {t("placeholders.title")}
                             </label>
                             <input
                               type="text"
                               className="form-control"
                               id="title"
-                              placeholder={t('placeholders.title')}
+                              placeholder={t("placeholders.title")}
                               readOnly
                               value={editingJob.title || "Title is null"}
                             />
@@ -436,7 +484,7 @@ export const ApprovedJobAdminPage = () => {
                         <div className="col-6">
                           <div className="mb-3">
                             <label htmlFor="category" className="form-label">
-                              {t('placeholders.category')}
+                              {t("placeholders.category")}
                             </label>
                             <input
                               type="text"
@@ -457,12 +505,12 @@ export const ApprovedJobAdminPage = () => {
                         <div className="col-6">
                           <div className="mb-3">
                             <label htmlFor="createdBy" className="form-label">
-                              {t('placeholders.createdBy')}
+                              {t("placeholders.createdBy")}
                             </label>
                             <input
                               type="text"
                               className="form-control"
-                              placeholder={t('placeholders.createdBy')}
+                              placeholder={t("placeholders.createdBy")}
                               id="createdBy"
                               readOnly
                               value={editingJob.userId || "Created By is null"}
@@ -472,13 +520,13 @@ export const ApprovedJobAdminPage = () => {
                         <div className="col-6">
                           <div className="mb-3">
                             <label htmlFor="salary" className="form-label">
-                              {t('placeholders.salary')}
+                              {t("placeholders.salary")}
                             </label>
                             <input
                               type="text"
                               className="form-control"
                               id="salary"
-                              placeholder={t('placeholders.salary')}
+                              placeholder={t("placeholders.salary")}
                               readOnly
                               value={editingJob.salary || "Salary is null"}
                             />
@@ -490,13 +538,13 @@ export const ApprovedJobAdminPage = () => {
                         <div className="col-6">
                           <div className="mb-3">
                             <label htmlFor="location" className="form-label">
-                              {t('placeholders.location')}
+                              {t("placeholders.location")}
                             </label>
                             <input
                               type="text"
                               className="form-control"
                               id="location"
-                              placeholder={t('placeholders.location')}
+                              placeholder={t("placeholders.location")}
                               value={editingJob.location || "Location is null"}
                               readOnly
                             />
@@ -505,13 +553,13 @@ export const ApprovedJobAdminPage = () => {
                         <div className="col-6">
                           <div className="mb-3">
                             <label htmlFor="createdAt" className="form-label">
-                              {t('placeholders.createdAt')}
+                              {t("placeholders.createdAt")}
                             </label>
                             <input
                               type="text"
                               className="form-control"
                               id="createdAt"
-                              placeholder={t('placeholders.createdAt')}
+                              placeholder={t("placeholders.createdAt")}
                               value={
                                 formatDateTime(editingJob.createdAt) ||
                                 "Created At is null"
@@ -526,7 +574,7 @@ export const ApprovedJobAdminPage = () => {
                         <div className="col-6">
                           <div className="mb-3">
                             <label htmlFor="description" className="z-label">
-                              {t('placeholders.description')}
+                              {t("placeholders.description")}
                             </label>
                             <textarea
                               className="form-control"
@@ -547,7 +595,7 @@ export const ApprovedJobAdminPage = () => {
                               htmlFor="requirements"
                               className="form-label"
                             >
-                              {t('placeholders.requirements')}
+                              {t("placeholders.requirements")}
                             </label>
                             <textarea
                               className="form-control"
@@ -566,7 +614,7 @@ export const ApprovedJobAdminPage = () => {
                         <div className="col-6">
                           <div className="mb-3">
                             <label htmlFor="quantity" className="form-label">
-                              {t('placeholders.quantityCV')}
+                              {t("placeholders.quantityCV")}
                             </label>
                             <input
                               type="text"
@@ -583,7 +631,9 @@ export const ApprovedJobAdminPage = () => {
 
                         <div className="col-6">
                           <div className="mb-3">
-                            <label className="form-label">{t('status.status')}</label>
+                            <label className="form-label">
+                              {t("status.status")}
+                            </label>
                             <div className="row ms-3  align-items-center d-flex justify-content-center">
                               <div className="form-check">
                                 <input
@@ -598,7 +648,7 @@ export const ApprovedJobAdminPage = () => {
                                   className="form-check-label"
                                   htmlFor="enable"
                                 >
-                                  {t('status.enable')}
+                                  {t("status.enable")}
                                 </label>
                               </div>
                               <div className="form-check">
@@ -614,7 +664,7 @@ export const ApprovedJobAdminPage = () => {
                                   className="form-check-label"
                                   htmlFor="disable"
                                 >
-                                  {t('status.disable')}
+                                  {t("status.disable")}
                                 </label>
                               </div>
                             </div>
@@ -625,17 +675,17 @@ export const ApprovedJobAdminPage = () => {
                       <div className="mt-3 text-center">
                         <button
                           type="button"
-                          className="btn btn-primary"
+                          className="btn btn-success"
                           onClick={updateJobStatus}
                         >
-                          {t('btn.btnUpdate')}
+                          {t("btn.btnUpdate")}
                         </button>
                         <button
                           type="submit"
                           className="btn btn-danger ms-3"
                           onClick={handleCancel}
                         >
-                          {t('btn.btnCancel')}
+                          {t("btn.btnCancel")}
                         </button>
                       </div>
                     </form>
@@ -651,18 +701,18 @@ export const ApprovedJobAdminPage = () => {
         <>
           <div className="container mt-4">
             <div className="card">
-              <b className="card-header">
-                {t('jobManagement.appliedForJob')} ({totalJobsApply} applied)
+              <b className="card-header fw-bold text-success">
+                {t("jobManagement.appliedForJob")} ({totalJobsApply} applied)
               </b>
               {applicants.length <= 0 ? (
-                <p className="p-3"> {t('jobManagement.noCandidate')}</p>
+                <p className="p-3 fw-bold text-success"> {t("jobManagement.noCandidate")}</p>
               ) : (
                 <>
                   <div className="">
                     <ul className="nav nav-tabs" id="myTab" role="tablist">
                       <li className="nav-item" role="presentation">
                         <a
-                          className="nav-link active fw-bold"
+                          className="nav-link active fw-bold text-success"
                           id="waiting-tab"
                           data-bs-toggle="tab"
                           href="#statusJob"
@@ -671,13 +721,13 @@ export const ApprovedJobAdminPage = () => {
                           aria-selected="true"
                           onClick={() => setCurrentTab("waiting")}
                         >
-                          {t('status.waiting')}{" "}
+                          {t("status.waiting")}{" "}
                           <span className="text-danger">({waitingCount})</span>
                         </a>
                       </li>
                       <li className="nav-item" role="presentation">
                         <a
-                          className="nav-link fw-bold"
+                          className="nav-link fw-bold text-success"
                           id="approval-tab"
                           data-bs-toggle="tab"
                           href="#statusJob"
@@ -686,13 +736,13 @@ export const ApprovedJobAdminPage = () => {
                           aria-selected="false"
                           onClick={() => setCurrentTab("approved")}
                         >
-                          {t('status.approved')}{" "}
+                          {t("status.approved")}{" "}
                           <span className="text-danger">({approvedCount})</span>
                         </a>
                       </li>
                       <li className="nav-item" role="presentation">
                         <a
-                          className="nav-link fw-bold"
+                          className="nav-link fw-bold text-success"
                           id="closed-tab"
                           data-bs-toggle="tab"
                           href="#statusJob"
@@ -701,7 +751,7 @@ export const ApprovedJobAdminPage = () => {
                           aria-selected="false"
                           onClick={() => setCurrentTab("closed")}
                         >
-                          {t('status.closed')}{" "}
+                          {t("status.closed")}{" "}
                           <span className="text-danger">({closedCount})</span>
                         </a>
                       </li>
@@ -720,20 +770,19 @@ export const ApprovedJobAdminPage = () => {
                           style={{ maxHeight: "60vh", overflowY: "auto" }}
                         >
                           {filteredApplicants.length <= 0 ? (
-                            <p className="p-3">
-                              {t('jobManagement.noCandidate')}{" "}
-                              {currentTab}
+                            <p className="p-3 fw-bold text-success">
+                              {t("jobManagement.noCandidate")} {currentTab}
                             </p>
                           ) : (
                             <table className="table custom-table no-footer text-center">
                               <thead>
                                 <tr>
-                                  <th>{t('table.name')}</th>
-                                  <th>{t('table.email')}</th>
-                                  <th>{t('table.phone')}</th>
-                                  <th>{t('table.CV')}</th>
-                                  <th>{t('table.date')}</th>
-                                  <th>{t('table.status')}</th>
+                                  <th>{t("table.name")}</th>
+                                  <th>{t("table.email")}</th>
+                                  <th>{t("table.phone")}</th>
+                                  <th>{t("table.CV")}</th>
+                                  <th>{t("table.date")}</th>
+                                  <th>{t("table.status")}</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -774,11 +823,11 @@ export const ApprovedJobAdminPage = () => {
 
             {/* Comments cho công việc */}
             <div className="card mt-4">
-              <b className="card-header">
-              {t('jobManagement.commentForThisJob')} ({totalJobsCmt} comments)
+              <b className="card-header fw-bold text-success">
+                {t("jobManagement.commentForThisJob")} ({totalJobsCmt} comments)
               </b>
               {reviewAndRating.length <= 0 ? (
-                <p className="p-3">{t('jobManagement.noComment')}</p>
+                <p className="p-3 fw-bold text-success">{t("jobManagement.noComment")}</p>
               ) : (
                 <div className="p-3">
                   <div id="comment">
@@ -852,6 +901,53 @@ export const ApprovedJobAdminPage = () => {
         </>
       )}
 
+      {!edit && !editingJob && !view && (
+        <div className="container mt-4">
+          <div className="row justify-content-center">
+            <div className="col-md-9">
+              <div className="d-flex align-items-center justify-content-between mb-4">
+                <h6 className="mb-0">{t("dashboard.statisticsApprovedJob")}</h6>
+                <div className="col-3">
+                  <select
+                    className="form-control"
+                    id="selectMonth"
+                    value={year}
+                    onChange={(e) => setYear(e.target.value)}
+                  >
+                    <option value="2018">2018</option>
+                    <option value="2019">2019</option>
+                    <option value="2020">2020</option>
+                    <option value="2021">2021</option>
+                    <option value="2022">2022</option>
+                    <option value="2023">2023</option>
+                    <option value="2024">2024</option>
+                  </select>
+                </div>
+              </div>
+              <div className="card">
+                <BarChart
+                  xAxis={[
+                    {
+                      id: "barCategories",
+                      data: xLabels,
+                      scaleType: "band",
+                    },
+                  ]}
+                  series={[
+                    {
+                      data: jobData.map((item) => item.value),
+                      label: t("dashboard.approvedJob"),
+                      color: "#198754"
+                    },
+                  ]}
+                  height={450}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="container-fluid pt-4 px-4">
         <div className="row g-4">
           <div className="col-12">
@@ -865,16 +961,16 @@ export const ApprovedJobAdminPage = () => {
               >
                 <div className="form-row">
                   <div className="row">
-                    <div className="col-md-4 col-lg-4 mb-3">
+                    <div className="col-md-4 col-lg-3 mb-3">
                       <input
                         type="text"
                         className="form-control"
                         id="keyword"
-                        placeholder={t('searchForm.keyword')}
+                        placeholder={t("searchForm.keyword")}
                         onChange={(e) => setSearch(e.target.value)}
                       />
                     </div>
-                    <div className="col-md-2  mb-3">
+                    <div className="col-md-2 col-lg-2 mb-3">
                       <input
                         type="date"
                         className="form-control"
@@ -883,7 +979,7 @@ export const ApprovedJobAdminPage = () => {
                         onChange={(e) => setStartDate(e.target.value)}
                       />
                     </div>
-                    <div className="col-md-2 mb-3">
+                    <div className="col-md-2 col-lg-2 mb-3">
                       <input
                         type="date"
                         className="form-control"
@@ -892,7 +988,7 @@ export const ApprovedJobAdminPage = () => {
                         onChange={(e) => setEndDate(e.target.value)}
                       />
                     </div>
-                    <div className="col-md-2 mb-3">
+                    <div className="col-md-2 col-lg-2 mb-3">
                       <select
                         className="form-select"
                         id="status"
@@ -900,14 +996,14 @@ export const ApprovedJobAdminPage = () => {
                         onChange={(e) => setSearchStatus(e.target.value)}
                       >
                         {/* <option value="">All status</option> */}
-                        <option value="ENABLE">{t('status.enable')}</option>
-                        <option value="DISABLE">{t('status.disable')}</option>
+                        <option value="ENABLE">{t("status.enable")}</option>
+                        <option value="DISABLE">{t("status.disable")}</option>
                       </select>
                     </div>
 
-                    <div className="col-md-2 mb-3">
+                    <div className="col-md-2 col-lg-2 mb-3 text-center">
                       <button
-                        className="btn btn-primary btn-block"
+                        className="btn btn-success btn-block"
                         type="button"
                         onClick={() =>
                           searchHandleChange(
@@ -918,9 +1014,22 @@ export const ApprovedJobAdminPage = () => {
                           )
                         }
                       >
-                        {t('searchForm.searchBtn')}
+                        {t("searchForm.searchBtn")}
                       </button>
                     </div>
+                    {jobs.length > 0 && (
+                      <div className="col-md-2 col-lg-1 mb-3">
+                        <CSVLink
+                          className="btn btn-success"
+                          data={jobs}
+                          filename="Approved Job"
+                          target="_blank"
+                        >
+                          Excel
+                        </CSVLink>
+                      </div>
+                    )}
+
                   </div>
                 </div>
               </form>
@@ -931,15 +1040,14 @@ export const ApprovedJobAdminPage = () => {
                       <thead className="text-center">
                         <tr>
                           <th scope="col">#</th>
-                          <th>{t('table.title')}</th>
-                          <th>{t('table.category')}</th>
-                          <th>{t('table.img')}</th>
-                          <th>{t('table.createdBy')}</th>
-                          <th>{t('table.salary')}</th>
-                          <th>{t('table.location')}</th>
-                          <th>{t('table.status')}</th>
-                          <th>{t('table.action')}</th>
-                          <th>{t('table.applicantRating')}</th>
+                          <th>{t("table.title")}</th>
+                          <th>{t("table.category")}</th>
+                          <th>{t("table.img")}</th>
+                          <th>{t("table.createdBy")}</th>
+                          <th>{t("table.salary")}</th>
+                          <th>{t("table.status")}</th>
+                          <th>{t("table.action")}</th>
+                          <th>{t("table.applicantRating")}</th>
                         </tr>
                       </thead>
                       <tbody className="text-center">
@@ -966,15 +1074,15 @@ export const ApprovedJobAdminPage = () => {
                             </td>
                             <td>{job.createdBy}</td>
                             <td>{job.salary}</td>
-                            <td>{job.location}</td>
                             <td>{job.status}</td>
-                            <td>
+                            <td style={{ minWidth: '100px' }}>
                               <button
                                 type="button"
                                 className="btn btn-primary"
                                 onClick={() => handleEditJob(job)}
                               >
-                                <i className="fa fa-pencil-alt"></i> {t('btn.btnEdit')}
+                                <i className="fa fa-pencil-alt"></i>{" "}
+                                {t("btn.btnEdit")}
                               </button>
                             </td>
                             <td>
@@ -983,20 +1091,27 @@ export const ApprovedJobAdminPage = () => {
                                 className="btn btn-success"
                                 onClick={() => handleViewJob(job)}
                               >
-                                <i className="fa fa-eye"></i> {t('btn.btnView')}
+                                <i className="fa fa-eye"></i> {t("btn.btnView")}
                               </button>
                             </td>
                           </tr>
                         ))}
                       </tbody>
                     </table>
+
+                    {totalPage >= 2 && (
+                      <div className="mt-4 mb-0">
+                        <Pagination
+                          currentPage={currentPage}
+                          totalPage={totalPage}
+                          paginate={paginate}
+                        />
+                      </div>
+                    )}
                   </div>
                 ) : (
-                  
                   <div className="text-center">
-                    <div className="background">
-                    {t('admin.noJob')}
-                    </div>
+                    <div className="background">{t("admin.noJob")}</div>
                     <div>
                       <img
                         src="/assets/img/sorry.png"
@@ -1011,35 +1126,39 @@ export const ApprovedJobAdminPage = () => {
         </div>
       </div>
 
-      {totalPage >= 2 && (
-        <div className="mt-3">
-          <Pagination
-            currentPage={currentPage}
-            totalPage={totalPage}
-            paginate={paginate}
-          />
+      {showToast === true && (
+
+        <div className="position-fixed bottom-0 end-0 p-3" style={{ zIndex: 5 }}>
+          <div
+            className={`toast ${showToast ? "show" : ""}`}
+            role="alert"
+            aria-live="assertive"
+            aria-atomic="true"
+          >
+            <div className="toast-header bg-success text-white">
+              <strong className="me-auto">{t("showToastMessage.status")}</strong>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="toast"
+                onClick={() => setShowToast(false)}
+              ></button>
+            </div>
+            <div className="toast-body">{message}</div>
+          </div>
         </div>
       )}
 
-      <div className="position-fixed bottom-0 end-0 p-3" style={{ zIndex: 5 }}>
-        <div
-          className={`toast ${showToast ? "show" : ""}`}
-          role="alert"
-          aria-live="assertive"
-          aria-atomic="true"
-        >
-          <div className="toast-header">
-            <strong className="me-auto">{t('showToastMessage.status')}</strong>
-            <button
-              type="button"
-              className="btn-close"
-              data-bs-dismiss="toast"
-              onClick={() => setShowToast(false)}
-            ></button>
-          </div>
-          <div className="toast-body">{message}</div>
-        </div>
-      </div>
+      <style>
+        {
+          `
+          .form-check-input:checked{
+            background-color: #198754;
+          }
+          `
+        }
+
+      </style>
     </>
   );
 };

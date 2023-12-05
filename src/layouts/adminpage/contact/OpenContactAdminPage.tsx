@@ -4,6 +4,8 @@ import { Page404 } from "../../errors/Page404";
 import { Pagination } from "../../utils/Pagination";
 import { ContactModel } from "../../../models/ContactModel";
 import { useTranslation } from 'react-i18next';
+import { BarChart } from "@mui/x-charts/BarChart";
+import { CSVLink } from "react-csv";
 
 
 export const OpenContactAdminPage = () => {
@@ -23,12 +25,14 @@ export const OpenContactAdminPage = () => {
   const [updated, setUpdated] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [message, setMessage] = useState("");
-
+  const [totalopenContactByMonth, setTotalopenContactByMonth] = useState([0]);
+  const [year, setYear] = useState("2023");
   const showToastMessage = (message: string) => {
     setMessage(message);
     setShowToast(true);
     setTimeout(() => setShowToast(false), 3000);
   };
+
 
   const token: any = localStorage.getItem("jwt_token");
 
@@ -144,6 +148,54 @@ export const OpenContactAdminPage = () => {
     }
   };
 
+  useEffect(() => {
+    const fetchTotalCandidateByMonth = async () => {
+      try {
+        const baseUrl = `http://localhost:8080/auth/admin/getTotalOpenContactByMonth?year=${year}`;
+        const response = await fetch(baseUrl, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`, // Replace with your actual authorization token
+          },
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setTotalopenContactByMonth(data.openContactMap);
+        } else {
+          console.error("Failed to fetch");
+        }
+      } catch (error: any) {
+        setHttpError(error.message);
+      }
+    };
+    fetchTotalCandidateByMonth();
+  }, [year]);
+
+  const candidateData: { month: number; value: number }[] = [];
+  for (const key in totalopenContactByMonth) {
+    if (totalopenContactByMonth.hasOwnProperty(key)) {
+      const item = {
+        month: parseInt(key),
+        value: totalopenContactByMonth[key],
+      };
+      candidateData.push(item);
+    }
+  }
+  const xLabels = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+
 
 
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
@@ -248,7 +300,7 @@ export const OpenContactAdminPage = () => {
                       <div />
                     </div>
                     <div className="text-center">
-                      <button type="button" className="btn btn-primary" onClick={updateContactStatus}>
+                      <button type="button" className="btn btn-success" onClick={updateContactStatus}>
                         {t('btn.btnClose')}
                       </button>
                       <button type="submit" className="btn btn-danger ms-3" onClick={handleCancel}>
@@ -258,6 +310,55 @@ export const OpenContactAdminPage = () => {
 
                   </form>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {!edit && !editingContact && (
+        <div className="container mt-4">
+          <div className="row justify-content-center">
+            <div className="col-md-9">
+              <div className="d-flex align-items-center justify-content-between mb-4">
+                <h6 className="mb-0 text-success fw-bold">
+                  {t("dashboard.statisticsOpenContact")}
+                </h6>
+                <div className="col-3">
+                  <select
+                    className="form-control"
+                    id="selectMonth"
+                    value={year}
+                    onChange={(e) => setYear(e.target.value)}
+                  >
+                    <option value="2018">2018</option>
+                    <option value="2019">2019</option>
+                    <option value="2020">2020</option>
+                    <option value="2021">2021</option>
+                    <option value="2022">2022</option>
+                    <option value="2023">2023</option>
+                    <option value="2024">2024</option>
+                  </select>
+                </div>
+              </div>
+              <div className="card">
+                <BarChart
+                  xAxis={[
+                    {
+                      id: "barCategories",
+                      data: xLabels,
+                      scaleType: "band",
+                    },
+                  ]}
+                  series={[
+                    {
+                      data: candidateData.map((item) => item.value),
+                      label: t("dashboard.openContact"),
+                      color: "#198754"
+                    },
+                  ]}
+                  height={450}
+                />
               </div>
             </div>
           </div>
@@ -276,7 +377,7 @@ export const OpenContactAdminPage = () => {
                 }}
               >
                 <div className="form-row d-flex align-items-center justify-content-center">
-                  <div className="col-md-6 mb-3">
+                  <div className="col-md-8 mb-3">
                     <input
                       type="text"
                       className="form-control"
@@ -285,21 +386,34 @@ export const OpenContactAdminPage = () => {
                       onChange={(e) => setSearch(e.target.value)}
                     />
                   </div>
-                  <div className="col-md-6 mb-3">
+                  <div className="col-md-2 text-center mb-3">
                     <label>&nbsp;</label>
                     <button
-                      className="btn btn-primary btn-block"
+                      className="btn btn-success btn-block"
                       type="button"
                       onClick={() => searchHandleChange(search)}
                     >
                       {t('searchForm.searchBtn')}
                     </button>
                   </div>
+                  <div className="col-md-2 mb-3">
+                    <CSVLink
+                      className="btn btn-success"
+                      data={contacts}
+                      filename="Open Contact"
+                      target="_blank"
+                    >
+                      Excel
+                    </CSVLink>
+
+                  </div>
+
                 </div>
               </form>
               <>
                 {contacts.length > 0 ? (
                   <div className="table-responsive">
+
                     <table className="table">
                       <thead className="text-center">
                         <tr>
@@ -308,7 +422,6 @@ export const OpenContactAdminPage = () => {
                           <th scope="col">{t('table.email')}</th>
                           <th scope="col">{t('table.createdBy')}</th>
                           <th scope="col">{t('table.createdAt')}</th>
-                          <th scope="col">{t('table.updatedAt')}</th>
                           <th scope="col">{t('table.updatedBy')}</th>
                           <th scope="col">{t('table.status')}</th>
                           <th scope="col">{t('table.action')}</th>
@@ -322,11 +435,10 @@ export const OpenContactAdminPage = () => {
                             <td>{contact.contactEmail}</td>
                             <td>{contact.contactCreatedAt.toLocaleString()}</td>
                             <td>{contact.contactCreatedBy}</td>
-                            <td>{contact.contactUpdatedAt?.toLocaleString() || ""}</td>
                             <td>{contact.contactUpdatedBy}</td>
                             <td>{contact.contactStatus}</td>
-                            <td>
-                              <button type="button" className="btn btn-primary" onClick={() => handleEditContact(contact)}>
+                            <td style={{ minWidth: '100px' }}>
+                              <button type="button" className="btn btn-success" onClick={() => handleEditContact(contact)}>
                                 <i className="fa fa-pencil-alt"></i> {t('btn.btnEdit')}
                               </button>
                             </td>
@@ -366,25 +478,28 @@ export const OpenContactAdminPage = () => {
         </div>
       )}
 
-      <div className="position-fixed bottom-0 end-0 p-3" style={{ zIndex: 5 }}>
-        <div
-          className={`toast ${showToast ? "show" : ""}`}
-          role="alert"
-          aria-live="assertive"
-          aria-atomic="true"
-        >
-          <div className="toast-header">
-            <strong className="me-auto"> {t('showToastMessage.status')}</strong>
-            <button
-              type="button"
-              className="btn-close"
-              data-bs-dismiss="toast"
-              onClick={() => setShowToast(false)}
-            ></button>
+      {showToast === true && (
+
+        <div className="position-fixed bottom-0 end-0 p-3" style={{ zIndex: 5 }}>
+          <div
+            className={`toast ${showToast ? "show" : ""}`}
+            role="alert"
+            aria-live="assertive"
+            aria-atomic="true"
+          >
+            <div className="toast-header bg-success text-white">
+              <strong className="me-auto"> {t('showToastMessage.status')}</strong>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="toast"
+                onClick={() => setShowToast(false)}
+              ></button>
+            </div>
+            <div className="toast-body">{message}</div>
           </div>
-          <div className="toast-body">{message}</div>
         </div>
-      </div>
+      )}
     </>
   );
 };

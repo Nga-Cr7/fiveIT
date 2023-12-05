@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { useAuth } from "../../utils/AuthProvide";
 import { useEffect } from "react";
 import { useTranslation } from 'react-i18next';
@@ -37,7 +37,7 @@ export const AdminHeader = () => {
           </h2>
         </Link>
         <a className="sidebar-toggler flex-shrink-0" id="sidebarToggler">
-          <i className="fa fa-bars"></i>
+          <i className="fa fa-bars text-success"></i>
         </a>
 
         <div className="navbar-nav align-items-center ms-auto">
@@ -50,6 +50,9 @@ export const AdminHeader = () => {
               <div className="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
                 {/* <a href="#" className="dropdown-item">My Profile</a>
                 <a href="#" className="dropdown-item">Settings</a> */}
+                <NavLink to="/admin/profile" className="dropdown-item">
+                  {t('header.profile')}
+                  </NavLink>
                 <button className="dropdown-item" onClick={logout}>{t('header.logout')}</button>
               </div>
             </div>

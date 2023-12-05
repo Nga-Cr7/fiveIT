@@ -183,14 +183,11 @@ export function JobPage() {
     locationForSearch: string
   ) => {
     setCurrentPage(1);
-
-    console.log("search: ", searchKey);
-    console.log("cateForSearch: ", cateForSearch);
-    console.log("locationForSearch: ", locationForSearch);
     let newURL = `http://localhost:8080/api/jobs/search/findJobsByTitleContainingAndCategoryIdAndLocationContaining?title=${searchKey}&categoryId=${cateForSearch}&location=${locationForSearch}&page=<currentPage>&size=${jobsPerPage}`;
     setSearchUrl(newURL);
-    localStorage.setItem("catee", cateForSearch);
     localStorage.removeItem("jobCate");
+    localStorage.setItem("jobCate", cateForSearch);
+   
   };
 
   //back to Jobs

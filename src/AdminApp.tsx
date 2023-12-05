@@ -16,6 +16,7 @@ import { WaitingBlogAdminPage } from "./layouts/adminpage/blogadmin/WaitingBlogA
 import { WaitingJobAdminPage } from "./layouts/adminpage/jobs/WaitingJobAdminPage";
 import { ApprovedJobAdminPage } from "./layouts/adminpage/jobs/ApprovedJobAdminPage";
 import { CategoryAdminPage } from "./layouts/adminpage/category/CategoryAdminPage";
+import { ProfileAdminPage } from "./layouts/adminpage/profileadmin/ProfileAdminPage";
 function AdminApp() {
   return (
     <>
@@ -36,6 +37,7 @@ function AdminApp() {
             <Route path="/blog/waitingBlog" element={<WaitingBlogAdminPage />} />
             <Route path="/contact/openContact" element={<OpenContactAdminPage />} />
             <Route path="/contact/closeContact" element={<CloseContactAdminPage />} />
+            <Route path="/admin/profile" element={<ProfileAdminPage />} />
           </Routes>
         </div>
       </div>

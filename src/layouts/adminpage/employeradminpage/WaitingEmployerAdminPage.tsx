@@ -4,7 +4,8 @@ import { SpinnerLoading } from "../../utils/SpinnerLoading";
 import { Page404 } from "../../errors/Page404";
 import { Pagination } from "../../utils/Pagination";
 import { useTranslation } from 'react-i18next';
-
+import { BarChart } from "@mui/x-charts/BarChart";
+import { CSVLink } from "react-csv";
 
 export const WaitingEmployerAdminPage = () => {
   const { t } = useTranslation();
@@ -29,12 +30,13 @@ export const WaitingEmployerAdminPage = () => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [searchStatus, setSearchStatus] = useState("");
-
+  const [totalEmployerByMonth, setTotalEmployerByMonth] = useState([0]);
+  const [year, setYear] = useState("2023");
 
   const showToastMessage = (message: string) => {
     setMessage(message);
     setShowToast(true);
-    setTimeout(() => setShowToast(false), 3000);
+    setTimeout(() => setShowToast(false), 1000);
   };
 
   const token: any = localStorage.getItem("jwt_token");
@@ -76,6 +78,9 @@ export const WaitingEmployerAdminPage = () => {
             employerData.companyName,
             employerData.companyLogo || null,
             employerData.taxNumber,
+            employerData.companyImg1,
+            employerData.companyImg2,
+            employerData.companyImg3,
             employerData.specializationNames
           );
 
@@ -112,6 +117,7 @@ export const WaitingEmployerAdminPage = () => {
   ) => {
     setCurrentPage(1);
     setEdit(false);
+    setEditingEmployer(null);
     let newURL = `http://localhost:8080/auth/admin/getAllEmployers?email=${search}&startDate=${startDate}&endDate=${endDate}&status=${searchStatus}&page=<currentPage>&size=${employersPerPage}&approval=${waiting}`;
     setSearchUrl(newURL);
   };
@@ -161,6 +167,55 @@ export const WaitingEmployerAdminPage = () => {
       }
     }
   };
+
+  useEffect(() => {
+    const fetchTotalCandidateByMonth = async () => {
+      try {
+        const baseUrl =
+          `http://localhost:8080/auth/admin/getTotalWaitingEmployerByMonth?year=${year}`;
+        const response = await fetch(baseUrl, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`, // Replace with your actual authorization token
+          },
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setTotalEmployerByMonth(data.waitingEmployerMap);
+        } else {
+          console.error("Failed to fetch");
+        }
+      } catch (error: any) {
+        setHttpError(error.message);
+      }
+    };
+    fetchTotalCandidateByMonth();
+  }, [year]);
+
+  const employerData: { month: number; value: number }[] = [];
+  for (const key in totalEmployerByMonth) {
+    if (totalEmployerByMonth.hasOwnProperty(key)) {
+      const item = {
+        month: parseInt(key),
+        value: totalEmployerByMonth[key],
+      };
+      employerData.push(item);
+    }
+  }
+  const xLabels = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
 
 
 
@@ -315,14 +370,64 @@ export const WaitingEmployerAdminPage = () => {
                         readOnly
                       ></textarea>
                     </div>
-                    <button type="button" className="btn btn-primary" onClick={updateEmployerApproval}>
-                      {t('btn.btnApproved')}
-                    </button>
-                    <button type="submit" className="btn btn-danger ms-3" onClick={handleCancel}>
-                      {t('btn.btnCancel')}
-                    </button>
+                    <div className="text-center">
+                      <button type="button" className="btn btn-success" onClick={updateEmployerApproval}>
+                        {t('btn.btnApproved')}
+                      </button>
+                      <button type="submit" className="btn btn-danger ms-3" onClick={handleCancel}>
+                        {t('btn.btnCancel')}
+                      </button>
+                    </div>
+
                   </form>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {!edit && !editingEmployer && (
+        <div className="container mt-4">
+          <div className="row justify-content-center">
+            <div className="col-md-9">
+              <div className="d-flex align-items-center justify-content-between mb-4">
+                <h6 className="mb-0 fw-bold text-success">{t('dashboard.statisticsWaitingEmployer')}</h6>
+                <div className="col-3">
+                  <select
+                    className="form-control"
+                    id="selectMonth"
+                    value={year}
+                    onChange={(e) => setYear(e.target.value)}
+                  >
+                    <option value="2018">2018</option>
+                    <option value="2019">2019</option>
+                    <option value="2020">2020</option>
+                    <option value="2021">2021</option>
+                    <option value="2022">2022</option>
+                    <option value="2023">2023</option>
+                    <option value="2024">2024</option>
+                  </select>
+                </div>
+              </div>
+              <div className="card">
+                <BarChart
+                  xAxis={[
+                    {
+                      id: "barCategories",
+                      data: xLabels,
+                      scaleType: "band",
+                    },
+                  ]}
+                  series={[
+                    {
+                      data: employerData.map((item) => item.value),
+                      label: t('dashboard.waitingEmployer'),
+                      color: "#198754"
+                    },
+                  ]}
+                  height={450}
+                />
               </div>
             </div>
           </div>
@@ -349,7 +454,7 @@ export const WaitingEmployerAdminPage = () => {
                         onChange={(e) => setSearch(e.target.value)}
                       />
                     </div>
-                    <div className="col-md-2  mb-3">
+                    <div className="col-md-2 col-lg-2 mb-3">
 
                       <input
                         type="date"
@@ -360,7 +465,7 @@ export const WaitingEmployerAdminPage = () => {
                         onChange={(e) => setStartDate(e.target.value)}
                       />
                     </div>
-                    <div className="col-md-2 mb-3">
+                    <div className="col-md-2 col-lg-2 mb-3">
                       <input
                         type="date"
                         className="form-control"
@@ -369,9 +474,9 @@ export const WaitingEmployerAdminPage = () => {
                         onChange={(e) => setEndDate(e.target.value)}
                       />
                     </div>
-                    <div className="col-md-2 mb-3">
+                    <div className="col-md-2 col-lg-2 mb-3 text-center">
                       <button
-                        className="btn btn-primary btn-block"
+                        className="btn btn-success btn-block"
                         type="button"
                         onClick={() =>
                           searchHandleChange(search, startDate, endDate, searchStatus)
@@ -380,6 +485,19 @@ export const WaitingEmployerAdminPage = () => {
                         {t('searchForm.searchBtn')}
                       </button>
                     </div>
+
+                    {employers.length > 0 && (
+                      <div className="col-md-2 col-lg-1 mb-3">
+                        <CSVLink
+                          className="btn btn-success btn-block"
+                          data={employers}
+                          filename="Approved Job"
+                          target="_blank"
+                        >
+                          Excel
+                        </CSVLink>
+                      </div>
+                    )}
                   </div>
                 </div>
               </form>
@@ -420,8 +538,8 @@ export const WaitingEmployerAdminPage = () => {
                             <td>{employer.taxNumber}</td>
                             <td>{employer.phoneNumber}</td>
                             <td>{employer.approval}</td>
-                            <td>
-                              <button type="button" className="btn btn-primary" onClick={() => handleEditEmployer(employer)}>
+                            <td style={{ minWidth: '100px' }}>
+                              <button type="button" className="btn btn-success" onClick={() => handleEditEmployer(employer)}>
                                 <i className="fa fa-pencil-alt"></i>  {t('btn.btnEdit')}
                               </button>
                             </td>
@@ -429,12 +547,21 @@ export const WaitingEmployerAdminPage = () => {
                         ))}
                       </tbody>
                     </table>
+                    {totalPage >= 2 && (
+                      <div className="mt-3">
+                        <Pagination
+                          currentPage={currentPage}
+                          totalPage={totalPage}
+                          paginate={paginate}
+                        />
+                      </div>
+                    )}
                   </div>
                 ) : (
                   // <p className="text-center text-warning">We don't find any user with the conditions you require.</p>
                   <div className="text-center">
                     <div className="background">
-                    {t('admin.noUser')}
+                      {t('admin.noUser')}
                     </div>
                     <div>
                       <img
@@ -451,35 +578,27 @@ export const WaitingEmployerAdminPage = () => {
         </div>
       </div>
 
-      {totalPage >= 2 && (
-        <div className="mt-3">
-          <Pagination
-            currentPage={currentPage}
-            totalPage={totalPage}
-            paginate={paginate}
-          />
+      {showToast === true && (
+        <div className="position-fixed bottom-0 end-0 p-3" style={{ zIndex: 5 }}>
+          <div
+            className={`toast ${showToast ? "show" : ""}`}
+            role="alert"
+            aria-live="assertive"
+            aria-atomic="true"
+          >
+            <div className="toast-header bg-success text-white">
+              <strong className="me-auto">{t('showToastMessage.status')}</strong>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="toast"
+                onClick={() => setShowToast(false)}
+              ></button>
+            </div>
+            <div className="toast-body">{message}</div>
+          </div>
         </div>
       )}
-
-      <div className="position-fixed bottom-0 end-0 p-3" style={{ zIndex: 5 }}>
-        <div
-          className={`toast ${showToast ? "show" : ""}`}
-          role="alert"
-          aria-live="assertive"
-          aria-atomic="true"
-        >
-          <div className="toast-header">
-            <strong className="me-auto">{t('showToastMessage.status')}</strong>
-            <button
-              type="button"
-              className="btn-close"
-              data-bs-dismiss="toast"
-              onClick={() => setShowToast(false)}
-            ></button>
-          </div>
-          <div className="toast-body">{message}</div>
-        </div>
-      </div>
     </>
   );
 };

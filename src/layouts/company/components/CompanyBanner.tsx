@@ -13,10 +13,11 @@ export const CompanyBanner: React.FC<{
       className="container-xxl py-3 mb-5 position-relative"
       style={{
         height: "400px",
-       
         backgroundImage: "url('../assets/img/companybanner2.jpg')",
+        // backgroundImage: `url('${props.profile?.companyImg1 ? props.profile?.companyImg1 : "../assets/img/companybanner2.jpg"}')`,
         backgroundSize: "cover",
-        backgroundPosition: "bottom"
+        backgroundPosition: "bottom",
+        
       }}
     >
       <div
@@ -24,7 +25,7 @@ export const CompanyBanner: React.FC<{
         style={{ bottom: "50px", left: "50px" }}
       >
         <div className="col-md-12">
-          <div className="d-flex">
+          <div className="d-flex center">
             <div className="row">
               <div className="col-3 mt-5">
                 <div
@@ -38,7 +39,8 @@ export const CompanyBanner: React.FC<{
                 >
                   {props.profile?.companyLogo ? (
                     <img
-                      className="img-fluid border border-4 border-dark rounded "
+                      className="img-fluid rounded "
+                      // className="img-fluid border border-4 border-dark rounded "
                       src={props.profile.companyLogo}
                       alt="Logo"
                       style={{
@@ -61,11 +63,11 @@ export const CompanyBanner: React.FC<{
                   )}
                 </div>
               </div>
-              <div className="col-8">
-                <div className="d-flex mt-5 ms-4 flex-column ">
+              <div className="col-9 mt-5">
+                <div className="d-flex mt-5 ms-4 flex-column justify-content-center">
                   {/* Use flex-column for vertical alignment */}
-                  <div className="company-name text-start">
-                    <h1 className="text-light">{props.profile?.companyName}</h1>
+                  <div className="company-name text-start w-100 ">
+                    <h1 className="text-light w-100">{props.profile?.companyName}</h1>
                   </div>
                   <div className="company-name text-start mb-1">
                     <h5 className="text-light">
@@ -93,41 +95,3 @@ export const CompanyBanner: React.FC<{
   );
 };
 
-/* <div className=" my-5 pt-5 pb-4 row">
-        <h2 className=" text-white mb-3 animated slideInDown">
-          {props.profile?.companyName} FPT SOF
-        </h2>
-        
-          <div className="d-flex align-items-center mb-5">
-            {"" ? (
-              <img
-                className="flex-shrink-0 img-fluid border rounded"
-                src={props.profile?.companyLogo}
-                alt=""
-                style={{ width: "80px", height: "80px" }}
-              />
-            ) : (
-              <img
-                className="flex-shrink-0 img-fluid border rounded"
-                src="../assets/img/com-logo-1.jpg"
-                alt=""
-                style={{ width: "120px", height: "120px" }}
-              />
-            )}
-            <div className="text-start ps-4">
-              <div className="mb-4 row">
-                <div className="col-sm-6 mb-3">
-                  <button className="btn btn-danger btn-block">Follow</button>
-                </div>
-                <div className="col-sm-6">
-                  <button className="btn btn-light btn-block">Contact </button>
-                </div>
-              </div>
-              <div className="text-truncate me-3">
-                <i className="fa fa-map-marker-alt text-primary me-2"></i>{" "}
-                {props.profile?.address}
-              </div>
-            </div>
-          </div>
-        
-      </div> */

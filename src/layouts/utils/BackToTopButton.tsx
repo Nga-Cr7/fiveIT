@@ -29,7 +29,7 @@ export const BackToTopButton = () => {
     }, []);
   
     return (
-      <Link to="#" className={`btn btn-lg btn-primary btn-lg-square back-to-top ${showButton ? 'd-block' : 'd-none'}`} onClick={handleButtonClick}>
+      <Link to="#" className={`btn btn-lg btn-success btn-lg-square back-to-top ${showButton ? 'd-block' : 'd-none'}`} onClick={handleButtonClick}>
         <i className="bi bi-arrow-up"></i>
       </Link>
     );

@@ -22,6 +22,34 @@ function App() {
     }
   }, [token]);
 
+  useEffect(() => {
+    const lastVisitDate = localStorage.getItem("lastVisitDate");
+    const currentDate = new Date().toLocaleDateString();
+    // alert(currentDate);
+    if (!lastVisitDate || lastVisitDate != currentDate) {
+      console.log("New visit today - Log access");
+      logAccess();
+      localStorage.setItem("lastVisitDate", currentDate);
+    }
+  }, [token]);
+
+  const logAccess = async () => {
+    try {
+        await fetch('http://localhost:8080/auth/admin/log', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                // Thêm các headers khác nếu cần
+            },
+            // Thêm body nếu cần
+        });
+
+        console.log('Access logged successfully');
+    } catch (error) {
+        console.error('Error logging access', error);
+    }
+};
+
 
   let componentToRender;
 

@@ -672,7 +672,7 @@ export const ProfileCandidateInfor: React.FC<{
                 {pdfFileName}
               </iframe>
             </div>
-            <button className="btnClose" onClick={closeCV}>
+            <button className="btnClose bg-success text-white" onClick={closeCV}>
               {t('btn.btnClose')}
             </button>
           </div>
@@ -687,7 +687,7 @@ export const ProfileCandidateInfor: React.FC<{
                 {pdfApplyFileName}
               </iframe>
             </div>
-            <button className="btnClose" onClick={closeCVApply}>
+            <button className="btnClose bg-success text-white" onClick={closeCVApply}>
               {t('btn.btnClose')}
             </button>
           </div>
@@ -700,7 +700,7 @@ export const ProfileCandidateInfor: React.FC<{
             <div className="modal-content w-100 h-100" style={{ zIndex: 1052 }}>
               <div dangerouslySetInnerHTML={{ __html: fieldContent }}></div>
 
-              <button className="btnClose" onClick={closeFieldApply}>
+              <button className="btnClose bg-success text-white" onClick={closeFieldApply}>
                 {t('btn.btnClose')}
               </button>
             </div>
@@ -794,7 +794,7 @@ export const ProfileCandidateInfor: React.FC<{
                               <img
                                 src={applyItem.job?.jobImg}
                                 alt={applyItem.job?.jobImg}
-                                style={{ width: "50px", height: "50px" }}
+                                style={{ width: "50px", height: "50px", objectFit:'contain' }}
                               />
                             </td>
                             <td
@@ -898,7 +898,7 @@ export const ProfileCandidateInfor: React.FC<{
                               <img
                                 src={applyItem.job?.jobImg}
                                 alt={applyItem.job?.jobImg}
-                                style={{ width: "50px", height: "50px" }}
+                                style={{ width: "50px", height: "50px", objectFit:'contain' }}
                               />
                             </td>
                             <td
@@ -1002,7 +1002,7 @@ export const ProfileCandidateInfor: React.FC<{
                               <img
                                 src={applyItem.job?.jobImg}
                                 alt={applyItem.job?.jobImg}
-                                style={{ width: "50px", height: "50px" }}
+                                style={{ width: "50px", height: "50px", objectFit:'contain' }}
                               />
                             </td>
                             <td
@@ -1077,7 +1077,7 @@ export const ProfileCandidateInfor: React.FC<{
               </div>
             </div>
             <div className="modal-body"></div>
-            <button className="btnClose" onClick={closeJob}>
+            <button className="btnClose bg-success text-white" onClick={closeJob}>
               {t('btn.btnClose')}
             </button>
           </div>
@@ -1162,7 +1162,7 @@ export const ProfileCandidateInfor: React.FC<{
                 </div>
               </div>
             </div>
-            <button className="btnClose" onClick={handleChangePasswordModal}>
+            <button className="btnClose bg-success text-white" onClick={handleChangePasswordModal}>
               {t('btn.btnClose')}
             </button>
           </div>

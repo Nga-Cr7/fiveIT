@@ -6,6 +6,8 @@ import { Page404 } from "../../errors/Page404";
 import { Pagination } from "../../utils/Pagination";
 import { SpinnerLoading } from "../../utils/SpinnerLoading";
 import { useTranslation } from 'react-i18next';
+import { BarChart } from "@mui/x-charts/BarChart";
+import { CSVLink } from "react-csv";
 
 
 export const WaitingJobAdminPage = () => {
@@ -32,7 +34,8 @@ export const WaitingJobAdminPage = () => {
   const [totalJobs, setTotalJobs] = useState(0);
   const approval: string = "WAITING";
   const [editingJob, setEditingJob] = useState<JobModel | null>(null);
-
+  const [totalWaitingJobByMonth, setTotalWaitingJobByMonth] = useState([0]);
+  const [year, setYear] = useState("2023");
   const showToastMessage = (message: string) => {
     setMessage(message);
     setShowToast(true);
@@ -45,9 +48,8 @@ export const WaitingJobAdminPage = () => {
     try {
       let baseUrlForJob = "";
       if (searchUrl === "") {
-        baseUrlForJob = `http://localhost:8080/auth/admin/getAllJobs?jobTitle=${search}&approval=${approval}&status=${searchStatus}&startDate=${startDate}&endDate=${endDate}&page=${
-          currentPage - 1
-        }&size=${jobsPerPage}`;
+        baseUrlForJob = `http://localhost:8080/auth/admin/getAllJobs?jobTitle=${search}&approval=${approval}&status=${searchStatus}&startDate=${startDate}&endDate=${endDate}&page=${currentPage - 1
+          }&size=${jobsPerPage}`;
       } else {
         let searchWithPage = searchUrl.replace(
           "<currentPage>",
@@ -117,7 +119,7 @@ export const WaitingJobAdminPage = () => {
   ) => {
     setCurrentPage(1);
     setEdit(false);
-
+    setEditingJob(null);
     let newURL = `http://localhost:8080/auth/admin/getAllJobs?jobTitle=${search}&approval=${approval}&status=${searchStatus}&startDate=${startDate}&endDate=${endDate}&page=<currentPage>&size=${jobsPerPage}`;
     setSearchUrl(newURL);
   };
@@ -156,8 +158,7 @@ export const WaitingJobAdminPage = () => {
 
       try {
         const response = await fetch(
-          `http://localhost:8080/auth/admin/updateJobStatus?jobId=${editingJob.jobId.toString()}&approval=${
-            editingJob.approval
+          `http://localhost:8080/auth/admin/updateJobStatus?jobId=${editingJob.jobId.toString()}&approval=${editingJob.approval
           }&status=${editingJob.status}`,
           {
             method: "PUT",
@@ -198,6 +199,54 @@ export const WaitingJobAdminPage = () => {
     const seconds = padZero(dateTime.getSeconds());
     return `${year}-${month}-${day} (${hours}:${minutes})`;
   }
+
+  useEffect(() => {
+    const fetchTotalCandidateByMonth = async () => {
+      try {
+        const baseUrl = `http://localhost:8080/auth/admin/getTotalWaitingJobByMonth?year=${year}`;
+        const response = await fetch(baseUrl, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`, // Replace with your actual authorization token
+          },
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setTotalWaitingJobByMonth(data.waitingJobMap);
+        } else {
+          console.error("Failed to fetch");
+        }
+      } catch (error: any) {
+        setHttpError(error.message);
+      }
+    };
+    fetchTotalCandidateByMonth();
+  }, [year]);
+
+  const jobData: { month: number; value: number }[] = [];
+  for (const key in totalWaitingJobByMonth) {
+    if (totalWaitingJobByMonth.hasOwnProperty(key)) {
+      const item = {
+        month: parseInt(key),
+        value: totalWaitingJobByMonth[key],
+      };
+      jobData.push(item);
+    }
+  }
+  const xLabels = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
 
   if (isLoading) {
     return <SpinnerLoading />;
@@ -243,7 +292,7 @@ export const WaitingJobAdminPage = () => {
                         <div className="col-6">
                           <div className="mb-3">
                             <label htmlFor="title" className="form-label">
-                            {t('placeholders.title')}
+                              {t('placeholders.title')}
                             </label>
                             <input
                               type="text"
@@ -258,7 +307,7 @@ export const WaitingJobAdminPage = () => {
                         <div className="col-6">
                           <div className="mb-3">
                             <label htmlFor="category" className="form-label">
-                            {t('placeholders.category')}
+                              {t('placeholders.category')}
                             </label>
                             <input
                               type="text"
@@ -279,7 +328,7 @@ export const WaitingJobAdminPage = () => {
                         <div className="col-6">
                           <div className="mb-3">
                             <label htmlFor="createdBy" className="form-label">
-                            {t('placeholders.createdBy')}
+                              {t('placeholders.createdBy')}
                             </label>
                             <input
                               type="text"
@@ -294,7 +343,7 @@ export const WaitingJobAdminPage = () => {
                         <div className="col-6">
                           <div className="mb-3">
                             <label htmlFor="salary" className="form-label">
-                            {t('placeholders.salary')}
+                              {t('placeholders.salary')}
                             </label>
                             <input
                               type="text"
@@ -312,7 +361,7 @@ export const WaitingJobAdminPage = () => {
                         <div className="col-6">
                           <div className="mb-3">
                             <label htmlFor="location" className="form-label">
-                            {t('placeholders.location')}
+                              {t('placeholders.location')}
                             </label>
                             <input
                               type="text"
@@ -327,7 +376,7 @@ export const WaitingJobAdminPage = () => {
                         <div className="col-6">
                           <div className="mb-3">
                             <label htmlFor="createdAt" className="form-label">
-                            {t('placeholders.createdAt')}
+                              {t('placeholders.createdAt')}
                             </label>
                             <input
                               type="text"
@@ -348,7 +397,7 @@ export const WaitingJobAdminPage = () => {
                         <div className="col-6">
                           <div className="mb-3">
                             <label htmlFor="description" className="form-label">
-                            {t('placeholders.description')}
+                              {t('placeholders.description')}
                             </label>
                             <textarea
                               className="form-control"
@@ -388,7 +437,7 @@ export const WaitingJobAdminPage = () => {
                         <div className="col-6">
                           <div className="mb-3">
                             <label htmlFor="quantity" className="form-label">
-                            {t('placeholders.quantityCV')}
+                              {t('placeholders.quantityCV')}
                             </label>
                             <input
                               type="text"
@@ -408,7 +457,7 @@ export const WaitingJobAdminPage = () => {
                       <div className="mt-3 text-center">
                         <button
                           type="button"
-                          className="btn btn-primary"
+                          className="btn btn-success"
                           onClick={updateJobStatus}
                         >
                           {t('btn.btnApproved')}
@@ -429,6 +478,53 @@ export const WaitingJobAdminPage = () => {
           </div>
         </>
       )}
+      {!edit && !editingJob && (
+        <div className="container mt-4">
+          <div className="row justify-content-center">
+            <div className="col-md-9">
+              <div className="d-flex align-items-center justify-content-between mb-4">
+                <h6 className="mb-0">{t("dashboard.statisticsWaitingJob")}</h6>
+                <div className="col-3">
+                  <select
+                    className="form-control"
+                    id="selectMonth"
+                    value={year}
+                    onChange={(e) => setYear(e.target.value)}
+                  >
+                    <option value="2018">2018</option>
+                    <option value="2019">2019</option>
+                    <option value="2020">2020</option>
+                    <option value="2021">2021</option>
+                    <option value="2022">2022</option>
+                    <option value="2023">2023</option>
+                    <option value="2024">2024</option>
+                  </select>
+                </div>
+              </div>
+              <div className="card">
+                <BarChart
+                  xAxis={[
+                    {
+                      id: "barCategories",
+                      data: xLabels,
+                      scaleType: "band",
+
+                    },
+                  ]}
+                  series={[
+                    {
+                      data: jobData.map((item) => item.value),
+                      label: t("dashboard.waitingJob"),
+                      color: "#198754",
+                    },
+                  ]}
+                  height={450}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="container-fluid pt-4 px-4">
         <div className="row g-4">
@@ -436,21 +532,21 @@ export const WaitingJobAdminPage = () => {
             <div className="bg-light rounded h-100 p-4">
               {/* Search form */}
               <form onSubmit={(e) => {
-                  e.preventDefault();
-                  searchHandleChange(search, startDate, endDate, searchStatus);
-                }}>
+                e.preventDefault();
+                searchHandleChange(search, startDate, endDate, searchStatus);
+              }}>
                 <div className="form-row">
                   <div className="row">
-                    <div className="col-md-4 col-lg-4 mb-3">
+                    <div className="col-md-4 col-lg-3 mb-3">
                       <input
                         type="text"
                         className="form-control"
                         id="keyword"
-                        placeholder="Title"
+                        placeholder={t('placeholders.title')}
                         onChange={(e) => setSearch(e.target.value)}
                       />
                     </div>
-                    <div className="col-md-2  mb-3">
+                    <div className="col-md-2 col-lg-3 mb-3">
                       <input
                         type="date"
                         className="form-control"
@@ -459,7 +555,7 @@ export const WaitingJobAdminPage = () => {
                         onChange={(e) => setStartDate(e.target.value)}
                       />
                     </div>
-                    <div className="col-md-2 mb-3">
+                    <div className="col-md-2 col-lg-3 mb-3">
                       <input
                         type="date"
                         className="form-control"
@@ -468,9 +564,9 @@ export const WaitingJobAdminPage = () => {
                         onChange={(e) => setEndDate(e.target.value)}
                       />
                     </div>
-                    <div className="col-md-2 mb-3">
+                    <div className="col-md-2 col-lg-2 mb-3 text-center">
                       <button
-                        className="btn btn-primary btn-block"
+                        className="btn btn-success btn-block"
                         type="button"
                         onClick={() =>
                           searchHandleChange(
@@ -484,6 +580,19 @@ export const WaitingJobAdminPage = () => {
                         {t('searchForm.searchBtn')}
                       </button>
                     </div>
+
+                    {jobs.length > 0 && (
+                      <div className="col-md-2 col-lg-1 mb-3">
+                        <CSVLink
+                          className="btn btn-success"
+                          data={jobs}
+                          filename="Waiting Job"
+                          target="_blank"
+                        >
+                          Excel
+                        </CSVLink>
+                      </div>
+                    )}
                   </div>
                 </div>
               </form>
@@ -499,7 +608,6 @@ export const WaitingJobAdminPage = () => {
                           <th>{t('table.img')}</th>
                           <th>{t('table.createdBy')}</th>
                           <th>{t('table.salary')}</th>
-                          <th>{t('table.location')}</th>
                           <th>{t('table.status')}</th>
                           <th>{t('table.action')}</th>
                         </tr>
@@ -526,14 +634,13 @@ export const WaitingJobAdminPage = () => {
                                 />
                               )}
                             </td>
-                            <td>{job.userId}</td>
+                            <td>{job.createdBy}</td>
                             <td>{job.salary}</td>
-                            <td>{job.location}</td>
                             <td>{job.status}</td>
-                            <td>
+                            <td style={{ minWidth: '100px' }}>
                               <button
                                 type="button"
-                                className="btn btn-primary"
+                                className="btn btn-success"
                                 onClick={() => handleEditJob(job)}
                               >
                                 <i className="fa fa-pencil-alt"></i> {t('btn.btnEdit')}
@@ -543,14 +650,21 @@ export const WaitingJobAdminPage = () => {
                         ))}
                       </tbody>
                     </table>
+                    {totalPage >= 2 && (
+                      <div className="mt-3">
+                        <Pagination
+                          currentPage={currentPage}
+                          totalPage={totalPage}
+                          paginate={paginate}
+                        />
+                      </div>
+                    )}
                   </div>
                 ) : (
-                  // <p className="text-center text-warning">
-                  //   We don't find any job with the conditions you require.
-                  // </p>
+
                   <div className="text-center">
                     <div className="background">
-                    {t('admin.noJob')}
+                      {t('admin.noJob')}
                     </div>
                     <div>
                       <img
@@ -566,35 +680,29 @@ export const WaitingJobAdminPage = () => {
         </div>
       </div>
 
-      {totalPage >= 2 && (
-        <div className="mt-3">
-          <Pagination
-            currentPage={currentPage}
-            totalPage={totalPage}
-            paginate={paginate}
-          />
+      {showToast === true && (
+        <div className="position-fixed bottom-0 end-0 p-3" style={{ zIndex: 5 }}>
+          <div
+            className={`toast ${showToast ? "show" : ""}`}
+            role="alert"
+            aria-live="assertive"
+            aria-atomic="true"
+          >
+            <div className="toast-header bg-success text-white">
+              <strong className="me-auto">{t('showToastMessage.status')}</strong>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="toast"
+                onClick={() => setShowToast(false)}
+              ></button>
+            </div>
+            <div className="toast-body">{message}</div>
+          </div>
         </div>
+
       )}
 
-      <div className="position-fixed bottom-0 end-0 p-3" style={{ zIndex: 5 }}>
-        <div
-          className={`toast ${showToast ? "show" : ""}`}
-          role="alert"
-          aria-live="assertive"
-          aria-atomic="true"
-        >
-          <div className="toast-header">
-            <strong className="me-auto">{t('showToastMessage.status')}</strong>
-            <button
-              type="button"
-              className="btn-close"
-              data-bs-dismiss="toast"
-              onClick={() => setShowToast(false)}
-            ></button>
-          </div>
-          <div className="toast-body">{message}</div>
-        </div>
-      </div>
     </>
   );
 };

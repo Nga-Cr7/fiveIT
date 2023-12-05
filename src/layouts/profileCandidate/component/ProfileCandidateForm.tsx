@@ -35,9 +35,9 @@ export const ProfileCandidateForm: React.FC<{ profile?: ProfileModel, updateProf
   });
 
   const [formErrors, setFormErrors] = useState<Partial<FormData>>({});
-
+  let errors: Partial<FormData> = {};
   const validateForm = () => {
-    let errors: Partial<FormData> = {};
+    
     let isValid = true;
     const phoneNumberRegex = /^\d+$/;
 
@@ -54,8 +54,36 @@ export const ProfileCandidateForm: React.FC<{ profile?: ProfileModel, updateProf
       isValid = false;
     }
     setFormErrors(errors);
+    
     return isValid;
   };
+
+  useEffect(() => {
+    setFormErrors((prevErrors) => {
+      const updatedErrors: Partial<FormData> = {};
+  
+      // Update language for each error if it exists in prevErrors
+      if (prevErrors.fullName) {
+        updatedErrors.fullName = t('formErrors.nameLength');
+      }
+  
+      if (prevErrors.phoneNumber) {
+        updatedErrors.phoneNumber = t('formErrors.phoneInvalid');
+      }
+  
+      if (prevErrors.address) {
+        updatedErrors.address = t('formErrors.invalidAddress');
+      }
+  
+      return {
+        ...prevErrors,
+        ...updatedErrors,
+      };
+    });
+  }, [t]);
+  
+
+
 
   useEffect(() => {
     const fetchSpecializations = async () => {
@@ -294,25 +322,29 @@ export const ProfileCandidateForm: React.FC<{ profile?: ProfileModel, updateProf
         </form>
 
       </div>
-      <div className="position-fixed bottom-0 end-0 p-3 toast-message" style={{ zIndex: 5 }}>
-        <div
-          className={`toast ${showToast ? "show" : ""}`}
-          role="alert"
-          aria-live="assertive"
-          aria-atomic="true"
-        >
-          <div className="toast-header" style={{ backgroundColor: '#198754', color: 'white' }}>
-            <strong className="me-auto">{t('showToastMessager.status')}</strong>
-            <button
-              type="button"
-              className="btn-close"
-              data-bs-dismiss="toast"
-              onClick={() => setShowToast(false)}
-            ></button>
+
+      {showToast === true && (
+
+        <div className="position-fixed bottom-0 end-0 p-3 toast-message" style={{ zIndex: 5 }}>
+          <div
+            className={`toast ${showToast ? "show" : ""}`}
+            role="alert"
+            aria-live="assertive"
+            aria-atomic="true"
+          >
+            <div className="toast-header" style={{ backgroundColor: '#198754', color: 'white' }}>
+              <strong className="me-auto">{t('showToastMessage.status')}</strong>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="toast"
+                onClick={() => setShowToast(false)}
+              ></button>
+            </div>
+            <div className="toast-body">{message}</div>
           </div>
-          <div className="toast-body">{message}</div>
         </div>
-      </div>
+      )}
 
       <style>
         {`
