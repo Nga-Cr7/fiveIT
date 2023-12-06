@@ -216,6 +216,11 @@ export function JobPage() {
                     className="form-control border-0"
                     placeholder={t('searchForm.keyword')}
                     onChange={(e) => setSearch(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        searchHandleChange(search, selectedCate, selectedLocation)
+                      }
+                    }}
                   />
                 </div>
                 <div className="col-md-4">

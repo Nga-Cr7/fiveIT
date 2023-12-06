@@ -32,13 +32,13 @@ export const ProfileLogoImg: React.FC<{ profile?: ProfileModel, onProfileUpdate:
       <div {...getRootProps()} key={index}>
         <input {...getInputProps()} />
         <img
-          src={imgSrc || "https://bootdey.com/img/Content/avatar/avatar6.png"}
+          src={imgSrc || "https://res.cloudinary.com/dzqoi9laq/image/upload/v1701858488/a_zbxuz8.jpg"}
           className="p-1"
           alt={`Company ${index + 1}`}
           style={{
             width: "80px",
             height: "60px",
-            border:"solid green 3px ",
+            border:"solid green 2px ",
           }}
         />
       </div>
@@ -220,13 +220,14 @@ export const ProfileLogoImg: React.FC<{ profile?: ProfileModel, onProfileUpdate:
                 {companyLogoURL && (
                   <img
                     src={companyLogoURL}
-                    className="rounded-circle p-1 bg-primary"
+                    className="rounded-circle p-1"
                     alt="Company"
                     style={{
                       height: '120px',
                       width: '120px',
-                      objectFit: 'cover',
-                      cursor: 'pointer'
+                      objectFit: 'contain',
+                      cursor: 'pointer',
+                      border: '2px #000 dotted'
                     }}
                   />
                 )}
@@ -235,8 +236,6 @@ export const ProfileLogoImg: React.FC<{ profile?: ProfileModel, onProfileUpdate:
                 <h6>{props.profile?.email}</h6>
                 <p className="text-success fw-bold mb-1">{props.profile?.companyName}</p>
                 <p className="text-muted font-size-sm">{props.profile?.address}</p>
-                {/* <button className="btn btn-primary p-2">Follow</button>
-                <button className="btn btn-outline-primary p-2">Message</button> */}
               </div>
             </div>
             <hr className="my-4" />

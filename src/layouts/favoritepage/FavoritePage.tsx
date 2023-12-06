@@ -6,8 +6,8 @@ import { Page404 } from "../errors/Page404";
 import { useAuth } from "../utils/AuthProvide";
 import { Pagination } from "../utils/Pagination";
 import { SpinnerLoading } from "../utils/SpinnerLoading";
-import { Jobs } from "./components/Jobs";
 import { useTranslation } from "react-i18next";
+import { Jobs } from "./components/Jobs";
 
 export function FavoritePage() {
   // Handle loading + Errors

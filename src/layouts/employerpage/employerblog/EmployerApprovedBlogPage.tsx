@@ -433,7 +433,7 @@ export const EmployerApprovedBlogPage = () => {
                                                 <p className="card-text">
                                                     <small className="text-muted">{t('blog.lastUpdated')}<b>{getRelativeTime(blog.createdAt)}</b> </small>
                                                 </p>
-                                                <button className="btn btn-success p-1 " onClick={() => handleViewClick(blog)}>{t('btn.btnView')}</button>
+                                                <button className="btn btn-success px-3 " onClick={() => handleViewClick(blog)}>{t('btn.btnView')}</button>
                                             </div>
 
                                         </div>

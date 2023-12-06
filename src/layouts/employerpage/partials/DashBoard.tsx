@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 // import "./components/apex-charts/apex-charts.css";
 import Chart from "react-apexcharts";
 import { useTranslation } from "react-i18next";
-import { BarChart} from "@mui/x-charts/BarChart";
+import { BarChart } from "@mui/x-charts/BarChart";
 
 export const Dashboard = () => {
   const token: any = localStorage.getItem("jwt_token");
@@ -14,9 +14,12 @@ export const Dashboard = () => {
   const [totalApplicant, setTotalApplicant] = useState([0]);
   const [totalJob, setTotalJob] = useState([0]);
   const [companyName, setCompanyName] = useState("");
+  const img1 = "https://res.cloudinary.com/dzqoi9laq/image/upload/v1700546303/Unstatic2_kaj1rs.png"
+  const img2 = "https://res.cloudinary.com/dzqoi9laq/image/upload/v1700546300/Unstatic1_cpcmcf.jpg"
+  const img3 = "https://res.cloudinary.com/dzqoi9laq/image/upload/v1700544982/LG1_gyizgf.jpg"
   const [year, setYear] = useState("2023");
-  const {t} = useTranslation();
-  const applicantData: {value: number }[] = [];
+  const { t } = useTranslation();
+  const applicantData: { value: number }[] = [];
   // if(totalApplicant.length<=0){}
   for (const key in totalApplicant) {
     if (totalApplicant.hasOwnProperty(key)) {
@@ -51,32 +54,38 @@ export const Dashboard = () => {
     "DEC",
   ];
 
-  const [lineChart, setLineChart] = useState({
-    colors: ["#FF9800"],
-    stroke: {
-      show: true,
-      curve: "smooth",
-      lineCap: "butt",
-      colors: undefined,
-      width: 2,
-      dashArray: 0,
-    },
+  const imgArray = [img1, img2, img3];
 
-    options: {
-      chart: {
-        id: "basic-bar",
-      },
-    },
-    fill: {
-      type: "gradient",
-    },
-    series: [
-      {
-        name: "Employer",
-        data: [10, 50, 100, 80, 62, 10, 30, 61],
-      },
-    ],
-  });
+  // Function to get a random index
+  function getRandomIndex(max: any) {
+    return Math.floor(Math.random() * max);
+  }
+
+  // Get a random index to select a random image
+  const randomIndex = getRandomIndex(imgArray.length);
+
+  // Use the randomly selected image URL
+  const randomImage = imgArray[randomIndex];
+
+  // const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth >= 768);
+
+  // // Function to update the screen size state
+  // const updateScreenSize = () => {
+  //   setIsLargeScreen(window.innerWidth >= 768);
+  // };
+
+  // // useEffect to set up event listener on component mount
+  // useEffect(() => {
+  //   // Set up event listener for window resize
+  //   window.addEventListener('resize', updateScreenSize);
+
+  //   // Clean up event listener on component unmount
+  //   return () => {
+  //     window.removeEventListener('resize', updateScreenSize);
+  //   };
+  // }, []);
+
+
 
   useEffect(() => {
     const fetchTotalUserByMonth = async () => {
@@ -140,7 +149,7 @@ export const Dashboard = () => {
         <div className="content-wrapper">
           <div className="container-xxl flex-grow-1 container-p-y">
             <div className="row">
-              <div className="col-lg-8 mb-4 order-0">
+              <div className="col-lg-8 order-0">
                 <div className="card">
                   <div className="d-flex align-items-end row">
                     <div className="col-sm-7">
@@ -197,27 +206,28 @@ export const Dashboard = () => {
               <div className="col-md-12 col-lg-8 order-2 order-md-3 order-lg-2 mb-4">
                 <div className="card">
                   <div className="row row-bordered g-0">
-                      <h5 className="card-header m-0 me-2 pb-3">{t('dashboard.statistics')}</h5>
-                      <div className="col-md-1 mt-3 ms-3">
-                        <select
-                          className="form-control"
-                          id="selectMonth"
-                          value={year}
-                          onChange={(e) => setYear(e.target.value)}
-                        >
-                          <option value="2018">2018</option>
-                          <option value="2019">2019</option>
-                          <option value="2020">2020</option>
-                          <option value="2021">2021</option>
-                          <option value="2022">2022</option>
-                          <option value="2023">2023</option>
-                          <option value="2024">2024</option>
-                        </select>
-                      </div>
-                      <div className="col-md-12">
+                    <h5 className="card-header m-0 me-2 pb-3">{t('dashboard.statisticsJob')}</h5>
+                    <div className="col-6 ms-3 mt-3">
+                      <select
+                        className="form-control"
+                        id="selectMonth"
+                        value={year}
+                        onChange={(e) => setYear(e.target.value)}
+                      >
+                        <option value="2018">2018</option>
+                        <option value="2019">2019</option>
+                        <option value="2020">2020</option>
+                        <option value="2021">2021</option>
+                        <option value="2022">2022</option>
+                        <option value="2023">2023</option>
+                        <option value="2024">2024</option>
+                      </select>
+                    </div>
+                    <div className={`col-md-12`}>
                       <BarChart
-                        width={880}
-                        height={345}
+                      
+                        // width={isLargeScreen ? 900 : 380}
+                        height={380}
                         series={[
                           {
                             data: applicantData.map((item) => item.value),
@@ -232,7 +242,7 @@ export const Dashboard = () => {
                         ]}
                         xAxis={[{ data: xLabels, scaleType: "band" }]}
                       />
-                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -241,7 +251,7 @@ export const Dashboard = () => {
                   <div className="col-6 mb-4">
                     <div className="card">
                       <div className="card-body">
-                      <i className="fa fa-chart-area fa-3x text-primary"></i>
+                        <i className="fa fa-chart-area fa-3x text-primary"></i>
                         <span className="d-block mb-1">{t('dashboard.jobEnable')}</span>
                         <h3 className="card-title text-nowrap mb-2">
                           {jobEnable}
@@ -252,7 +262,7 @@ export const Dashboard = () => {
                   <div className="col-6 mb-4">
                     <div className="card">
                       <div className="card-body">
-                      <i className="fa fa-chart-area fa-3x text-primary"></i>
+                        <i className="fa fa-chart-area fa-3x text-primary"></i>
                         <span className="fw-semibold d-block mb-1">
                           {t('dashboard.jobDisable')}
                         </span>
@@ -261,33 +271,12 @@ export const Dashboard = () => {
                     </div>
                   </div>
 
-                  <div className="col-12 mb-4">
+                  <div className="col-12">
                     <div className="card">
                       <div className="card-body">
-                        <div className="d-flex justify-content-between flex-sm-row flex-column gap-3">
-                          <div className="d-flex flex-sm-column flex-row align-items-start justify-content-between">
+                        <div className="d-flex justify-content-between">
                             <div className="card-title">
-                              <h5 className="text-nowrap mb-2">
-                                {t('dashboard.jobReport')}
-                              </h5>
-                            </div>
-                            <div className="mt-sm-auto">
-                              <Chart
-                                options={lineChart.options}
-                                series={lineChart.series}
-                                colors={lineChart.colors}
-                                stroke={lineChart.stroke}
-                                fill={lineChart.fill}
-                                type="area"
-                                width="100%"
-                              />
-                            </div>
-                            {/* <div className="mt-sm-auto">
-                              <small className="text-success text-nowrap fw-semibold"
-                              ><i className="bx bx-chevron-up"></i> 68.2% </small>
-                              
-                              <h3 className="mb-0">82,9</h3>
-                            </div> */}
+                              <img src={randomImage} className="w-100 h-100" alt="" />
                           </div>
                         </div>
                       </div>
@@ -307,7 +296,10 @@ export const Dashboard = () => {
           .icon-small{
             width:38px;
             height:38px;
-          }   
+          } 
+
+          
+         
         `}
       </style>
     </>

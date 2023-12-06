@@ -302,8 +302,8 @@ const Dashboard = () => {
               <div className="row">
                 {chartData.length > 0 ? (
                   <LineChart
-                    width={1000}
-                    height={500}
+                    // width={1000}
+                    height={400}
                     series={[{ data: chartData }]}
                     xAxis={[{ scaleType: "point", data: xLabels }]}
                   />
@@ -342,7 +342,7 @@ const Dashboard = () => {
               </div>
               <div className="row">
                 <BarChart
-                  height={500}
+                  height={400}
                   series={[
                     {
                       data: candidateData.map((item) => item.value),
@@ -392,7 +392,7 @@ const Dashboard = () => {
               </div>
               <div className="row">
                 <BarChart
-                  height={500}
+                  height={400}
                   series={[
                     {
                       data: applicantData.map((item) => item.value),
@@ -442,7 +442,7 @@ const Dashboard = () => {
                         <img
                           src={e.companyLogo}
                           alt=""
-                          style={{ width: "50px", height: "50px", objectFit: "contain" }}
+                          style={{ width: "50px", height: "30px", objectFit: "contain" }}
 
                         />
                       </td>

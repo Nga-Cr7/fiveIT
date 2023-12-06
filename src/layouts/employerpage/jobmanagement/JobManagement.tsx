@@ -10,6 +10,8 @@ import { FaStar } from "react-icons/fa";
 import ReactQuill from "react-quill";
 import { useTranslation } from 'react-i18next';
 import { CSVLink, CSVDownload } from "react-csv"
+import { BarChart } from "@mui/x-charts/BarChart";
+import { green } from "@mui/material/colors";
 
 
 export const JobManagement = () => {
@@ -87,6 +89,36 @@ export const JobManagement = () => {
 
   const paginateApply = (pageNumber: number) => setCurrentPageApply(pageNumber);
   const paginateCmt = (pageNumber: number) => setCurrentPageCmt(pageNumber);
+
+  const [year, setYear] = useState("2023");
+  const [totalApplicant, setTotalApplicant] = useState([0]);
+  const [totalJob, setTotalJob] = useState([0]);
+  const [httpError, setHttpError] = useState(null);
+  const jobData: { month: number; value: number }[] = [];
+  for (const key in totalJob) {
+    if (totalJob.hasOwnProperty(key)) {
+      const item = {
+        month: parseInt(key),
+        value: totalJob[key],
+      };
+      jobData.push(item);
+    }
+  }
+  const xLabels = [
+    "JAN ",
+    "FEB ",
+    "MAR ",
+    "APR",
+    "MAY ",
+    "JUN ",
+    "JUL ",
+    "AUG",
+    "SEP ",
+    "OCT ",
+    "NOV",
+    "DEC",
+  ];
+
 
   const [currentTab, setCurrentTab] = useState("waiting");
 
@@ -392,7 +424,7 @@ export const JobManagement = () => {
 
     }
 
-    window.scrollTo(0, 500);
+    // window.scrollTo(0, 500);
   };
 
   const handleInputChange = (
@@ -603,7 +635,7 @@ export const JobManagement = () => {
     setStartDate(startDate);
     setEndDate(endDate);
     setQuery(query);
-
+    handleCancelForm();
     const searchURL = `http://localhost:8080/auth/employer/searchJob?status=${status}&startDate=${startDate}&endDate=${endDate}&query=${query}&page=<currentPage>&size=${jobperPage}`;
     setSearchJobURL(searchURL);
     setApplicants([]);
@@ -838,12 +870,39 @@ export const JobManagement = () => {
     setDeEditorHtml("");
     setImageURL("");
     setIsDisplayedForm(false);
+    setYear("2023");
   };
 
   //format money
   function formatMoney(number: any) {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   }
+
+
+  useEffect(() => {
+    const fetchTotalUserByMonth = async () => {
+      try {
+        const baseUrl = `http://localhost:8080/auth/employer/getQuantityJobAndCvByMonth?year=${year}`;
+        const response = await fetch(baseUrl, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`, // Replace with your actual authorization token
+          },
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setTotalApplicant(data.applicantMap);
+          setTotalJob(data.jobMap);
+          console.log(data);
+        } else {
+          console.error("Failed to fetch");
+        }
+      } catch (error: any) {
+        setHttpError(error.message);
+      }
+    };
+    fetchTotalUserByMonth();
+  }, [year]);
 
   // END END END  END END  END
   //end
@@ -868,8 +927,52 @@ export const JobManagement = () => {
           <h3 className="text-center fw-bold text-success">{t('jobManagement.jobManagement')}</h3>
 
         </div>
-        {isDisplayedForm === false &&(
-        <button className="btn btn-success" id="newButtonBegin" onClick={handleNewButton}>{t("btn.btnNew")}</button>
+        {isDisplayedForm === false && (
+          <>
+            <div className="col-md-12 order-2 order-md-3 order-lg-2 mb-4">
+              <div className="card">
+                <div className="row row-bordered g-0">
+                  <h6 className="card-header m-0 pb-1">{t('dashboard.statisticsJob')}</h6>
+                  <div className="row">
+                  <button className="col-md-1 col-4 mt-3 ms-3 btn btn-success p-0" id="newButtonBegin" onClick={handleNewButton}>{t("btn.btnNew")}</button>
+                  <div className="col-md-1 col-4 mt-3 ms-3">
+                    <select
+                      className="form-control"
+                      id="selectMonth"
+                      value={year}
+                      onChange={(e) => setYear(e.target.value)}
+                    >
+                      <option value="2018">2018</option>
+                      <option value="2019">2019</option>
+                      <option value="2020">2020</option>
+                      <option value="2021">2021</option>
+                      <option value="2022">2022</option>
+                      <option value="2023">2023</option>
+                      <option value="2024">2024</option>
+                    </select>
+                  </div>
+                  </div>
+                  
+                  <div className="col-md-12 w-100">
+                    <BarChart
+                      height={345}
+                      series={[
+                        {
+                          data: jobData.map((item) => item.value),
+                          label: t('dashboard.job'),
+                          id: "uvId",
+                        },
+                      ]}
+                      xAxis={[{ data: xLabels, scaleType: "band" }]}
+                      colors={[
+                        '#2e7d32'
+                      ]}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </>
         )}
         <div className="content container-fluid">
           <div className="row">
@@ -1499,7 +1602,8 @@ export const JobManagement = () => {
                     </div>
                     <div className="col-md-2">
                       <select
-                        className="form-control bg-warning text-white"
+                        className="form-control text-white"
+                        style={{ background: '#00b074' }}
                         value={status}
                         onChange={(e) => setStatusForJob(e.target.value)}
                       >
@@ -1513,7 +1617,7 @@ export const JobManagement = () => {
                           searchJob(status, startDate, endDate, query)
                         }
 
-                        className="form-control btn-success me-4 bg-success text-white fw-bold"
+                        className="form-control btn-success bg-success text-white fw-bold"
                       >
                         {t('searchForm.searchBtn')}
                       </button>
@@ -1531,106 +1635,120 @@ export const JobManagement = () => {
                       </div>
                     )}
                   </div>
-                  
+
                 </div>
                 <div className="card-body p-0">
-                  <div className="table-responsive">
-                    <table className="table  custom-table  no-footer">
-                      <thead>
-                        <tr>
-                          <th>{t('table.img')}</th>
-                          <th>{t('table.title')}</th>
-                          <th>{t('table.salary')}</th>
-                          <th>{t('table.closeDate')}</th>
-                          <th>{t('table.category')}</th>
-                          <th>{t('table.status')}</th>
-                          <th>{t('table.approval')}</th>
-                          <th>{t('table.applied')}</th>
-                          <th className="text-center" colSpan={2}>
-                            {t('table.action')}
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {jobs.map((jobItem, index) => (
-                          <tr key={index}>
-                            <td>
-                              <img
-                                src={jobItem.jobImg}
-                                alt=""
-                                style={{ width: "50px", height: "50px", objectFit: "contain" }}
-                              />
-                            </td>
-                            <td>{jobItem.title}</td>
-                            <td>{formatMoney(jobItem.salary)} đ</td>
-                            <td>{formatDate(jobItem.applicationDeadline)}</td>
-                            <td>{jobItem.jobCategory.categoryName}</td>
-                            <td>{jobItem.status}</td>
-                            <td>{jobItem.approval}</td>
-                            <td className="text-center">
-                              {jobItem.quantityCv}
-                            </td>
-                            <>
-                              {status === "ENABLE" ? (
-                                <td>
-                                  <button
-                                    className="btn btn-success"
-                                    onClick={() => {
-                                      handleEditClick(jobItem);
-                                      handleMoveOnTop();
-                                      setIsDisplayApplicantAndComment(false)
-
-                                    }}
-                                  >
-                                    {t('btn.btnView')}
-                                  </button>
-                                </td>
-                              ) : (
-                                <td>
-                                  <button
-                                    className="btn btn-success"
-                                    onClick={() => {
-                                      handleEditClick(jobItem);
-                                      handleMoveOnTop();
-                                      setIsDisplayApplicantAndComment(false)
-                                    }}
-                                  >
-                                    {t('btn.btnEdit')}
-                                  </button>
-                                </td>
-                              )}
-
-                              <td>
-                                <button
-                                  type="button"
-                                  className="btn btn-warning"
-                                  onClick={() => {
-                                    handleViewApplicantButton(jobItem);
-                                    fetchReviewAndRating(jobItem);
-                                    setIsDisplayedForm(false);
-                                    handleMoveOnTop();
-
-                                  }}
-                                >
-                                  <i className="bi bi-eye-fill"></i>
-                                  CV
-                                </button>
-                              </td>
-                            </>
+                  {jobs.length > 0 ? (
+                    <><div className="table-responsive">
+                      <table className="table  custom-table  no-footer">
+                        <thead>
+                          <tr>
+                            <th>{t('table.img')}</th>
+                            <th>{t('table.title')}</th>
+                            <th>{t('table.salary')}</th>
+                            <th>{t('table.closeDate')}</th>
+                            <th>{t('table.category')}</th>
+                            <th>{t('table.status')}</th>
+                            <th>{t('table.approval')}</th>
+                            <th className="text-center" colSpan={2}>
+                              {t('table.action')}
+                            </th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                  {totalPage >= 2 && (
-                    <div className="mt-3 mb-2">
-                      <Pagination
-                        currentPage={currentPage}
-                        totalPage={totalPage}
-                        paginate={paginate}
-                      />
+                        </thead>
+                        <tbody>
+                          {jobs.map((jobItem, index) => (
+                            <tr key={index}>
+                              <td>
+                                <img
+                                  src={jobItem.jobImg}
+                                  alt=""
+                                  style={{ width: "50px", height: "50px", objectFit: "contain" }}
+                                />
+                              </td>
+                              <td>{jobItem.title}</td>
+                              <td>{formatMoney(jobItem.salary)} $</td>
+                              <td>{formatDate(jobItem.applicationDeadline)}</td>
+                              <td>{jobItem.jobCategory.categoryName}</td>
+                              <td>{jobItem.status}</td>
+                              <td>{jobItem.approval}</td>
+                              <>
+                                {status === "ENABLE" ? (
+                                  <td>
+                                    <button
+                                      className="btn btn-success"
+                                      onClick={() => {
+                                        handleEditClick(jobItem);
+                                        handleMoveOnTop();
+                                        setIsDisplayApplicantAndComment(false)
+
+                                      }}
+                                    >
+                                      {t('btn.btnView')}
+                                    </button>
+                                  </td>
+                                ) : (
+                                  <td>
+                                    <button
+                                      className="btn btn-success"
+                                      onClick={() => {
+                                        handleEditClick(jobItem);
+                                        handleMoveOnTop();
+                                        setIsDisplayApplicantAndComment(false)
+                                      }}
+                                    >
+                                      {t('btn.btnEdit')}
+                                    </button>
+                                  </td>
+                                )}
+
+                                <td>
+                                  <button
+                                    type="button"
+                                    className="btn btn-warning d-flex"
+                                    onClick={() => {
+                                      handleViewApplicantButton(jobItem);
+                                      fetchReviewAndRating(jobItem);
+                                      setIsDisplayedForm(false);
+                                      handleMoveOnTop();
+
+                                    }}
+                                  >
+                                    <i className="bi bi-eye-fill"></i>
+                                    <span>CV</span>
+                                  </button>
+                                </td>
+                              </>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
                     </div>
+                      {totalPage >= 2 && (
+                        <div className="mt-3 mb-2">
+                          <Pagination
+                            currentPage={currentPage}
+                            totalPage={totalPage}
+                            paginate={paginate}
+                          />
+                        </div>
+                      )}</>
+                  ) : (
+                    <><div className="text-center mt-4">
+                      <div className="background">
+                        <strong>
+                          {t('admin.noJob')}
+                        </strong>
+                      </div>
+                      <div>
+                        <img
+                          style={{ maxWidth: "30%" }}
+                          src="/assets/img/sorry.png"
+                          className="img-fluid w-30 "
+                        />
+                      </div>
+                    </div></>
                   )}
+
                 </div>
               </div>
             </div>

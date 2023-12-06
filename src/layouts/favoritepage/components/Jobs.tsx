@@ -14,19 +14,11 @@ export const Jobs: React.FC<{ job: JobModel }> = (props) => {
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
-  const generateRandomString = (length:number) => {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@$%^&*()_+';
-    let result = '';
-    for (let i = 0; i < length; i++) {
-      result += characters.charAt(Math.floor(Math.random() * characters.length));
-    }
-    return result;
-  };
+  
 
   const jobId = props.job.jobId;
-  const randomString = generateRandomString(50);
 
-  const jobDetailLink = `/jobDetail/${randomString}-${jobId}-${randomString}`;
+  const jobDetailLink = `/jobDetail/${jobId}`;
 
   const showToastMessage = (message: string) => {
     setMessage(message);
@@ -149,14 +141,14 @@ export const Jobs: React.FC<{ job: JobModel }> = (props) => {
                 className="flex-shrink-0 img-fluid border rounded"
                 src={props.job.jobImg}
                 alt=""
-                style={{ width: "80px", height: "80px" }}
+                style={{ width: "80px", height: "80px", objectFit:'contain' }}
               />
             ) : (
               <img
                 className="flex-shrink-0 img-fluid border rounded"
                 src="../assets/img/com-logo-1.jpg"
                 alt=""
-                style={{ width: "80px", height: "80px" }}
+                style={{ width: "80px", height: "80px", objectFit:'contain' }}
               />
             )}
             <Link

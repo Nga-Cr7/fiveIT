@@ -14,7 +14,8 @@ export function JobDetailPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [httpError, setHttpError] = useState(null);
 
-  const jobId = (window.location.pathname).split("-")[1];
+  const jobId = window.location.pathname.split("/").pop();
+
 
   useEffect(() => {
     const fetchJob = async () => {

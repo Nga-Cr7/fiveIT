@@ -334,7 +334,7 @@
     "category": "Category",
     "action": "Action",
     "status": "Status",
-    "finvalidIMGFile": "Approval",
+    "approval": "Approval",
     "applied": "Applied",
     "closeDate": "Close Date",
     "gender": "Gender",

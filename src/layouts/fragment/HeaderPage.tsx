@@ -44,7 +44,7 @@ export function HeaderPage() {
 
           {(user === null || (user?.role === "candidate")) && (
             <>
-              <NavLink to="/home" className="nav-item nav-link active">
+              <NavLink to="/home" className="nav-item nav-link">
                 {t('header.home')}
               </NavLink>
               <NavLink to="/about" className="nav-item nav-link">
@@ -67,7 +67,7 @@ export function HeaderPage() {
 
           {user?.role === "employer" && (
             <>
-              <NavLink to="/employerDashboard" className="nav-item nav-link active">
+              <NavLink to="/employerDashboard" className="nav-item nav-link">
                 {t('header.dashboard')}
               </NavLink>
               <NavDropdown title={t('header.blog')} id="collapsible-nav-dropdown">

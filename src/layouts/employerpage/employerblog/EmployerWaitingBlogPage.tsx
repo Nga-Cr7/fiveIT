@@ -167,7 +167,7 @@ export const EmployerWaitingBlogPage = () => {
             errors.title = t('formErrors.invalidTitle10');
             isValid = false;
         }
-        if (EditorHtml.trim().length < 100) {
+        if (EditorHtml.trim().length < 30) {
             errors.blogContent = t('formErrors.invalidContent');
             isValid = false;
         }
@@ -441,7 +441,7 @@ export const EmployerWaitingBlogPage = () => {
                                                         <p className="card-text">
                                                             <small className="text-muted">{t('blog.lastUpdated')} <b>{getRelativeTime(blog.createdAt)}</b> </small>
                                                         </p>
-                                                        <button className="btn btn-primary p-1 " onClick={() => handleUpdateClick(blog)}>{t('btn.btnEdit')}</button>
+                                                        <button className="btn btn-primary px-3 " onClick={() => handleUpdateClick(blog)}>{t('btn.btnEdit')}</button>
                                                     </div>
 
                                                 </div>

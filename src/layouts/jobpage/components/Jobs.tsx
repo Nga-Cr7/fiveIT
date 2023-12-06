@@ -12,28 +12,17 @@ export const Jobs: React.FC<{ job: JobModel }> = (props) => {
   const [profile, setProfile] = useState<ProfileModel>();
   const [isLoading, setIsLoading] = useState(true);
 
-  // const [applicantByUser, setApplicantByUser] = useState<ApplicantModel[]>([]);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [isIconDisabled, setIsIconDisabled] = useState(false);
-  // const [isFavorite, setIsFavorite] = useState(false);
 
   const [showToast, setShowToast] = useState(false);
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
-  const generateRandomString = (length:number) => {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@$%^&*()_+';
-    let result = '';
-    for (let i = 0; i < length; i++) {
-      result += characters.charAt(Math.floor(Math.random() * characters.length));
-    }
-    return result;
-  };
 
   const jobId = props.job.jobId;
-  const randomString = generateRandomString(50);
 
-  const jobDetailLink = `/jobDetail/${randomString}-${jobId}-${randomString}`;
+  const jobDetailLink = `/jobDetail/${jobId}`;
 
   const showToastMessage = (message: string) => {
     setMessage(message);
