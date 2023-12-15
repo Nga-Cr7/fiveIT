@@ -20,6 +20,7 @@ function EmployerApp() {
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/employerDashboard" element={<Dashboard />} />
+            <Route path="/home" element={<Dashboard />} />
             <Route path="/profileEmployer" element={<ProfileEmployerPage />} />
             <Route path="/profile" element={<ProfileEmployerPage />} />
             <Route path="/approvedEmployerBlogs" element={<EmployerApprovedBlogPage />} />

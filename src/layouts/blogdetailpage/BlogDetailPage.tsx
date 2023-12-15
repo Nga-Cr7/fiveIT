@@ -16,7 +16,7 @@ export const BlogDetailPage = () => {
   const [httpError, setHttpError] = useState(null);
 
   // const blogId = (window.location.pathname).split("/")[2];
-  const blogId = (window.location.pathname).split("-")[1];
+  const blogId = window.location.pathname.split("/").pop();
 
   useEffect(() => {
     const fetchBlogDetail = async () => {

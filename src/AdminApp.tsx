@@ -17,6 +17,7 @@ import { WaitingJobAdminPage } from "./layouts/adminpage/jobs/WaitingJobAdminPag
 import { ApprovedJobAdminPage } from "./layouts/adminpage/jobs/ApprovedJobAdminPage";
 import { CategoryAdminPage } from "./layouts/adminpage/category/CategoryAdminPage";
 import { ProfileAdminPage } from "./layouts/adminpage/profileadmin/ProfileAdminPage";
+import { LoginPage } from "./layouts/authpage/LoginPage";
 function AdminApp() {
   return (
     <>
@@ -25,8 +26,10 @@ function AdminApp() {
         <div className="content">
           <AdminHeader />
           <Routes>
+            <Route path="/login" element={<LoginPage />} />
             <Route path="/" element={<Navigate to="/dashboard" />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            {/* <Route path="/home" element={<Dashboard />} /> */}
             <Route path="/candidate" element={<CandidateAdminPage />} />
             <Route path="/employer/approvedEmployer" element={<EmployerAdminPage />} />
             <Route path="/employer/waitingEmployer" element={<WaitingEmployerAdminPage />} />

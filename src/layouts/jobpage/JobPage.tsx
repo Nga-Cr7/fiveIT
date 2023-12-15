@@ -1,4 +1,3 @@
-import { error } from "console";
 import { JobCategoryModel } from "../../models/JobCategoryModel";
 import { JobModel } from "../../models/JobModel";
 import { Page404 } from "../errors/Page404";
@@ -75,8 +74,6 @@ export function JobPage() {
             categoryName: cate.categoryName,
           })
         );
-
-        console.log("cuurrentpagech URL form USe", currentPage);
 
         setJobCate(loadedCate);
         const jobsDataResponse = jobsData._embedded.jobs;

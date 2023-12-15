@@ -4,7 +4,7 @@ import { FaStar } from "react-icons/fa";
 import { SpinnerLoading } from "../../utils/SpinnerLoading";
 import { useAuth } from "../../utils/AuthProvide";
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Pagination } from "../../utils/Pagination";
 import { BlogComment } from "../../../models/BlogComment";
 import { BlogModel } from "../../../models/BlogModel";
@@ -163,18 +163,32 @@ export const BlogDetailComment: React.FC<{ blog?: BlogModel }> = (props) => {
   const [message, setMessage] = useState("");
 
   const navigate = useNavigate();
+
+  const location = useLocation();
+  const handleToastClick = () => {
+    const currentPath = location.pathname;
+    localStorage.setItem('redirectToPage', currentPath);
+    navigate('/login');
+  };
   const showToastMessage = (message: string) => {
     setMessage(message);
     setShowToast(true);
-    if (message === "Please Login to post your comment") {
+    if (message === t('showToastMessage.pleaseLogin')) {
       const toastMessage = document.querySelector('.toast-message');
-      if (toastMessage) {
-        toastMessage.addEventListener('click', () => {
-          navigate('/login'); // Replace '/home' with the actual URL of your home page
-        });
+        if (toastMessage) {
+          // console.log("aaaa")
+          toastMessage.addEventListener('click', handleToastClick);
       }
     }
-    setTimeout(() => setShowToast(false), 3000);
+    setTimeout(() => {
+      setShowToast(false);
+      if (message === t('showToastMessage.pleaseLogin')) {
+        const toastMessage = document.querySelector('.toast-message');
+        if (toastMessage) {
+          toastMessage.removeEventListener('click', handleToastClick);
+        }
+      }
+    }, 3000);
   };
 
   const token: any = localStorage.getItem("jwt_token");

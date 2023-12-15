@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { JobModel } from "../../../models/JobModel";
 import { useAuth } from "../../utils/AuthProvide";
 import { ProfileModel } from "../../../models/ProfileModel";
@@ -18,25 +18,15 @@ export const Jobs: React.FC<{ job: JobModel }> = (props) => {
   const [showToast, setShowToast] = useState(false);
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
+
 
 
   const jobId = props.job.jobId;
 
   const jobDetailLink = `/jobDetail/${jobId}`;
 
-  const showToastMessage = (message: string) => {
-    setMessage(message);
-    setShowToast(true);
-    if (message === t('showToastMessage.pleaseLogin')) {
-      const toastMessage = document.querySelector('.toast-message');
-      if (toastMessage) {
-        toastMessage.addEventListener('click', () => {
-          navigate('/login'); // Replace '/home' with the actual URL of your home page
-        });
-      }
-    }
-    setTimeout(() => setShowToast(false), 3000);
-  };
+
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -79,7 +69,7 @@ export const Jobs: React.FC<{ job: JobModel }> = (props) => {
       }
     };
     if (user) {
-    fetchProfile();
+      fetchProfile();
     }
   }, []);
 
@@ -108,14 +98,14 @@ export const Jobs: React.FC<{ job: JobModel }> = (props) => {
     }
   }, []);
 
-  function checkApply(jobId : any) {
+  function checkApply(jobId: any) {
     if (user === null) {
       showToastMessage(t('showToastMessage.pleaseLogin'));
       return;
     }
     navigate(`${jobDetailLink}?applyNow=open`);
   }
-  
+
 
   // Function to toggle favorite status
   const toggleFavorite = async () => {
@@ -150,7 +140,7 @@ export const Jobs: React.FC<{ job: JobModel }> = (props) => {
       });
       if (response.ok) {
         const message = await response.text();
-        if(message == "Add success") {
+        if (message == "Add success") {
           showToastMessage(`${t('showToastMessage.add')} ${props.job.title} ${t('showToastMessage.successFavorite')}`);
         } else {
           showToastMessage(`${t('showToastMessage.remove')} ${props.job.title} ${t('showToastMessage.successFavorite')}`);
@@ -165,10 +155,10 @@ export const Jobs: React.FC<{ job: JobModel }> = (props) => {
     }
   };
 
- function padZero(value: number): string {
+  function padZero(value: number): string {
     return value < 10 ? `0${value}` : value.toString();
   }
-  
+
   function formatDateTime(dateTimeString: any) {
     const dateTime = new Date(dateTimeString);
     const year = dateTime.getFullYear();
@@ -181,6 +171,29 @@ export const Jobs: React.FC<{ job: JobModel }> = (props) => {
   }
 
 
+  const handleToastClick = () => {
+    const currentPath = location.pathname;
+    localStorage.setItem('redirectToPage', currentPath);
+    navigate('/login');
+  };
+
+
+  const showToastMessage = (message: string) => {
+    setMessage(message);
+    setShowToast(true);
+
+    if (message == t('showToastMessage.pleaseLogin')) {
+      handleToastClick();
+    }
+
+    setTimeout(() => {
+      setShowToast(false);
+    }, 3000);
+  };
+
+
+
+
   return (
     <>
       <div className="job-item p-4 mb-4">
@@ -191,14 +204,14 @@ export const Jobs: React.FC<{ job: JobModel }> = (props) => {
                 className="flex-shrink-0 img-fluid border rounded"
                 src={props.job.jobImg}
                 alt=""
-                style={{ width: "80px", height: "80px", objectFit:"contain" }}
+                style={{ width: "80px", height: "80px", objectFit: "contain" }}
               />
             ) : (
               <img
                 className="flex-shrink-0 img-fluid border rounded"
                 src="../assets/img/com-logo-1.jpg"
                 alt=""
-                style={{ width: "80px", height: "80px",objectFit:"contain" }}
+                style={{ width: "80px", height: "80px", objectFit: "contain" }}
               />
             )}
             <Link
@@ -223,25 +236,25 @@ export const Jobs: React.FC<{ job: JobModel }> = (props) => {
           <div className="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
             <div className="d-flex mb-3">
 
-            {isIconDisabled ? (
-              <button className="btn btn-square me-3" onClick={toggleFavorite}>
-                <i className="fas fa-heart text-primary"></i>
-              </button>
+              {isIconDisabled ? (
+                <button className="btn btn-square me-3" onClick={toggleFavorite}>
+                  <i className="fas fa-heart text-primary"></i>
+                </button>
               ) : (
-              <button className="btn btn-square me-3" onClick={toggleFavorite}>
-                <i className="far fa-heart text-primary"></i>
-              </button>
+                <button className="btn btn-square me-3" onClick={toggleFavorite}>
+                  <i className="far fa-heart text-primary"></i>
+                </button>
               )}
               {isButtonDisabled ? (
-                <button className="btn btn-warning" style={{width : '110px'}} disabled>
-                {t('btn.btnApplied')}
+                <button className="btn btn-warning" style={{ width: '110px' }} disabled>
+                  {t('btn.btnApplied')}
                 </button>
               ) : (
                 <button
                   className="btn btn-primary"
                   onClick={() => checkApply(props.job.jobId)}
                 >
-                 {t('btn.btnApply')}
+                  {t('btn.btnApply')}
                 </button>
               )}
             </div>
@@ -252,25 +265,29 @@ export const Jobs: React.FC<{ job: JobModel }> = (props) => {
           </div>
         </div>
 
-        <div className="position-fixed bottom-0 end-0 p-3 toast-message" style={{ zIndex: "999"}}>
-          <div
-            className={`toast ${showToast ? "show" : ""}`}
-            role="alert"
-            aria-live="assertive"
-            aria-atomic="true"
-          >
-            <div className="toast-header" style={{ backgroundColor: '#198754', color: 'white' }}>
-              <strong className="me-auto">{t('showToastMessage.status')}</strong>
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="toast"
-                onClick={() => setShowToast(false)}
-              ></button>
+        {showToast && (
+          <>
+            <div className="position-fixed top-0 end-0 p-3 toast-message" style={{ zIndex: "9999" }}>
+              <div
+                className={`toast ${showToast ? "show" : ""}`}
+                role="alert"
+                aria-live="assertive"
+                aria-atomic="true"
+              >
+                <div className="toast-header" style={{ backgroundColor: '#198754', color: 'white' }}>
+                  <strong className="me-auto">{t('showToastMessage.status')}</strong>
+                  <button
+                    type="button"
+                    className="btn-close"
+                    data-bs-dismiss="toast"
+                    onClick={() => setShowToast(false)}
+                  ></button>
+                </div>
+                <div className="toast-body">{message}</div>
+              </div>
             </div>
-            <div className="toast-body">{message}</div>
-          </div>
-        </div>
+          </>
+        )}
       </div>
     </>
   );

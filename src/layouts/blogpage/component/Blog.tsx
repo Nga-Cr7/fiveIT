@@ -5,19 +5,10 @@ import clsx from "clsx";
 
 export const Blog: React.FC<{ blog: BlogModel }> = (props) => {
 
-  const generateRandomString = (length: number) => {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@$%^&*()_+';
-    let result = '';
-    for (let i = 0; i < length; i++) {
-      result += characters.charAt(Math.floor(Math.random() * characters.length));
-    }
-    return result;
-  };
 
   const blogId = props.blog.blogId;
-  const randomString = generateRandomString(50);
 
-  const blogDetailLink = `/blogDetail/${randomString}-${blogId}-${randomString}`;
+  const blogDetailLink = `/blogDetail/${blogId}`;
 
   function padZero(value: number): string {
     return value < 10 ? `0${value}` : value.toString();

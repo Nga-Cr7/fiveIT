@@ -35,7 +35,6 @@ interface JobCategoryModelForHome {
             const jobCountURL = `http://localhost:8080/api/jobs/search/getCountJobByCate?categoryId=${cate.categoryId}`;
             const response = await fetch(jobCountURL);
             const data = await response.json();
-            console.log(data);
             return {
               ...cate,
               jobCount: data,
@@ -44,7 +43,6 @@ interface JobCategoryModelForHome {
           });
   
           const loadedCate = await Promise.all(countPromises);
-        //   console.log(loadedCate[0])
   
           setJobCate(loadedCate);
         } catch (error: any) {

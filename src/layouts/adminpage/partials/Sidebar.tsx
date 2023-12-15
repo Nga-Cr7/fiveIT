@@ -136,7 +136,7 @@ export const Sidebar = () => {
               </div>
             </div>
 
-            <button onClick={logout} className="nav-item nav-link nav-link border-0">
+            <button onClick={logout} className="nav-item nav-link nav-link border-0 position-fixed bottom-0" style={{width:"15%"}}>
               <i className="fas fa-home me-2"></i>{t('header.logout')}
             </button>
 

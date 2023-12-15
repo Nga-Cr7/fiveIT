@@ -46,8 +46,8 @@ export const LeftContent: React.FC<{ job?: JobModel }> = (props) => {
   const [applyNow, setApplyNow] = useState(queryParams.get('applyNow') === 'open');
   const openModal = () => {
     if (user === null) {
-      showToastMessage("Please login");
-      return
+      showToastMessage(t('showToastMessage.pleaseLogin'));
+      return;
     }
     setApplyNow(true);
   };
@@ -211,18 +211,28 @@ export const LeftContent: React.FC<{ job?: JobModel }> = (props) => {
   const [message, setMessage] = useState("");
 
   const navigate = useNavigate();
+
+ 
   const showToastMessage = (message: string) => {
     setMessage(message);
     setShowToast(true);
-    if (message === "Please Login to post your comment") {
+    if (message === t('showToastMessage.pleaseLogin')) {
+     
       const toastMessage = document.querySelector('.toast-message');
       if (toastMessage) {
-        toastMessage.addEventListener('click', () => {
-          navigate('/login'); // Replace '/home' with the actual URL of your home page
-        });
+          toastMessage.addEventListener('click', handleToastClick);
       }
     }
-    setTimeout(() => setShowToast(false), 3000);
+
+    setTimeout(() => {
+      setShowToast(false);
+      if (message === t('showToastMessage.pleaseLogin')) {
+        const toastMessage = document.querySelector('.toast-message');
+        if (toastMessage) {
+          toastMessage.removeEventListener('click', handleToastClick);
+        }
+      }
+    }, 3000);
   };
 
   const token: any = localStorage.getItem("jwt_token");
@@ -489,7 +499,13 @@ export const LeftContent: React.FC<{ job?: JobModel }> = (props) => {
     return isValid;
   };
 
-
+  const handleToastClick = () => {
+    // e.preventDefault();
+    // setShowToast(true);
+    const currentPath = location.pathname;
+    localStorage.setItem('redirectToPage', currentPath);
+    navigate('/login');
+  };
 
   const handleSubmitApply = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -876,8 +892,8 @@ export const LeftContent: React.FC<{ job?: JobModel }> = (props) => {
           </div>
         )}
 
-        {showToast === true && (
-            <div className="position-fixed bottom-0 end-0 p-3 toast-message" style={{ zIndex: "999" }}>
+        {/* {showToast && ( */}
+            <div className="position-fixed top-0 end-0 p-3 toast-message" style={{ zIndex: 9999 }}>
               <div
                 className={`toast ${showToast ? "show" : ""}`}
                 role="alert"
@@ -896,7 +912,7 @@ export const LeftContent: React.FC<{ job?: JobModel }> = (props) => {
                 <div className="toast-body">{message}</div>
               </div>
             </div>
-          )}
+          {/* )} */}
 
       </div>
 

@@ -1,6 +1,6 @@
 import "./style.css";
-import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { Link, useNavigate  } from "react-router-dom";
+import { useEffect, useState,  } from "react";
 import jwt_decode from "jwt-decode";
 import { useAuth } from "../utils/AuthProvide";
 import { SpinnerLoading } from "../utils/SpinnerLoading";
@@ -15,9 +15,6 @@ interface FormData {
   password: string;
 }
 
-
-
-
 export const LoginPage = () => {
   localStorage.removeItem("jobCate");
 
@@ -31,6 +28,19 @@ export const LoginPage = () => {
   const [isForgetModalOpen, setIsForgetModalOpen] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [message, setMessage] = useState("");
+  const { user } = useAuth();
+
+  useEffect(() => {
+    if(user){
+      if (user?.role === "admin") {
+        navigate('/dashboard');
+      }
+      else {
+        navigate('/home');
+      }
+    }
+    
+  }, [user]);
 
   const showToastMessage = (message: string) => {
     setMessage(message);
@@ -104,13 +114,21 @@ export const LoginPage = () => {
           const name = decodedToken.sub;
           const role = decodedToken.role;
           login(token, name, role);
+
+          const redirectToPage = localStorage.getItem('redirectToPage');
           // eslint-disable-next-line no-lone-blocks
           if (role === "admin") {
             navigate("/dashboard");
           } else if (role === "employer") {
             navigate("/employerDashboard");
           } else if (role === "candidate") {
-            navigate("/home");
+            if (redirectToPage) {
+              localStorage.removeItem('redirectToPage');
+              navigate(redirectToPage);
+            }else{
+                navigate("/home");
+            }
+            
           }
           setIsLoading(false);
         } else {
@@ -137,6 +155,8 @@ export const LoginPage = () => {
   };
 
   const [errorResetPassword, setErrorResetPassword] = useState<string | null>(null);
+
+
   const handleForgetPassWordSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
