@@ -893,7 +893,7 @@ export const LeftContent: React.FC<{ job?: JobModel }> = (props) => {
         )}
 
         {/* {showToast && ( */}
-            <div className="position-fixed top-0 end-0 p-3 toast-message" style={{ zIndex: 9999 }}>
+            <div className="position-fixed top-0 end-0 p-3 toast-message" style={{ zIndex: 5 }}>
               <div
                 className={`toast ${showToast ? "show" : ""}`}
                 role="alert"

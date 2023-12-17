@@ -31,6 +31,10 @@ export const LoginPage = () => {
   const { user } = useAuth();
 
   useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth", // for smooth scrolling
+    });
     if(user){
       if (user?.role === "admin") {
         navigate('/dashboard');
