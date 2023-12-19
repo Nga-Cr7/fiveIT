@@ -411,7 +411,7 @@ export const EmployerWaitingBlogPage = () => {
                             ) : (
                                 <div className="h-100 w-100 d-flex justify-content-center align-items-center" style={{ maxHeight: '700px' }}>
                                     <img
-                                        src="https://res.cloudinary.com/dzqoi9laq/image/upload/v1699442426/pexels-ivan-samkov-4240497_piqzam.jpg"
+                                        src="https://res.cloudinary.com/dzqoi9laq/image/upload/v1703008550/business-information-technology_m61ios.jpg"
                                         className="h-100 w-100"
                                         style={{ objectFit: "cover" }}
                                         alt=""
