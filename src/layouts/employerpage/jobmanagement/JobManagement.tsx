@@ -1913,7 +1913,7 @@ export const JobManagement = () => {
 
       {showToast === true && (
         <div
-          className="position-fixed top-0 end-0 p-3 toast-message"
+          className="position-fixed bottom-0 end-0 p-3 toast-message"
           style={{ zIndex: 9999 }}
         >
           <div
