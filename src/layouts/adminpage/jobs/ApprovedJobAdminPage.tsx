@@ -9,7 +9,7 @@ import { SpinnerLoading } from "../../utils/SpinnerLoading";
 import { UserModel } from "../../../models/UserModel";
 import { useTranslation } from "react-i18next";
 import { BarChart } from "@mui/x-charts/BarChart";
-import { CSVLink, CSVDownload } from "react-csv"
+import { CSVLink, CSVDownload } from "react-csv";
 export const ApprovedJobAdminPage = () => {
   const { t } = useTranslation();
 
@@ -31,7 +31,7 @@ export const ApprovedJobAdminPage = () => {
   // page for comment and rating
   const [currentPageCmt, setCurrentPageCmt] = useState(1);
   const [totalPageCmt, setTotalPageCmt] = useState(0);
-  const [jobsPerPageCmt] = useState(5);
+  const [jobsPerPageCmt] = useState(4);
   const [totalJobsCmt, setTotalJobsCmt] = useState(0);
 
   const [isInitialRender, setIsInitialRender] = useState(true);
@@ -70,8 +70,9 @@ export const ApprovedJobAdminPage = () => {
     try {
       let baseUrlForJob = "";
       if (searchUrl === "") {
-        baseUrlForJob = `http://localhost:8080/auth/admin/getAllJobs?jobTitle=${search}&approval=${approval}&status=${searchStatus}&startDate=${startDate}&endDate=${endDate}&page=${currentPage - 1
-          }&size=${jobsPerPage}`;
+        baseUrlForJob = `http://localhost:8080/auth/admin/getAllJobs?jobTitle=${search}&approval=${approval}&status=${searchStatus}&startDate=${startDate}&endDate=${endDate}&page=${
+          currentPage - 1
+        }&size=${jobsPerPage}`;
       } else {
         let searchWithPage = searchUrl.replace(
           "<currentPage>",
@@ -163,8 +164,7 @@ export const ApprovedJobAdminPage = () => {
   const fetchApply = async (jobId: any) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/auth/admin/getAllApplicantByJob?jobId=${jobId}&page=${currentPageApply - 1
-        }&size=${jobsPerPageApply}`,
+        `http://localhost:8080/auth/admin/getAllApplicantByJob?jobId=${jobId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -174,8 +174,9 @@ export const ApprovedJobAdminPage = () => {
 
       if (response.ok) {
         const data = await response.json();
+        // console.log(data);
         const loadedApply: ApplicantModel[] = [];
-        data.content.forEach((applysData: any) => {
+        data.forEach((applysData: any) => {
           const applicant = new ApplicantModel(
             applysData.appicantId,
             applysData.job,
@@ -193,8 +194,8 @@ export const ApprovedJobAdminPage = () => {
           loadedApply.push(applicant);
         });
         setApplicants(loadedApply);
-        setTotalJobsApply(data.totalElements);
-        setTotalPageApply(data.totalPages);
+        // setTotalJobsApply(data.totalElements);
+        // setTotalPageApply(data.totalPages);
       } else {
         throw new Error("Request failed");
       }
@@ -206,7 +207,8 @@ export const ApprovedJobAdminPage = () => {
   const fetchReviewAndRating = async (jobId: any) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/auth/admin/getAllReviewAndRatingByJob?jobId=${jobId}&page=${currentPageCmt - 1
+        `http://localhost:8080/auth/admin/getAllReviewAndRatingByJob?jobId=${jobId}&page=${
+          currentPageCmt - 1
         }&size=${jobsPerPageCmt}`,
         {
           headers: {
@@ -299,7 +301,8 @@ export const ApprovedJobAdminPage = () => {
 
       try {
         const response = await fetch(
-          `http://localhost:8080/auth/admin/updateJobStatus?jobId=${editingJob.jobId.toString()}&status=${editingJob.status
+          `http://localhost:8080/auth/admin/updateJobStatus?jobId=${editingJob.jobId.toString()}&status=${
+            editingJob.status
           }`,
           {
             method: "PUT",
@@ -702,10 +705,13 @@ export const ApprovedJobAdminPage = () => {
           <div className="container mt-4">
             <div className="card">
               <b className="card-header fw-bold text-success">
-                {t("jobManagement.appliedForJob")} ({totalJobsApply} applied)
+                {t("jobManagement.appliedForJob")} ({applicants.length} applied)
               </b>
               {applicants.length <= 0 ? (
-                <p className="p-3 fw-bold text-success"> {t("jobManagement.noCandidate")}</p>
+                <p className="p-3 fw-bold text-success">
+                  {" "}
+                  {t("jobManagement.noCandidate")}
+                </p>
               ) : (
                 <>
                   <div className="">
@@ -805,14 +811,6 @@ export const ApprovedJobAdminPage = () => {
                               </tbody>
                             </table>
                           )}
-
-                          {totalPageApply >= 2 && (
-                            <Pagination
-                              currentPage={currentPageApply}
-                              totalPage={totalPageApply}
-                              paginate={paginateApply}
-                            />
-                          )}
                         </div>
                       </div>
                     </div>
@@ -827,7 +825,9 @@ export const ApprovedJobAdminPage = () => {
                 {t("jobManagement.commentForThisJob")} ({totalJobsCmt} comments)
               </b>
               {reviewAndRating.length <= 0 ? (
-                <p className="p-3 fw-bold text-success">{t("jobManagement.noComment")}</p>
+                <p className="p-3 fw-bold text-success">
+                  {t("jobManagement.noComment")}
+                </p>
               ) : (
                 <div className="p-3">
                   <div id="comment">
@@ -937,7 +937,7 @@ export const ApprovedJobAdminPage = () => {
                     {
                       data: jobData.map((item) => item.value),
                       label: t("dashboard.approvedJob"),
-                      color: "#198754"
+                      color: "#198754",
                     },
                   ]}
                   height={450}
@@ -1029,7 +1029,6 @@ export const ApprovedJobAdminPage = () => {
                         </CSVLink>
                       </div>
                     )}
-
                   </div>
                 </div>
               </form>
@@ -1075,7 +1074,7 @@ export const ApprovedJobAdminPage = () => {
                             <td>{job.createdBy}</td>
                             <td>{job.salary}</td>
                             <td>{job.status}</td>
-                            <td style={{ minWidth: '100px' }}>
+                            <td style={{ minWidth: "100px" }}>
                               <button
                                 type="button"
                                 className="btn btn-primary"
@@ -1127,8 +1126,10 @@ export const ApprovedJobAdminPage = () => {
       </div>
 
       {showToast === true && (
-
-        <div className="position-fixed bottom-0 end-0 p-3" style={{ zIndex: 5 }}>
+        <div
+          className="position-fixed bottom-0 end-0 p-3"
+          style={{ zIndex: 5 }}
+        >
           <div
             className={`toast ${showToast ? "show" : ""}`}
             role="alert"
@@ -1136,7 +1137,9 @@ export const ApprovedJobAdminPage = () => {
             aria-atomic="true"
           >
             <div className="toast-header bg-success text-white">
-              <strong className="me-auto">{t("showToastMessage.status")}</strong>
+              <strong className="me-auto">
+                {t("showToastMessage.status")}
+              </strong>
               <button
                 type="button"
                 className="btn-close"
@@ -1150,14 +1153,11 @@ export const ApprovedJobAdminPage = () => {
       )}
 
       <style>
-        {
-          `
+        {`
           .form-check-input:checked{
             background-color: #198754;
           }
-          `
-        }
-
+          `}
       </style>
     </>
   );

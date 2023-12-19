@@ -8,7 +8,7 @@ import { useEffect } from "react";
 
 export function HeaderPage() {
   const { user, logout } = useAuth();
-  const { t} = useTranslation();
+  const { t } = useTranslation();
 
   const userLanguage = localStorage.getItem('userLanguage') || 'en';
 
@@ -21,7 +21,7 @@ export function HeaderPage() {
     localStorage.setItem('userLanguage', language);
   };
 
-  
+
 
   return (
     <nav className="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
@@ -113,30 +113,40 @@ export function HeaderPage() {
                 className="dropdown-menu"
                 aria-labelledby="dropdownMenuLink"
               >
-                <li>
-                  <NavLink to="/profile" className="dropdown-item">
-                  {t('header.profile')}
-                  </NavLink>
-                </li>
-
                 {user?.role === "candidate" && (
-                  <li>
-                    <NavLink to="/favoriteJob" className="dropdown-item">
-                    {t('header.favoriteJob')}
-                    </NavLink>
-                  </li>
+                  <>
+                    <li>
+                      <NavLink to="/profile" className="dropdown-item">
+                        {t('header.profile')}
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink to="/favoriteJob" className="dropdown-item">
+                        {t('header.favoriteJob')}
+                      </NavLink>
+                    </li>
+                  </>
+                )}
+                {user?.role === "employer" && (
+                  <>
+                    <li>
+                      <NavLink to="/profileEmployer" className="dropdown-item">
+                        {t('header.profile')}
+                      </NavLink>
+                    </li>
+                  </>
                 )}
 
                 <li>
                   <button className="dropdown-item" onClick={logout}>
-                  {t('header.logout')}
+                    {t('header.logout')}
                   </button>
                 </li>
               </ul>
             </div>
           ) : (
             <NavLink to="/login" className="nav-item nav-link">
-             {t('header.login')}
+              {t('header.login')}
             </NavLink>
           )}
         </div>

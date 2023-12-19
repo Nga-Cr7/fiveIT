@@ -401,7 +401,7 @@ export const BlogDetailComment: React.FC<{ blog?: BlogModel }> = (props) => {
             </button>
           </form>
         </div>
-        <div className="position-fixed top-0 end-0 p-3 toast-message" style={{ zIndex: 5 }}>
+        <div className="position-fixed bottom-0 end-0 p-3 toast-message" style={{ zIndex: 5 }}>
           <div
             className={`toast ${showToast ? "show" : ""}`}
             role="alert"

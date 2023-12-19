@@ -20,7 +20,7 @@ export function FavoritePage() {
 
   // Handle pagination
   const [currentPage, setCurrentPage] = useState(1);
-  const [jobsPerPage] = useState(4);
+  const [jobsPerPage] = useState(7);
   const [totalAmountOfJobs, setTotalAmountOfJobs] = useState(0);
   const [totalPage, setTotalPage] = useState(0);
 
@@ -31,52 +31,66 @@ export function FavoritePage() {
 
   const { t } = useTranslation();
 
-  useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const response = await fetch(
-          "http://localhost:8080/auth/profile/loadProfile",
-          {
-            headers: {
-              Authorization: `Bearer ${user?.token}`,
-            },
-          }
-        );
-
-        if (response.ok) {
-          const profileData = await response.json();
-          const profile = new ProfileModel(
-            profileData.profileType,
-            profileData.name,
-            profileData.email,
-            profileData.userImage,
-            profileData.userCv,
-            profileData.gender,
-            profileData.phoneNumber,
-            profileData.address,
-            profileData.bio,
-            profileData.companyName,
-            profileData.companyLogo,
-            profileData.companyImg1,
-            profileData.companyImg2,
-            profileData.companyImg3,
-            profileData.taxNumber,
-            profileData.specializationNames, // Pass specialization names as an array
-            profileData.favoriteJobs // Pass specialization names as an array
-          );
-          setProfile(profile);
-          setJobs(profile.favoriteJobs);
+  const fetchProfile = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:8080/auth/profile/loadProfile",
+        {
+          headers: {
+            Authorization: `Bearer ${user?.token}`,
+          },
         }
-      } catch (error) {
-        console.log("Error fetching API:", error);
-      } finally {
-        setIsLoading(false);
+      );
+
+      if (response.ok) {
+        const profileData = await response.json();
+        const profile = new ProfileModel(
+          profileData.profileType,
+          profileData.name,
+          profileData.email,
+          profileData.userImage,
+          profileData.userCv,
+          profileData.gender,
+          profileData.phoneNumber,
+          profileData.address,
+          profileData.bio,
+          profileData.companyName,
+          profileData.companyLogo,
+          profileData.companyImg1,
+          profileData.companyImg2,
+          profileData.companyImg3,
+          profileData.taxNumber,
+          profileData.specializationNames, // Pass specialization names as an array
+          profileData.favoriteJobs // Pass specialization names as an array
+        );
+        setProfile(profile);
+        setJobs(profile.favoriteJobs);
+        setTotalAmountOfJobs(jobs.length);
+        setTotalPage(Math.ceil(profile.favoriteJobs.length / jobsPerPage));
       }
-    };
+    } catch (error) {
+      console.log("Error fetching API:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
     if (user) {
       fetchProfile();
     }
-  }, []);
+  }, [currentPage]);
+
+  const handleJobClickCallback = () => {
+    setCurrentPage(1);
+    fetchProfile();
+  };
+
+  const indexOfLastJob = currentPage * jobsPerPage;
+  const indexOfFirstJob = indexOfLastJob - jobsPerPage;
+  const currentJobs = jobs.slice(indexOfFirstJob, indexOfLastJob);
+
+  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   if (isLoading) {
     return <SpinnerLoading />;
@@ -86,33 +100,39 @@ export function FavoritePage() {
     return <Page404 error={httpError} />;
   }
 
-  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
-
+  // const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
   return (
     <>
       <div className="container-xxl py-5">
         <div className="container">
-          {jobs.length > 0 ? (
+          {currentJobs.length > 0 ? (
             <>
               <h1
                 className="text-center mb-5 wow fadeInUp"
                 data-wow-delay="0.1s"
               >
-               {t("favorite.favorite")}
+                {t("favorite.favorite")}
               </h1>
 
               <div
                 className="tab-className text-center wow fadeInUp"
                 data-wow-delay="0.3s"
               >
-                {jobs.length > 0 &&
-                  jobs.map((job) => <Jobs job={job} key={job.jobId} />)}
+                {currentJobs.map((job) => (
+                  <Jobs
+                    job={job}
+                    key={job.jobId}
+                    onClick={handleJobClickCallback}
+                  />
+                ))}
               </div>
-              {/* <Pagination
-                currentPage={currentPage}
-                totalPage={totalPage}
-                paginate={paginate}
-              /> */}
+              {totalPage > 1 && (
+                <Pagination
+                  currentPage={currentPage}
+                  totalPage={Math.ceil(jobs.length / jobsPerPage)}
+                  paginate={paginate}
+                />
+              )}
             </>
           ) : (
             <div className="text-center">

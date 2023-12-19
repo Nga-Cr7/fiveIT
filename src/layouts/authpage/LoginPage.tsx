@@ -443,7 +443,7 @@ export const LoginPage = () => {
           aria-live="assertive"
           aria-atomic="true"
         >
-          <div className="toast-header">
+          <div className="toast-header" style={{ backgroundColor: '#198754', color: 'white' }}>
             <strong className="me-auto">{t('showToastMessage.status')}</strong>
             <button
               type="button"

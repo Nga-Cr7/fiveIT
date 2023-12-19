@@ -223,7 +223,7 @@ const Dashboard = () => {
               <div className="bg-light rounded d-flex align-items-center justify-content-between p-4">
                 <i className="fa fa-user fa-3x text-success"></i>
                 <div className="ms-1">
-                  <p className="mb-2 fw-bold text-success">{t('dashboard.totalCandidate')}</p>
+                  <p className="mb-2 fw-bold text-success">{t('dashboard.totalCandidates')}</p>
                   <h4 className="mb-0">{totalCandidate}</h4>
                 </div>
               </div>
@@ -234,7 +234,7 @@ const Dashboard = () => {
               <div className="bg-light rounded d-flex align-items-center justify-content-between p-4">
                 <i className="fa fa-clipboard fa-3x text-primary"></i>
                 <div className="ms-1">
-                  <p className="mb-2 fw-bold text-success">{t('dashboard.employer')}</p>
+                  <p className="mb-2 fw-bold text-success">{t('dashboard.totalEmployers')}</p>
                   <h4 className="mb-0">{totalEmployer}</h4>
                 </div>
               </div>

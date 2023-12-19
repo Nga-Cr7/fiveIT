@@ -11,6 +11,7 @@ import { JobCategoryModel } from "../../../models/JobCategoryModel";
 import { JobModel } from "../../../models/JobModel";
 import { UserModel } from "../../../models/UserModel";
 import { useTranslation } from 'react-i18next';
+import React from "react";
 export const ProfileCandidateInfor: React.FC<{
   profile?: ProfileModel;
   applicant: ApplicantModel[];
@@ -281,7 +282,7 @@ export const ProfileCandidateInfor: React.FC<{
     ) {
       setErrorChangingPassword(t('formErrors.invalidPassword'))
     }
-    else if (newPassword ===currentPassword) {
+    else if (newPassword === currentPassword) {
       setErrorChangingPassword(t('formErrors.currentMatchNewPass'));
     }
     else if (newPassword !== confirmPassword) {
@@ -698,8 +699,7 @@ export const ProfileCandidateInfor: React.FC<{
         <div id="modalFieldApply" className="modal">
           <div className="">
             <div className="modal-content w-100 h-100" style={{ zIndex: 1052 }}>
-              <div dangerouslySetInnerHTML={{ __html: fieldContent }}></div>
-
+              <div dangerouslySetInnerHTML={{ __html: `${fieldContent}` }}></div>
               <button className="btnClose bg-success text-white" onClick={closeFieldApply}>
                 {t('btn.btnClose')}
               </button>
@@ -794,7 +794,7 @@ export const ProfileCandidateInfor: React.FC<{
                               <img
                                 src={applyItem.job?.jobImg}
                                 alt={applyItem.job?.jobImg}
-                                style={{ width: "50px", height: "50px", objectFit:'contain' }}
+                                style={{ width: "50px", height: "50px", objectFit: 'contain' }}
                               />
                             </td>
                             <td
@@ -898,7 +898,7 @@ export const ProfileCandidateInfor: React.FC<{
                               <img
                                 src={applyItem.job?.jobImg}
                                 alt={applyItem.job?.jobImg}
-                                style={{ width: "50px", height: "50px", objectFit:'contain' }}
+                                style={{ width: "50px", height: "50px", objectFit: 'contain' }}
                               />
                             </td>
                             <td
@@ -1002,7 +1002,7 @@ export const ProfileCandidateInfor: React.FC<{
                               <img
                                 src={applyItem.job?.jobImg}
                                 alt={applyItem.job?.jobImg}
-                                style={{ width: "50px", height: "50px", objectFit:'contain' }}
+                                style={{ width: "50px", height: "50px", objectFit: 'contain' }}
                               />
                             </td>
                             <td

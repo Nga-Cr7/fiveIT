@@ -348,7 +348,8 @@
     "waiting": "Đang chờ",
     "approved": "Đã duyệt",
     "enable": "Kích hoạt",
-    "disable": "Vô hiệu hóa"
+    "disable": "Vô hiệu hóa",
+    "denied": "Từ chối"
   },
 
   "pagination": {

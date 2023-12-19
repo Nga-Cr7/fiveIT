@@ -223,6 +223,7 @@ export const ProfileCandidateForm: React.FC<{ profile?: ProfileModel, updateProf
                     className="form-control"
                     value={formData.gender}
                     onChange={handleInputChange}
+                    style={{background: "#fff"}}
                   >
                     <option value="Male">{t('placeholders.gender.male')}</option>
                     <option value="Female">{t('placeholders.gender.female')}</option>

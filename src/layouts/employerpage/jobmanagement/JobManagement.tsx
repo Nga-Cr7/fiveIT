@@ -8,11 +8,10 @@ import { useDropzone } from "react-dropzone";
 import { ApplicantModel } from "../../../models/ApplicantModel";
 import { FaStar } from "react-icons/fa";
 import ReactQuill from "react-quill";
-import { useTranslation } from 'react-i18next';
-import { CSVLink, CSVDownload } from "react-csv"
+import { useTranslation } from "react-i18next";
+import { CSVLink, CSVDownload } from "react-csv";
 import { BarChart } from "@mui/x-charts/BarChart";
 import { green } from "@mui/material/colors";
-
 
 export const JobManagement = () => {
   const { t } = useTranslation();
@@ -24,6 +23,7 @@ export const JobManagement = () => {
   const [message, setMessage] = useState("");
   const [jobs, setJobs] = useState<JobModel[]>([]);
   const [job, setJob] = useState<JobModel | null>();
+  const [jobForApplicant, setJobForApplicant] = useState<JobModel | null>();
   const [applicants, setApplicants] = useState<ApplicantModel[]>([]);
   const [applicantView, setApplicantView] = useState<ApplicantModel>();
   // const [jobId, setJobId] = useState("27");
@@ -84,7 +84,7 @@ export const JobManagement = () => {
   // page for commentForJob
   const [currentPageCmt, setCurrentPageCmt] = useState(1);
   const [totalPageCmt, setTotalPageCmt] = useState(0);
-  const [jobsPerPageCmt] = useState(2);
+  const [jobsPerPageCmt] = useState(4);
   const [totalJobsCmt, setTotalJobsCmt] = useState(0);
 
   const paginateApply = (pageNumber: number) => setCurrentPageApply(pageNumber);
@@ -119,7 +119,6 @@ export const JobManagement = () => {
     "DEC",
   ];
 
-
   const [currentTab, setCurrentTab] = useState("waiting");
 
   const [messageToCandidateError, setMessageToCandidateError] = useState<
@@ -131,7 +130,7 @@ export const JobManagement = () => {
       return applyItem.status === "WAITING";
     } else if (currentTab === "approved") {
       return applyItem.status === "APPROVED";
-    } else if (currentTab === "closed") {
+    } else if (currentTab === "denied") {
       return applyItem.status === "CLOSE";
     }
     return true;
@@ -196,6 +195,7 @@ export const JobManagement = () => {
   interface CommentForJob {
     reviewText: string;
     rating: any;
+
     createdAt: string;
   }
   const comments: CommentForJob[] = [];
@@ -257,14 +257,14 @@ export const JobManagement = () => {
           categoryName: cate.categoryName,
         }));
         setJobCate(loadedCate);
-      } catch (error: any) { }
+      } catch (error: any) {}
     };
     fetchData();
   }, []);
 
   // fetch close job
   useEffect(() => {
-    console.log("TODAY")
+    console.log("TODAY");
     const fetchData = async () => {
       const jobURL = `http://localhost:8080/auth/employer/getJobApplicationDeadline?applicationDeadline=${today}`;
       try {
@@ -323,7 +323,7 @@ export const JobManagement = () => {
     let isValid = true;
 
     if (formData.title.trim().length < 5) {
-      errors.title = t('formErrors.invalidTitle');
+      errors.title = t("formErrors.invalidTitle");
       isValid = false;
     }
     if (
@@ -331,34 +331,34 @@ export const JobManagement = () => {
       !formData.salary ||
       formData.salary <= 0
     ) {
-      errors.salary = t('formErrors.invalidSalary');
+      errors.salary = t("formErrors.invalidSalary");
       isValid = false;
     }
 
     if (formData.category === "0") {
-      errors.category = t('formErrors.category');
+      errors.category = t("formErrors.category");
       isValid = false;
     }
     if (formData.location === "location") {
-      errors.location = t('formErrors.location');
+      errors.location = t("formErrors.location");
       isValid = false;
     }
     if (!isNumeric(formData.quantityCv) || formData.quantityCv <= 0) {
-      errors.quantityCv = t('formErrors.invalidQuantity');
+      errors.quantityCv = t("formErrors.invalidQuantity");
       isValid = false;
     }
 
     if (deEditorHtml.trim().length < 30) {
-      errors.description = t('formErrors.invalidDescription');
+      errors.description = t("formErrors.invalidDescription");
       isValid = false;
     }
     if (reEditorHtml.trim().length < 30) {
-      errors.requirements = t('formErrors.invalidRequirements');
+      errors.requirements = t("formErrors.invalidRequirements");
       isValid = false;
     }
 
     if (!formData.applicationDeadline) {
-      errors.applicationDeadline = t('formErrors.closeDate');
+      errors.applicationDeadline = t("formErrors.closeDate");
       isValid = false;
     }
 
@@ -370,8 +370,9 @@ export const JobManagement = () => {
   const fetchJobs = async () => {
     let jobsURL = "";
     if (searchJobURL === "") {
-      jobsURL = `http://localhost:8080/auth/employer/getAllJob?email=${user?.name
-        }&status=${status}&page=${currentPage - 1}&size=${jobperPage}`;
+      jobsURL = `http://localhost:8080/auth/employer/getAllJob?email=${
+        user?.name
+      }&status=${status}&page=${currentPage - 1}&size=${jobperPage}`;
     } else {
       let searchWithPage = searchJobURL.replace(
         "<currentPage>",
@@ -421,7 +422,6 @@ export const JobManagement = () => {
       }
     } catch (error: any) {
       console.log(error);
-
     }
 
     // window.scrollTo(0, 500);
@@ -450,7 +450,7 @@ export const JobManagement = () => {
       applicationDeadline: adjustDateToTimeZone(jobNew.applicationDeadline),
       quantityCv: jobNew.quantityCv,
     });
-    setFormErrors(null)
+    setFormErrors(null);
     setReEditorHtml(jobNew.requirements);
     setDeEditorHtml(jobNew.description);
     setImageURL(jobNew.jobImg);
@@ -479,7 +479,6 @@ export const JobManagement = () => {
     setImageURL("");
     setIsUpdate(false);
   };
-
 
   const handleNewButton = async () => {
     setFormData({
@@ -517,11 +516,11 @@ export const JobManagement = () => {
       fetchReviewAndRating(job);
     }
   }, [currentPageApply, currentPageCmt]);
+
   const handleViewApplicantButton = async (jobNew: JobModel) => {
     setApplicantStatus("WAITING");
     setJob(jobNew);
-    let baseApplicantURL = `http://localhost:8080/api/applicants/search/findApplicantByJobId?jobId=${jobNew.jobId
-      }&page=${currentPageApply - 1}&size=${jobsPerPageApply}`;
+    let baseApplicantURL = `http://localhost:8080/api/applicants/search/findApplicantByJobId?jobId=${jobNew.jobId}`;
     try {
       const responseApplicant = await fetch(baseApplicantURL, {
         method: "GET",
@@ -533,18 +532,19 @@ export const JobManagement = () => {
         if (responseApplicant.ok) {
           const data = await responseApplicant.json();
           setApplicants(data._embedded.applicants);
-          setTotalJobsApply(data.page.totalElements);
-          setTotalPageApply(data.page.totalPages);
+          // setTotalJobsApply(data.page.totalElements);
+          // setTotalPageApply(data.page.totalPages);
         }
         setIsDisplayApplicantAndComment(true);
       }
-    } catch { }
+    } catch {}
   };
 
   const fetchReviewAndRating = async (jobNew: JobModel) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/reviewAndRatings/search/findReviewAndRatingByJobId?jobId=${jobNew?.jobId
+        `http://localhost:8080/api/reviewAndRatings/search/findReviewAndRatingByJobId?jobId=${
+          jobNew?.jobId
         }&page=${currentPageCmt - 1}&size=${jobsPerPageCmt}`,
         {
           headers: {
@@ -581,12 +581,12 @@ export const JobManagement = () => {
         setApplicants([]);
         setIsLoading(false);
         setConfirmCloseJob(false);
-        setIsDisplayedForm(false)
-        showToastMessage(t('showToastMessage.successCloseJob'));
+        setIsDisplayedForm(false);
+        showToastMessage(t("showToastMessage.successCloseJob"));
       } else {
-        showToastMessage(t('showToastMessage.errorCloseJob'));
+        showToastMessage(t("showToastMessage.errorCloseJob"));
       }
-    } catch { }
+    } catch {}
   };
 
   //handle Denied applicant
@@ -609,20 +609,20 @@ export const JobManagement = () => {
 
           setIsLoading(false);
           setMessageToCandidateError(null);
-          showToastMessage(t('showToastMessage.successSendMessage'));
+          showToastMessage(t("showToastMessage.successSendMessage"));
           return true;
         } else {
-          showToastMessage(t('showToastMessage.errorSendMessage'));
+          showToastMessage(t("showToastMessage.errorSendMessage"));
           return false;
         }
-      } catch { }
+      } catch {}
     } else {
-      setMessageToCandidateError(t('formErrors.sendMessage'));
+      setMessageToCandidateError(t("formErrors.sendMessage"));
       return false;
     }
   };
 
-  useEffect(() => { }, [applicants]);
+  useEffect(() => {}, [applicants]);
 
   // search
   const searchJob = async (
@@ -649,6 +649,9 @@ export const JobManagement = () => {
       setViewApprovedModel(false);
       setViewPDF(false);
     }
+    if (job) {
+      handleViewApplicantButton(job);
+    } 
   };
 
   //format date
@@ -699,27 +702,14 @@ export const JobManagement = () => {
 
             if (response.ok) {
               setIsLoading(false);
-              showToastMessage(t('showToastMessage.successUpdateJob'));
-              setFormData({
-                jobId: "",
-                title: "",
-                salary: "",
-                category: "",
-                location: "",
-                file: null,
-                description: "",
-                requirements: "",
-                applicationDeadline: "",
-                quantityCv: "",
-              });
-              setReEditorHtml("");
-              setDeEditorHtml("");
+              showToastMessage(t("showToastMessage.successUpdateJob"));
+              handleCancelForm();
               setCurrentPage(1);
               setImageURL("fiveIT");
               fetchJobs();
             } else {
               setIsLoading(false);
-              showToastMessage(t('showToastMessage.errorUpdateJob'));
+              showToastMessage(t("showToastMessage.errorUpdateJob"));
             }
           } catch (error) {
             // Handle network error
@@ -765,7 +755,7 @@ export const JobManagement = () => {
 
             if (response.ok) {
               setIsLoading(false);
-              showToastMessage(t('showToastMessage.successPostJob'));
+              showToastMessage(t("showToastMessage.successPostJob"));
               setFormData({
                 jobId: "",
                 title: "",
@@ -785,7 +775,7 @@ export const JobManagement = () => {
               setSelectedLocation("location");
             } else {
               setIsLoading(false);
-              showToastMessage(t('showToastMessage.errorPostJob'));
+              showToastMessage(t("showToastMessage.errorPostJob"));
             }
           } catch (error) {
             // Handle network error
@@ -818,7 +808,7 @@ export const JobManagement = () => {
       if (selectedFile.type.startsWith("image/")) {
         setImageFileType(selectedFile.type);
       } else {
-        showToastMessage(t('showToastMessage.invalidIMGFile'));
+        showToastMessage(t("showToastMessage.invalidIMGFile"));
         setImageFile(null);
       }
     }
@@ -878,7 +868,6 @@ export const JobManagement = () => {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   }
 
-
   useEffect(() => {
     const fetchTotalUserByMonth = async () => {
       try {
@@ -924,49 +913,56 @@ export const JobManagement = () => {
     <>
       <div className="page-wrapper">
         <div className="row justify-content-center mt-4">
-          <h3 className="text-center fw-bold text-success">{t('jobManagement.jobManagement')}</h3>
-
+          <h3 className="text-center fw-bold text-success">
+            {t("jobManagement.jobManagement")}
+          </h3>
         </div>
         {isDisplayedForm === false && (
           <>
             <div className="col-md-12 order-2 order-md-3 order-lg-2 mb-4">
               <div className="card">
                 <div className="row row-bordered g-0">
-                  <h6 className="card-header m-0 pb-1">{t('dashboard.statisticsJob')}</h6>
+                  <h6 className="card-header m-0 pb-1">
+                    {t("dashboard.statisticsJob")}
+                  </h6>
                   <div className="row">
-                  <button className="col-md-1 col-4 mt-3 ms-3 btn btn-success p-0" id="newButtonBegin" onClick={handleNewButton}>{t("btn.btnNew")}</button>
-                  <div className="col-md-1 col-4 mt-3 ms-3">
-                    <select
-                      className="form-control"
-                      id="selectMonth"
-                      value={year}
-                      onChange={(e) => setYear(e.target.value)}
+                    <button
+                      className="col-md-1 col-4 mt-3 ms-3 btn btn-success p-0"
+                      id="newButtonBegin"
+                      onClick={handleNewButton}
                     >
-                      <option value="2018">2018</option>
-                      <option value="2019">2019</option>
-                      <option value="2020">2020</option>
-                      <option value="2021">2021</option>
-                      <option value="2022">2022</option>
-                      <option value="2023">2023</option>
-                      <option value="2024">2024</option>
-                    </select>
+                      {t("btn.btnNew")}
+                    </button>
+                    <div className="col-md-1 col-4 mt-3 ms-3">
+                      <select
+                        className="form-control"
+                        id="selectMonth"
+                        value={year}
+                        onChange={(e) => setYear(e.target.value)}
+                      >
+                        <option value="2018">2018</option>
+                        <option value="2019">2019</option>
+                        <option value="2020">2020</option>
+                        <option value="2021">2021</option>
+                        <option value="2022">2022</option>
+                        <option value="2023">2023</option>
+                        <option value="2024">2024</option>
+                      </select>
+                    </div>
                   </div>
-                  </div>
-                  
+
                   <div className="col-md-12 w-100">
                     <BarChart
                       height={345}
                       series={[
                         {
                           data: jobData.map((item) => item.value),
-                          label: t('dashboard.job'),
+                          label: t("dashboard.job"),
                           id: "uvId",
                         },
                       ]}
                       xAxis={[{ data: xLabels, scaleType: "band" }]}
-                      colors={[
-                        '#2e7d32'
-                      ]}
+                      colors={["#2e7d32"]}
                     />
                   </div>
                 </div>
@@ -978,8 +974,9 @@ export const JobManagement = () => {
           <div className="row">
             {/* show form */}
             <div
-              className={`col-xl-12 col-sm-12 col-12 ${isDisplayedForm ? "" : "display-none"
-                }`}
+              className={`col-xl-12 col-sm-12 col-12 ${
+                isDisplayedForm ? "" : "display-none"
+              }`}
             >
               <form method="PUT" onSubmit={handleSubmitFormUpdate}>
                 <div className="row">
@@ -988,23 +985,24 @@ export const JobManagement = () => {
                       <div className="card-header">
                         <div className="row">
                           <div className="col-9">
-                            {isUpdate ?
+                            {isUpdate ? (
                               <h5 className="card-titles text-success">
-                                {t('jobManagement.updateJob')}
-                              </h5> : <h5 className="card-titles text-success">
-                                {t('jobManagement.postJob')}
+                                {t("jobManagement.updateJob")}
                               </h5>
-                            }
+                            ) : (
+                              <h5 className="card-titles text-success">
+                                {t("jobManagement.postJob")}
+                              </h5>
+                            )}
                           </div>
                         </div>
 
-                        <div>
-                        </div>
+                        <div></div>
                       </div>
                       <div className="card-body">
                         <div className="row">
                           <label htmlFor="" className="ms-4 fw-bold">
-                            {t('jobManagement.chooseImg')}
+                            {t("jobManagement.chooseImg")}
                           </label>
                           <div className="col-md-3">
                             <div {...getImageRootProps()} className="">
@@ -1015,28 +1013,36 @@ export const JobManagement = () => {
                                   src={imageURL}
                                   className="img"
                                   alt="aaaa"
-                                  style={{ height: "100px", width: "170px", objectFit: "contain" }}
+                                  style={{
+                                    height: "100px",
+                                    width: "170px",
+                                    objectFit: "contain",
+                                  }}
                                 />
                               ) : (
                                 <img
                                   src={job?.jobImg}
                                   className="form-control"
                                   alt="Click here"
-                                  style={{ height: "100px", width: "170px", objectFit: "contain" }}
+                                  style={{
+                                    height: "100px",
+                                    width: "170px",
+                                    objectFit: "contain",
+                                  }}
                                 />
                               )}
                             </div>
                           </div>
                           <div className="col-md-9">
                             <label htmlFor="bio" className="form-label fw-bold">
-                              {t('placeholders.title')}
+                              {t("placeholders.title")}
                             </label>
                             <input
                               className="form-control"
                               type="text"
                               name="title"
                               id="title"
-                              placeholder={t('placeholders.title')}
+                              placeholder={t("placeholders.title")}
                               value={formData?.title}
                               onChange={handleInputChange}
                             />
@@ -1054,19 +1060,19 @@ export const JobManagement = () => {
                         </div>
                         <div className="row">
                           <div className="row">
-                            <div className="col-xl-6">
+                            <div className="col-md-6">
                               <div className="form-group">
                                 <label
                                   htmlFor="bio"
                                   className="form-label fw-bold"
                                 >
-                                  {t('placeholders.salary')}
+                                  {t("placeholders.salary")}
                                 </label>
                                 <input
                                   className="form-control"
                                   type="text"
                                   name="salary"
-                                  placeholder={t('placeholders.salary')}
+                                  placeholder={t("placeholders.salary")}
                                   value={formData.salary}
                                   onChange={handleInputChange}
                                 />
@@ -1088,13 +1094,13 @@ export const JobManagement = () => {
                                   htmlFor="bio"
                                   className="form-label fw-bold"
                                 >
-                                  {t('placeholders.quantityCV')}
+                                  {t("placeholders.quantityCV")}
                                 </label>
                                 <input
                                   type="text"
                                   className="form-control"
                                   name="quantityCv"
-                                  placeholder={t('placeholders.quantityCV')}
+                                  placeholder={t("placeholders.quantityCV")}
                                   value={formData.quantityCv}
                                   onChange={handleInputChange}
                                 />
@@ -1116,13 +1122,13 @@ export const JobManagement = () => {
                                   htmlFor="bio"
                                   className="form-label fw-bold"
                                 >
-                                  {t('placeholders.closeDate')}
+                                  {t("placeholders.closeDate")}
                                 </label>
                                 <input
                                   type="date"
                                   className="form-control"
                                   name="applicationDeadline"
-                                  placeholder={t('placeholders.closeDate')}
+                                  placeholder={t("placeholders.closeDate")}
                                   min={today}
                                   value={formData.applicationDeadline}
                                   onChange={handleInputChange}
@@ -1142,16 +1148,16 @@ export const JobManagement = () => {
                           </div>
                         </div>
                         <div className="row">
-                          <div className="col-xl-6 col-sm-12 col-12">
+                          <div className="col-md-6 col-sm-12 col-12">
                             <div className="form-group">
                               <label
                                 htmlFor="bio"
                                 className="form-label fw-bold"
                               >
-                                {t('placeholders.category')}
+                                {t("placeholders.category")}
                               </label>
                               <select
-                                className="select form-control"
+                                className="form-control"
                                 name="category"
                                 value={formData.category}
                                 onChange={(e) =>
@@ -1161,7 +1167,9 @@ export const JobManagement = () => {
                                   })
                                 }
                               >
-                                <option value="0">{t('placeholders.category')}</option>
+                                <option value="0">
+                                  {t("placeholders.category")}
+                                </option>
                                 {jobCate.map((cate) => (
                                   <option
                                     key={cate.categoryId}
@@ -1189,7 +1197,7 @@ export const JobManagement = () => {
                                 htmlFor="bio"
                                 className="form-label fw-bold"
                               >
-                                {t('placeholders.location')}
+                                {t("placeholders.location")}
                               </label>
                               <select
                                 className="select form-control"
@@ -1202,7 +1210,9 @@ export const JobManagement = () => {
                                 }
                                 value={formData.location}
                               >
-                                <option value="location">{t('placeholders.location')}</option>
+                                <option value="location">
+                                  {t("placeholders.location")}
+                                </option>
                                 {location.map((loca, index) => (
                                   <option key={index} value={loca}>
                                     {loca}
@@ -1231,7 +1241,7 @@ export const JobManagement = () => {
                                 htmlFor="bio"
                                 className="form-label fw-bold"
                               >
-                                {t('placeholders.description')}
+                                {t("placeholders.description")}
                               </label>
                               <ReactQuill
                                 value={deEditorHtml}
@@ -1255,7 +1265,7 @@ export const JobManagement = () => {
                                 htmlFor="bio"
                                 className="form-label fw-bold"
                               >
-                                {t('placeholders.requirements')}
+                                {t("placeholders.requirements")}
                               </label>
                               <ReactQuill
                                 value={reEditorHtml}
@@ -1281,7 +1291,7 @@ export const JobManagement = () => {
                                 type="submit"
                                 className="btn btn-success w-auto"
                               >
-                                {t('btn.btnPost')}
+                                {t("btn.btnPost")}
                               </button>
                             ) : (
                               <button
@@ -1293,7 +1303,7 @@ export const JobManagement = () => {
                                     job.status === "DISABLE")
                                 }
                               >
-                                {t('btn.btnUpdate')}
+                                {t("btn.btnUpdate")}
                               </button>
                             )}
                             <button
@@ -1301,7 +1311,7 @@ export const JobManagement = () => {
                               className="btn btn-info w-auto ms-3"
                               onClick={handleNewJob}
                             >
-                              {t('btn.btnNew')}
+                              {t("btn.btnNew")}
                             </button>
                             {job && job.status === "ENABLE" ? (
                               <button
@@ -1309,7 +1319,7 @@ export const JobManagement = () => {
                                 className="btn btn-warning w-auto ms-3"
                                 onClick={handleDisableButton}
                               >
-                                {t('btn.btnDisable')}
+                                {t("btn.btnDisable")}
                               </button>
                             ) : (
                               ""
@@ -1319,7 +1329,7 @@ export const JobManagement = () => {
                               className="btn btn-danger w-auto ms-3"
                               onClick={handleCancelForm}
                             >
-                              {t('btn.btnCancel')}
+                              {t("btn.btnCancel")}
                             </button>
                           </div>
                         </div>
@@ -1338,12 +1348,10 @@ export const JobManagement = () => {
                   <div className="container mt-4">
                     <div className="card">
                       <b className="card-header">
-                        {t('jobManagement.appliedForJob')} ({totalJobsApply} applied)
+                        {t("jobManagement.appliedForJob")}
                       </b>
                       {applicants.length <= 0 ? (
-                        <p className="p-3">
-                          {t('jobManagement.noCandidate')}
-                        </p>
+                        <p className="p-3">{t("jobManagement.noCandidate")}</p>
                       ) : (
                         <>
                           <div className="">
@@ -1363,7 +1371,7 @@ export const JobManagement = () => {
                                   aria-selected="true"
                                   onClick={() => setCurrentTab("waiting")}
                                 >
-                                  {t('status.waiting')}{" "}
+                                  {t("status.waiting")}{" "}
                                   <span className="text-danger">
                                     ({waitingCount})
                                   </span>
@@ -1380,7 +1388,7 @@ export const JobManagement = () => {
                                   aria-selected="false"
                                   onClick={() => setCurrentTab("approved")}
                                 >
-                                  {t('status.approved')}{" "}
+                                  {t("status.approved")}{" "}
                                   <span className="text-danger">
                                     ({approvedCount})
                                   </span>
@@ -1395,9 +1403,9 @@ export const JobManagement = () => {
                                   role="tab"
                                   aria-controls="closed"
                                   aria-selected="false"
-                                  onClick={() => setCurrentTab("closed")}
+                                  onClick={() => setCurrentTab("denied")}
                                 >
-                                  {t('status.closed')}{" "}
+                                  {t("status.denied")}{" "}
                                   <span className="text-danger">
                                     ({closedCount})
                                   </span>
@@ -1422,18 +1430,17 @@ export const JobManagement = () => {
                                 >
                                   {filteredApplicants.length <= 0 ? (
                                     <p className="p-3">
-                                      {t('jobManagement.noCandidate')}{" "}
-                                      {currentTab}
+                                      {t("jobManagement.noCandidate")}{" "}
+                                      {/* {currentTab} */}
                                     </p>
                                   ) : (
                                     <table className="table custom-table no-footer text-center">
                                       <thead>
                                         <tr>
-                                          <th>{t('table.name')}</th>
-                                          <th>{t('table.email')}</th>
-                                          <th>{t('table.phone')}</th>
-                                          <th>{t('table.CV')}</th>
-                                          <th>{t('table.date')}</th>
+                                          <th>{t("table.name")}</th>
+                                          <th>{t("table.email")}</th>
+                                          <th>{t("table.phone")}</th>
+                                          <th>{t("table.CV")}</th>
                                         </tr>
                                       </thead>
                                       <tbody>
@@ -1443,11 +1450,6 @@ export const JobManagement = () => {
                                               <td>{applicant.fullName}</td>
                                               <td>{applicant.email}</td>
                                               <td>{applicant.phoneNumber}</td>
-                                              <td>
-                                                {formatDate(
-                                                  applicant.createdAt
-                                                )}
-                                              </td>
                                               <td className="text-center">
                                                 <button
                                                   className="btn btn-success"
@@ -1459,7 +1461,7 @@ export const JobManagement = () => {
                                                   }
                                                 >
                                                   <i className="bi bi-eye-fill"></i>
-                                                  {t('btn.btnView')}
+                                                  {t("btn.btnView")}
                                                 </button>
                                               </td>
                                             </tr>
@@ -1467,14 +1469,6 @@ export const JobManagement = () => {
                                         )}
                                       </tbody>
                                     </table>
-                                  )}
-
-                                  {totalPageApply >= 2 && (
-                                    <Pagination
-                                      currentPage={currentPageApply}
-                                      totalPage={totalPageApply}
-                                      paginate={paginateApply}
-                                    />
                                   )}
                                 </div>
                               </div>
@@ -1486,9 +1480,11 @@ export const JobManagement = () => {
 
                     {/* Comments cho công việc */}
                     <div className="card mt-4">
-                      <b className="card-header">{t('jobManagement.commentForThisJob')}</b>
+                      <b className="card-header">
+                        {t("jobManagement.commentForThisJob")}
+                      </b>
                       {commentForJob.length <= 0 ? (
-                        <p className="p-3">{t('jobManagement.noComment')}</p>
+                        <p className="p-3">{t("jobManagement.noComment")}</p>
                       ) : (
                         <div className="p-3">
                           <div id="comment">
@@ -1505,7 +1501,6 @@ export const JobManagement = () => {
                                           />
                                         </div>
                                         <div>
-                                          <b></b> <br />
                                           <time dateTime={review.createdAt}>
                                             {formatDate(review.createdAt)}
                                           </time>{" "}
@@ -1529,7 +1524,7 @@ export const JobManagement = () => {
                                                     size={15}
                                                     color={
                                                       currentRating <=
-                                                        review.rating
+                                                      review.rating
                                                         ? "#ffc107"
                                                         : "#b0b0b0"
                                                     }
@@ -1574,11 +1569,11 @@ export const JobManagement = () => {
                       <input
                         type="text"
                         className="form-control"
-                        placeholder={t('searchForm.keyword')}
+                        placeholder={t("searchForm.keyword")}
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}
                         onKeyDown={(e) => {
-                          if (e.key === 'Enter') {
+                          if (e.key === "Enter") {
                             searchJob(status, startDate, endDate, query);
                           }
                         }}
@@ -1603,12 +1598,12 @@ export const JobManagement = () => {
                     <div className="col-md-2">
                       <select
                         className="form-control text-white"
-                        style={{ background: '#00b074' }}
+                        style={{ background: "#00b074" }}
                         value={status}
                         onChange={(e) => setStatusForJob(e.target.value)}
                       >
-                        <option value="ENABLE">{t('status.enable')}</option>
-                        <option value="DISABLE">{t('status.disable')}</option>
+                        <option value="ENABLE">{t("status.enable")}</option>
+                        <option value="DISABLE">{t("status.disable")}</option>
                       </select>
                     </div>
                     <div className="col-md-2 text-center">
@@ -1616,10 +1611,9 @@ export const JobManagement = () => {
                         onClick={() =>
                           searchJob(status, startDate, endDate, query)
                         }
-
                         className="form-control btn-success bg-success text-white fw-bold"
                       >
-                        {t('searchForm.searchBtn')}
+                        {t("searchForm.searchBtn")}
                       </button>
                     </div>
                     {jobs.length > 0 && (
@@ -1635,94 +1629,103 @@ export const JobManagement = () => {
                       </div>
                     )}
                   </div>
-
                 </div>
                 <div className="card-body p-0">
                   {jobs.length > 0 ? (
-                    <><div className="table-responsive">
-                      <table className="table  custom-table  no-footer">
-                        <thead>
-                          <tr>
-                            <th>{t('table.img')}</th>
-                            <th>{t('table.title')}</th>
-                            <th>{t('table.salary')}</th>
-                            <th>{t('table.closeDate')}</th>
-                            <th>{t('table.category')}</th>
-                            <th>{t('table.status')}</th>
-                            <th>{t('table.approval')}</th>
-                            <th className="text-center" colSpan={2}>
-                              {t('table.action')}
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {jobs.map((jobItem, index) => (
-                            <tr key={index}>
-                              <td>
-                                <img
-                                  src={jobItem.jobImg}
-                                  alt=""
-                                  style={{ width: "50px", height: "50px", objectFit: "contain" }}
-                                />
-                              </td>
-                              <td>{jobItem.title}</td>
-                              <td>{formatMoney(jobItem.salary)} $</td>
-                              <td>{formatDate(jobItem.applicationDeadline)}</td>
-                              <td>{jobItem.jobCategory.categoryName}</td>
-                              <td>{jobItem.status}</td>
-                              <td>{jobItem.approval}</td>
-                              <>
-                                {status === "ENABLE" ? (
-                                  <td>
-                                    <button
-                                      className="btn btn-success"
-                                      onClick={() => {
-                                        handleEditClick(jobItem);
-                                        handleMoveOnTop();
-                                        setIsDisplayApplicantAndComment(false)
-
-                                      }}
-                                    >
-                                      {t('btn.btnView')}
-                                    </button>
-                                  </td>
-                                ) : (
-                                  <td>
-                                    <button
-                                      className="btn btn-success"
-                                      onClick={() => {
-                                        handleEditClick(jobItem);
-                                        handleMoveOnTop();
-                                        setIsDisplayApplicantAndComment(false)
-                                      }}
-                                    >
-                                      {t('btn.btnEdit')}
-                                    </button>
-                                  </td>
-                                )}
-
-                                <td>
-                                  <button
-                                    type="button"
-                                    className="btn btn-warning d-flex"
-                                    onClick={() => {
-                                      handleViewApplicantButton(jobItem);
-                                      fetchReviewAndRating(jobItem);
-                                      setIsDisplayedForm(false);
-                                      handleMoveOnTop();
-
-                                    }}
-                                  >
-                                    <i className="bi bi-eye-fill"></i>
-                                    <span>CV</span>
-                                  </button>
-                                </td>
-                              </>
+                    <>
+                      <div className="table-responsive">
+                        <table className="table  custom-table  no-footer">
+                          <thead>
+                            <tr>
+                              <th>{t("table.img")}</th>
+                              <th>{t("table.title")}</th>
+                              <th>{t("table.salary")}</th>
+                              <th>{t("table.closeDate")}</th>
+                              <th>{t("table.category")}</th>
+                              <th>{t("table.status")}</th>
+                              <th>{t("table.approval")}</th>
+                              <th className="text-center" colSpan={2}>
+                                {t("table.action")}
+                              </th>
                             </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
+                          </thead>
+                          <tbody>
+                            {jobs.map((jobItem, index) => (
+                              <tr key={index}>
+                                <td>
+                                  <img
+                                    src={jobItem.jobImg}
+                                    alt=""
+                                    style={{
+                                      width: "50px",
+                                      height: "50px",
+                                      objectFit: "contain",
+                                    }}
+                                  />
+                                </td>
+                                <td>{jobItem.title}</td>
+                                <td>{formatMoney(jobItem.salary)} $</td>
+                                <td>
+                                  {formatDate(jobItem.applicationDeadline)}
+                                </td>
+                                <td>{jobItem.jobCategory.categoryName}</td>
+                                <td>{jobItem.status}</td>
+                                <td>{jobItem.approval}</td>
+                                <>
+                                  {status === "ENABLE" ? (
+                                    <td>
+                                      <button
+                                        className="btn btn-success"
+                                        onClick={() => {
+                                          handleEditClick(jobItem);
+                                          handleMoveOnTop();
+                                          setIsDisplayApplicantAndComment(
+                                            false
+                                          );
+                                        }}
+                                      >
+                                        {t("btn.btnView")}
+                                      </button>
+                                    </td>
+                                  ) : (
+                                    <td>
+                                      <button
+                                        className="btn btn-success"
+                                        onClick={() => {
+                                          handleEditClick(jobItem);
+                                          handleMoveOnTop();
+                                          setIsDisplayApplicantAndComment(
+                                            false
+                                          );
+                                        }}
+                                      >
+                                        {t("btn.btnEdit")}
+                                      </button>
+                                    </td>
+                                  )}
+
+                                  <td>
+                                    <button
+                                      type="button"
+                                      className="btn btn-warning d-flex"
+                                      onClick={() => {
+                                        handleViewApplicantButton(jobItem);
+                                        fetchReviewAndRating(jobItem);
+                                        setIsDisplayedForm(false);
+                                        handleMoveOnTop();
+                                        setJobForApplicant(jobItem);
+                                      }}
+                                    >
+                                      <i className="bi bi-eye-fill"></i>
+                                      <span>CV</span>
+                                    </button>
+                                  </td>
+                                </>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
                       {totalPage >= 2 && (
                         <div className="mt-3 mb-2">
                           <Pagination
@@ -1731,24 +1734,24 @@ export const JobManagement = () => {
                             paginate={paginate}
                           />
                         </div>
-                      )}</>
+                      )}
+                    </>
                   ) : (
-                    <><div className="text-center mt-4">
-                      <div className="background">
-                        <strong>
-                          {t('admin.noJob')}
-                        </strong>
+                    <>
+                      <div className="text-center mt-4">
+                        <div className="background">
+                          <strong>{t("admin.noJob")}</strong>
+                        </div>
+                        <div>
+                          <img
+                            style={{ maxWidth: "30%" }}
+                            src="/assets/img/sorry.png"
+                            className="img-fluid w-30 "
+                          />
+                        </div>
                       </div>
-                      <div>
-                        <img
-                          style={{ maxWidth: "30%" }}
-                          src="/assets/img/sorry.png"
-                          className="img-fluid w-30 "
-                        />
-                      </div>
-                    </div></>
+                    </>
                   )}
-
                 </div>
               </div>
             </div>
@@ -1763,7 +1766,7 @@ export const JobManagement = () => {
             <div className="row justify-content-end">
               {viewCoverletter ? (
                 <div className="col-md-11">
-                  <h5 className="ms-5 text-success fw-bold">{t('table.CL')}</h5>
+                  <h5 className="ms-5 text-success fw-bold">{t("table.CL")}</h5>
                 </div>
               ) : (
                 ""
@@ -1797,7 +1800,7 @@ export const JobManagement = () => {
                       setStatusApplicant("CLOSE");
                     }}
                   >
-                    {t('btn.btnDenied')}
+                    {t("btn.btnDenied")}
                   </button>
                 </div>
                 <div className="col-md-4">
@@ -1815,7 +1818,7 @@ export const JobManagement = () => {
                       className="btn btn-success text-light"
                       onClick={() => setViewCoverletter(true)}
                     >
-                      {t('table.CL')}
+                      {t("table.CL")}
                     </button>
                   )}
                 </div>
@@ -1828,7 +1831,7 @@ export const JobManagement = () => {
                       setStatusApplicant("APPROVED");
                     }}
                   >
-                    {t('btn.btnApproved')}
+                    {t("btn.btnApproved")}
                   </button>
                 </div>
               </div>
@@ -1849,7 +1852,7 @@ export const JobManagement = () => {
                       className="btn btn-success text-light"
                       onClick={() => setViewCoverletter(true)}
                     >
-                      {t('table.CL')}
+                      {t("table.CL")}
                     </button>
                   )}
                 </div>
@@ -1864,7 +1867,7 @@ export const JobManagement = () => {
           <div className="modal">
             <div className="modal-content">
               <div className="modal-header">
-                <h6 className="">{t('jobManagement.message')}</h6>
+                <h6 className="">{t("jobManagement.message")}</h6>
                 <button
                   type="button"
                   className="btn-close text-danger"
@@ -1893,14 +1896,14 @@ export const JobManagement = () => {
                   className="btn btn-secondary"
                   onClick={() => setViewApprovedModel(false)}
                 >
-                  {t('btn.btnClose')}
+                  {t("btn.btnClose")}
                 </button>
                 <button
                   type="button"
                   className="btn btn-success"
                   onClick={sendMessage}
                 >
-                  {t('btn.btnSend')}
+                  {t("btn.btnSend")}
                 </button>
               </div>
             </div>
@@ -1910,8 +1913,8 @@ export const JobManagement = () => {
 
       {showToast === true && (
         <div
-          className="position-fixed bottom-0 end-0 p-3 toast-message"
-          style={{ zIndex: 5 }}
+          className="position-fixed top-0 end-0 p-3 toast-message"
+          style={{ zIndex: 9999 }}
         >
           <div
             className={`toast ${showToast ? "show" : ""}`}
@@ -1923,7 +1926,9 @@ export const JobManagement = () => {
               className="toast-header"
               style={{ backgroundColor: "#198754", color: "white" }}
             >
-              <strong className="me-auto">{t('showToastMessage.status')}</strong>
+              <strong className="me-auto">
+                {t("showToastMessage.status")}
+              </strong>
               <button
                 type="button"
                 className="btn-close"
@@ -1933,140 +1938,81 @@ export const JobManagement = () => {
             </div>
             <div className="toast-body">{message}</div>
           </div>
-          <>
-            <div
-              id="modal "
-              className={`modal ${isDisplayedCloseJobModal && jobDeadline && jobDeadline.length > 0
-                ? ""
-                : "display-none"
-                }`}
-            >
-              <div className="modal-content w-100 h-100">
-                <div className="row justify-content-end">
-                  <div className="col-md-11">
-                    <h4 className="text-success">
-                      {t('jobManagement.reachedDate')}
-                    </h4>
-                  </div>
-                  <div className="col-md-1">
-                    <h4
-                      className="btn text-danger"
-                      onClick={handleCloseJobDeadline}
-                    >
-                      X
-                    </h4>
-                  </div>
-                </div>
-                <div className="">
-                  {jobDeadline !== null ? (
-                    <table className="table custom-table  no-footer">
-                      <thead>
-                        <tr>
-                          <th></th>
-                          <th>{t('table.title')}</th>
-                          <th>{t('table.salary')}</th>
-                          <th>{t('table.closeDate')}</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {jobDeadline.map((jobItem: any, index: number) => (
-                          <tr key={index}>
-                            <td>
-                              <img
-                                src={jobItem.jobImg}
-                                alt=""
-                                style={{ width: "50px", height: "50px", objectFit: "contain" }}
-                              />
-                            </td>
-                            <td>{jobItem.title}</td>
-                            <td>{formatMoney(jobItem.salary)} đ</td>
-                            <td>{formatDate(jobItem.applicationDeadline)}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  ) : null}
-                </div>
-                <div className="row"></div>
-              </div>
-            </div>
-          </>
+
           {/* modal noti when close job */}
-          {confirmCloseJob && job ? (
-            <div className="modal">
-              <div className="modal">
-                <div className="modal-content">
-                  <div className="modal-header">
-                    <h6 className="">{t('jobManagement.confirmClose')}</h6>
-                    <button
-                      type="button"
-                      className="btn-close text-danger"
-                      onClick={handleCancelButtonConfirm}
-                    ></button>
-                  </div>
-                  <div className="modal-body">
-                    <table className="table custom-table  no-footer">
-                      <thead>
-                        <tr>
-                          <th></th>
-                          <th>{t('table.title')}</th>
-                          <th>{t('table.salary')}</th>
-                          <th>{t('table.closeDate')}</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>
-                            <img
-                              src={job?.jobImg}
-                              alt=""
-                              style={{ width: "50px", height: "50px", objectFit: "contain" }}
-                            />
-                          </td>
-                          <td>{job?.title}</td>
-                          <td>{formatMoney(job?.salary)} đ</td>
-                          <td>{formatDate(job?.applicationDeadline)}</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                  <div className="modal-footer">
-                    <button
-                      type="button"
-                      className="btn btn-secondary"
-                      onClick={handleCloseJob}
-                    >
-                      OK
-                    </button>
-                    <button
-                      type="button"
-                      className="btn btn-success"
-                      onClick={handleCancelButtonConfirm}
-                    >
-                      {t('btn.btnCancel')}
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ) : (
-            " "
-          )}
 
           {/*  */}
-        </div >
+        </div>
+      )}
+      {confirmCloseJob && job ? (
+        <div className="modal">
+          <div className="modal">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h6 className="">{t("jobManagement.confirmClose")}</h6>
+                <button
+                  type="button"
+                  className="btn-close text-danger"
+                  onClick={handleCancelButtonConfirm}
+                ></button>
+              </div>
+              <div className="modal-body">
+                <table className="table custom-table  no-footer">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th>{t("table.title")}</th>
+                      <th>{t("table.salary")}</th>
+                      <th>{t("table.closeDate")}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <img
+                          src={job?.jobImg}
+                          alt=""
+                          style={{
+                            width: "50px",
+                            height: "50px",
+                            objectFit: "contain",
+                          }}
+                        />
+                      </td>
+                      <td>{job?.title}</td>
+                      <td>{formatMoney(job?.salary)} đ</td>
+                      <td>{formatDate(job?.applicationDeadline)}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div className="modal-footer">
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={handleCloseJob}
+                >
+                  OK
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-success"
+                  onClick={handleCancelButtonConfirm}
+                >
+                  {t("btn.btnCancel")}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        " "
       )}
       <style>
         {`
-      
-
-        .nav {
-          position: sticky;
-          top: 0;
-          background-color: #c0c0c0	
-          z-index: 1000; 
+        .form-control {
+          width:98%
         }
-
         `}
       </style>
     </>

@@ -9,6 +9,7 @@ export const RightCompanyContent: React.FC<{ job?: JobModel }> = (props) => {
   
 
   const jobDetailLink = `/jobDetail/${props.job?.jobId}?applyNow=open`;
+  const jobDetail = `/jobDetail/${props.job?.jobId}`;
 
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   useEffect(() => {
@@ -56,7 +57,7 @@ export const RightCompanyContent: React.FC<{ job?: JobModel }> = (props) => {
               style={{ width: "50px", height: "50px", objectFit: "contain" }}
             />
           )}
-          <Link className="text-start ps-4" to={jobDetailLink}>
+          <Link className="text-start ps-4" to={jobDetail}>
             <h5 className="mb-3">{props.job?.title}</h5>
           </Link>
         </div>
